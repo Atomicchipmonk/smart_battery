@@ -9,51 +9,72 @@
 
 #include "debug.h"
 #include "pin_selection.h"
-#include "thermistor.c"
+
 #include <SD.h>
+#include <avr/power.h>
+#include "RTClib.h"
+
 #include "log.h"
+#include "time.h"
+#include "thermistor.c"
+#include "sleep.h"
+
 
         
-
+RTC_PCF8523 rtc;
  
 void setup(void) {
-  Serial.begin(9600);
+  
+  if(debug){
+    Serial.begin(9600);
+  }
+  
+
   analogReference(5);
   pinMode(LED_BUILTIN, OUTPUT);
-
 
   //Set up relay pins
   pinMode(HEATER_RELAY_PIN, OUTPUT);
   pinMode(CHARGE_RELAY_ON_PIN, OUTPUT);
-  pinMode(CHARGE_RELAY_OFF_PIN, OUTPUT);
+  //pinMode(CHARGE_RELAY_OFF_PIN, OUTPUT);
   pinMode(OUTPUT_RELAY_ON_PIN, OUTPUT);
   pinMode(OUTPUT_RELAY_OFF_PIN, OUTPUT);
 
-
+  initialize_rtc(rtc);
+  
+  
   if (!SD.begin(SD_CHIP_SELECT)) {
     return 1;
   }
 
+
+  
+
 }
+uint32_t counter = 0;
  
 void loop(void) {
 
   //im alive
   digitalWrite(LED_BUILTIN, HIGH);
+  //pinMode(SLEEP_WAKE_PIN, OUTPUT);
+  
 
-  //Set next timer (always do this first)
+  //get time
+  DateTime timeNow = rtc.now();
 
+
+  //get data
   float celcius_average = get_temperature(THERMISTOR_PIN_HEATER);
   String log_msg = "JSON eventually: Temperature ";
   log_msg += String(celcius_average);
   log_msg += " *C";
 
+
+  //log data
   int32_t rc = log_message(log_msg);
 
-    digitalWrite(CHARGE_RELAY_ON_PIN, HIGH);
-    delay(15);
-    digitalWrite(CHARGE_RELAY_ON_PIN, LOW);
-  
+  //report logging
   for (int32_t i = 0; i < rc; i++){
     digitalWrite(LED_BUILTIN, LOW);
     delay(100);
@@ -61,26 +82,24 @@ void loop(void) {
     delay(100);
   }
 
-  digitalWrite(LED_BUILTIN, LOW);
+
+  counter++;
+
+  if(counter > 5){
+    rotate_sd_file(timeNow);
+    counter = 0;
+  }
 
 
-  //just some general turning on and off relays
-  digitalWrite(CHARGE_RELAY_OFF_PIN, HIGH);
-  delay(15);
-  digitalWrite(CHARGE_RELAY_OFF_PIN, LOW);
+  //Save power during production
+  if(!debug){
+    //Setup ISR
+    pciSetup(SLEEP_WAKE_PIN);
+    //Turn everything off
+    power_off();
+  }
+  
 
-  digitalWrite(OUTPUT_RELAY_ON_PIN, HIGH);
-    delay(15);
-    digitalWrite(OUTPUT_RELAY_ON_PIN, LOW);
-
-  delay(1000);
-
-  digitalWrite(OUTPUT_RELAY_OFF_PIN, HIGH);
-  delay(15);
-  digitalWrite(OUTPUT_RELAY_OFF_PIN, LOW);
-
-
-  //Turn everything off
-
+  //for timing
   delay(1000);
 }
