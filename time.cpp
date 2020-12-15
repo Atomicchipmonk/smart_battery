@@ -2,10 +2,14 @@
 #include "RTClib.h"
 #include <stdint.h>
 
-uint8_t initialize_rtc(RTC_PCF8523 rtc){
+
+
+RTC_PCF8523 rtc;
+
+uint8_t initialize_rtc(){
+
   if (! rtc.begin()) {
     return 1;
-    abort();
   }
 
   if (! rtc.initialized() || rtc.lostPower()) {
@@ -21,16 +25,16 @@ uint8_t initialize_rtc(RTC_PCF8523 rtc){
   rtc.enableCountdownTimer(PCF8523_FrequencySecond, 20, PCF8523_LowPulse14x64Hz);
 }
 
-uint8_t set_time(RTC_PCF8523 rtc, DateTime newTime){
+uint8_t set_time(DateTime newTime){
   rtc.adjust(newTime);
 }
 
-uint8_t set_repeating_alarm(RTC_PCF8523 rtc, uint8_t rate_in_minutes){
+uint8_t set_repeating_alarm(uint8_t rate_in_minutes){
   rtc.deconfigureAllTimers();
   rtc.enableCountdownTimer(PCF8523_FrequencyMinute, rate_in_minutes, PCF8523_LowPulse6x64Hz);
 }
 
-DateTime get_time(RTC_PCF8523 rtc){
+DateTime get_time(){
   return rtc.now();
 }
 

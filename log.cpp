@@ -9,12 +9,48 @@
 
 #include "log.h"
 
-String create_influx_json(float heater_temp){
-  return "1234";
+int8_t create_influx_json(float heater_temp_celcius,
+      float battery_temp_celcius,
+      float solar_input_voltage,
+      float battery_input_voltage,
+      float battery_percent_charged,
+      float solar_input_current,
+      float battery_current,
+      int8_t heater_relay,
+      int8_t charge_relay,
+      int8_t output_relay,
+      int8_t system_state,
+      DateTime time,
+      char* buffer,
+      uint16_t buffer_size){
+
+
+        //dtostrf(f, 2, 2, &str[strlen(str)]);
+
+  //this doesnt work, requires additional compiler linking for floats in printf. If this did work though, it would be great!
+  int8_t ret = snprintf(buffer, buffer_size, "INFLUX JSON: %f %f %f %f %f %f %d %d %d %d", 
+      battery_temp_celcius, \
+      solar_input_voltage, \
+      battery_input_voltage, \
+      battery_percent_charged, \
+      solar_input_current, \
+      battery_current, \
+      heater_relay, \
+      charge_relay, \
+      output_relay, \
+      system_state);
+
+
+  if (ret < 0) {
+    return EXIT_FAILURE;
+  }
+  if (ret >= buffer_size) {
+      // Result was truncated - resize the buffer and retry.
+  }
 }
 
 
-uint8_t log_message(String log_msg){
+uint8_t log_message(char* log_msg){
   uint8_t rc = 0;
 
   rc += write_to_serial(log_msg);
@@ -24,12 +60,12 @@ uint8_t log_message(String log_msg){
   return rc;  
 }
 
-uint8_t write_to_ethernet(String log_msg){
+uint8_t write_to_ethernet(char* log_msg){
   return 1;
 }
 
 
-uint8_t write_to_serial(String log_msg){
+uint8_t write_to_serial(char* log_msg){
     if(Serial){
       Serial.println(log_msg);
       return 0;
@@ -38,7 +74,7 @@ uint8_t write_to_serial(String log_msg){
     }
 }
 
-uint8_t write_to_sd_card(String log_msg, bool has_internet){
+uint8_t write_to_sd_card(char* log_msg, bool has_internet){
 
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
