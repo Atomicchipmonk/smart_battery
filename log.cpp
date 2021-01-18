@@ -2,12 +2,18 @@
 
 #include "debug.h"
 
+#include "pin_selection.h"
 #include "Arduino.h"
 #include <SPI.h>
 #include <SD.h>
 #include "RTClib.h"
 
 #include "log.h"
+
+char current_sd_file_live_down[64] = "default.live.txt";
+char current_sd_file_stored[64] = "default.stored.txt";
+
+
 
 int8_t create_influx_json(float heater_temp_celcius,
       float battery_temp_celcius,
@@ -21,24 +27,35 @@ int8_t create_influx_json(float heater_temp_celcius,
       int8_t output_relay,
       int8_t system_state,
       DateTime time,
-      char* buffer,
+      char buffer[],
       uint16_t buffer_size){
 
 
-        //dtostrf(f, 2, 2, &str[strlen(str)]);
-
-  //this doesnt work, requires additional compiler linking for floats in printf. If this did work though, it would be great!
-  int8_t ret = snprintf(buffer, buffer_size, "INFLUX JSON: %f %f %f %f %f %f %d %d %d %d", 
-      battery_temp_celcius, \
-      solar_input_voltage, \
-      battery_input_voltage, \
-      battery_percent_charged, \
-      solar_input_current, \
-      battery_current, \
+ 
+  int8_t ret = snprintf(buffer, buffer_size, "battery,batt_id=%d heater_on=%d,charge_on=%d,output_on=%d,system_state=%d", 
+      BATTERY_ID, \
       heater_relay, \
       charge_relay, \
       output_relay, \
       system_state);
+
+/*strcpy(&buffer[strlen(buffer)], ",heater_temp=");
+      dtostrf(heater_temp_celcius, 3, 3, &buffer[strlen(buffer)]);
+      strcpy(&buffer[strlen(buffer)], ",bat_temp=");
+      dtostrf(battery_temp_celcius, 3, 3, &buffer[strlen(buffer)]);
+      strcpy(&buffer[strlen(buffer)], ",solar_v=");
+      dtostrf(solar_input_voltage, 3, 3, &buffer[strlen(buffer)]);
+      strcpy(&buffer[strlen(buffer)], ",bat_v=");
+      dtostrf(battery_input_voltage, 3, 3, &buffer[strlen(buffer)]);
+      strcpy(&buffer[strlen(buffer)], ",bat_charged=");
+      dtostrf(battery_percent_charged, 3, 3, &buffer[strlen(buffer)]);
+      strcpy(&buffer[strlen(buffer)], ",solar_cur=");
+      dtostrf(solar_input_current, 3, 3, &buffer[strlen(buffer)]);
+      strcpy(&buffer[strlen(buffer)], ",bat_cur=");
+      dtostrf(battery_current, 3, 3, &buffer[strlen(buffer)]);
+*/
+      snprintf(&buffer[strlen(buffer)], buffer_size - strlen(buffer), " %lu", time.unixtime());
+      
 
 
   if (ret < 0) {
@@ -55,7 +72,12 @@ uint8_t log_message(char* log_msg){
 
   rc += write_to_serial(log_msg);
   rc += write_to_ethernet(log_msg);
-  rc += write_to_sd_card(log_msg, true);
+  //rc += write_to_sd_card(log_msg, true);
+
+    // if the file is available, write to it:
+
+
+
 
   return rc;  
 }
@@ -65,25 +87,26 @@ uint8_t write_to_ethernet(char* log_msg){
 }
 
 
-uint8_t write_to_serial(char* log_msg){
-    if(Serial){
-      Serial.println(log_msg);
-      return 0;
-    } else {
-      return 1;
-    }
+uint8_t write_to_serial(char log_msg[]){
+  if(Serial){
+    Serial.println(log_msg);
+    return 0;
+  } else {
+    return 1;
+  }
 }
 
-uint8_t write_to_sd_card(char* log_msg, bool has_internet){
+uint8_t write_to_sd_card(char log_msg[], bool has_internet){
 
-  // open the file. note that only one file can be open at a time,
-  // so you have to close this one before opening another.
-  File dataFile; 
+  
+
+
+  File dataFile;
 
   if(has_internet){
-    dataFile = SD.open("live_down/datalog.txt", FILE_WRITE);  
+      dataFile = SD.open(current_sd_file_live_down, FILE_WRITE);
   } else {
-    dataFile = SD.open("stored/datalog.txt", FILE_WRITE);
+    dataFile = SD.open(current_sd_file_stored, FILE_WRITE);
   }
 
   // if the file is available, write to it:
@@ -94,30 +117,52 @@ uint8_t write_to_sd_card(char* log_msg, bool has_internet){
   }
   // if the file isn't open, pop up an error:
   else {
+    if(Serial){
+      Serial.println("unable to write to sd card");
+    }
     return 1;
   }
 
  }
+
+
 
  uint8_t rotate_sd_file(DateTime timeNow){
   uint8_t rc = 1;
 
   //char buf1[20];
   //sprintf(buf1, "%02d:%02d:%02d-%02d/%02d/%02d",  hour(timeNow), minute(timeNow), second(timeNow), day(timeNow), month(timeNow), year(timeNow));
-  Serial.println(timeNow.unixtime());
+  //Serial.println(timeNow.unixtime());
+  //String time = String(timeNow.unixtime(), DEC);
 
-  showTime(timeNow);
+  //showTime(timeNow);
 
-  if (SD.exists("live_down/datalog.txt")) {
-    //SD.copy("live_down/datalog.txt", "live_down/rotated.txt");
-    rc = 0;
-  } 
+    //open and close previous files so that you know there are no stray open files.
+    /*File live_dataFile; 
 
-  if (SD.exists("stored/datalog.txt")) {
-    //SD.copy("stored/datalog.txt", "stored/rotated.txt");
-    rc = 0;
-  }
+    live_dataFile = SD.open(current_sd_file_live_down, FILE_READ);  
+    if (live_dataFile) {
+      live_dataFile.close();
+    }
 
+    File stored_dataFile; 
+    stored_dataFile = SD.open(current_sd_file_stored, FILE_READ);
+    if (stored_dataFile){
+      stored_dataFile.close();
+    }*/
+
+
+
+    snprintf(current_sd_file_live_down, 64, "/%lu.live.txt", timeNow.unixtime());
+    snprintf(current_sd_file_stored, 64, "/%lu.stored.txt", timeNow.unixtime());
+    if(Serial){
+      Serial.println(current_sd_file_live_down);
+      Serial.println(current_sd_file_stored);
+    }
+    
+
+  rc = 0;
+  
   return rc;
  }
 

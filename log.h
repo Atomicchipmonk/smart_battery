@@ -17,12 +17,14 @@ int8_t create_influx_json(float heater_temp_celcius, \
       int8_t output_relay, \
       int8_t system_state, \
       DateTime time, \
-      char* buffer, \
+      char buffer[], \
       uint16_t buffer_size);
-uint8_t log_message(char* log_msg);
-uint8_t write_to_ethernet(char* log_msg);
-uint8_t write_to_serial(char* log_msg);
-uint8_t write_to_sd_card(char* log_msg, bool has_internet);
+
+uint8_t log_message(char log_msg[]);
+uint8_t write_to_ethernet(char log_msg[]);
+uint8_t write_to_serial(char log_msg[]);
+uint8_t write_to_sd_card(char log_msg[], bool has_internet);
+uint8_t initialize_sd_card(DateTime timeNow);
 uint8_t rotate_sd_file(DateTime timeNow);
 
 
