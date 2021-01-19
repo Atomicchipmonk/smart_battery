@@ -7,21 +7,39 @@
 
 #include <stdint.h>
 
+#include "RTClib.h"
+#include <SD.h>
+
 #include "debug.h"
 #include "pin_selection.h"
 #include "thermistor.c"
-#include <SD.h>
 #include "log.h"
+#include "relays.h"
+#include "power_readings.h"
+#include "time.h"
+
+
+
 
         
+
+#define LOG_BUFFER_SIZE 1024
+
+
+uint8_t counter = 0;
+uint8_t system_state = 0;
+DateTime last_rotation;
 
  
 void setup(void) {
   Serial.begin(9600);
-  analogReference(5);
-  pinMode(LED_BUILTIN, OUTPUT);
+  while (!Serial){
+    delay(100);
+  }
+  analogReference(AR_DEFAULT);
 
 
+  pinMode(BLINK_LED, OUTPUT);
   //Set up relay pins
   pinMode(HEATER_RELAY_PIN, OUTPUT);
   pinMode(CHARGE_RELAY_ON_PIN, OUTPUT);
@@ -29,55 +47,104 @@ void setup(void) {
   pinMode(OUTPUT_RELAY_ON_PIN, OUTPUT);
   pinMode(OUTPUT_RELAY_OFF_PIN, OUTPUT);
 
+  initialize_rtc();
 
   if (!SD.begin(SD_CHIP_SELECT)) {
-    return 1;
+    return;
   }
+
+  SD.mkdir("/stored");
+  SD.mkdir("/live");
+  SD.mkdir("/stored_db");
+  SD.mkdir("/live_db");
+  
+  last_rotation = get_time();
+  rotate_sd_file(last_rotation);
 
 }
  
 void loop(void) {
 
+  DateTime loop_start_time = get_time();
+
   //im alive
-  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(BLINK_LED, HIGH);
 
   //Set next timer (always do this first)
 
-  float celcius_average = get_temperature(THERMISTOR_PIN_HEATER);
-  String log_msg = "JSON eventually: Temperature ";
-  log_msg += String(celcius_average);
-  log_msg += " *C";
+  //get data
+  float heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
+  float battery_temp_celcius = get_temperature(THERMISTOR_PIN_BATTERY);
+
+  float solar_input_voltage = get_voltage(VOLTAGE_SENSE_SOLAR_PIN);
+  float battery_input_voltage = get_voltage(VOLTAGE_SENSE_BATTERY_PIN);
+  float battery_percent_charged = translate_charge(battery_input_voltage);
+  
+  float solar_input_current = get_current(CURRENT_SENSE_SOLAR_ADDR);
+  float battery_current = get_current(CURRENT_SENSE_BATTERY_ADDR);
+
+  //get relays
+  int8_t heater_relay = get_heater_relay();
+  int8_t charge_relay = get_charge_relay();
+  int8_t output_relay = get_output_relay();
+
+
+
+  int8_t log_rc = 0;
+  char log_msg[LOG_BUFFER_SIZE] = "DEFAULT MESSAGE";
+  create_influx_json(heater_temp_celcius,
+      battery_temp_celcius,
+      solar_input_voltage,
+      battery_input_voltage,
+      battery_percent_charged,
+      solar_input_current,
+      battery_current,
+      heater_relay,
+      charge_relay,
+      output_relay,
+      system_state,
+      loop_start_time,
+      log_msg,
+      LOG_BUFFER_SIZE);
+
+  log_rc = log_message(log_msg);
 
   int32_t rc = log_message(log_msg);
 
-    digitalWrite(CHARGE_RELAY_ON_PIN, HIGH);
-    delay(15);
-    digitalWrite(CHARGE_RELAY_ON_PIN, LOW);
-  
+/* Uncomment if you want to hear/see some latching action
+    set_latching_relay(CHARGE_RELAY_ON_PIN);
+    delay(500);
+    set_latching_relay(CHARGE_RELAY_OFF_PIN);
+    delay(100);
+    set_latching_relay(OUTPUT_RELAY_ON_PIN);
+    delay(500);
+    set_latching_relay(OUTPUT_RELAY_OFF_PIN);
+    delay(100);
+    set_relay_on(HEATER_RELAY_PIN);
+    delay(500);
+    set_relay_off(HEATER_RELAY_PIN);
+*/
+
   for (int32_t i = 0; i < rc; i++){
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(100);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(100);
+    blink_led();
   }
 
-  digitalWrite(LED_BUILTIN, LOW);
 
 
-  //just some general turning on and off relays
-  digitalWrite(CHARGE_RELAY_OFF_PIN, HIGH);
-  delay(15);
-  digitalWrite(CHARGE_RELAY_OFF_PIN, LOW);
+  //fast rotation if debugging
+  if(debug){
+    if(loop_start_time.minute() != last_rotation.minute()){
+      rotate_sd_file(loop_start_time);
+      memcpy(&last_rotation, &loop_start_time, sizeof(DateTime));
+    }    
+  } else {
+    if(loop_start_time.day() != last_rotation.day()){
+      rotate_sd_file(loop_start_time);
+      memcpy(&last_rotation, &loop_start_time, sizeof(DateTime));
+    }
+  }
 
-  digitalWrite(OUTPUT_RELAY_ON_PIN, HIGH);
-    delay(15);
-    digitalWrite(OUTPUT_RELAY_ON_PIN, LOW);
-
-  delay(1000);
-
-  digitalWrite(OUTPUT_RELAY_OFF_PIN, HIGH);
-  delay(15);
-  digitalWrite(OUTPUT_RELAY_OFF_PIN, LOW);
+  digitalWrite(BLINK_LED, LOW);
 
 
   //Turn everything off

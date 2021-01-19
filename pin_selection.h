@@ -1,4 +1,6 @@
 
+//Blink LED
+#define BLINK_LED 8
 
 //Thermistor pins
 #define THERMISTOR_PIN_HEATER A0
@@ -15,7 +17,7 @@
 //Digital output
 #define HEATER_RELAY_PIN 12
 #define CHARGE_RELAY_ON_PIN 10
-#define CHARGE_RELAY_OFF_PIN 11
+#define CHARGE_RELAY_OFF_PIN 5
 #define OUTPUT_RELAY_ON_PIN 6
 #define OUTPUT_RELAY_OFF_PIN 9
 
