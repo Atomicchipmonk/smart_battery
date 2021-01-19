@@ -11,7 +11,7 @@
 #include "pin_selection.h"
 
 #include <SD.h>
-#include <avr/power.h>
+//#include <avr/power.h>
 #include "RTClib.h"
 
 
@@ -20,7 +20,7 @@
 #include "log.h"
 #include "time.h"
 #include "thermistor.c"
-#include "sleep.h"
+//#include "sleep.h"
 
 
 #define LOG_BUFFER_SIZE 1024
@@ -35,7 +35,7 @@ void setup(void) {
   }
   
 
-  analogReference(5);
+  //analogReference(5);
   pinMode(LED_BUILTIN, OUTPUT);
 
   //Set up relay pins
@@ -49,7 +49,7 @@ void setup(void) {
   
   
   if (!SD.begin(SD_CHIP_SELECT)) {
-    return 1;
+    return;
   }
 
 
@@ -87,8 +87,8 @@ void loop(void) {
   //Set iridium mode (sending, not sending)
 
   //log data
-  int8_t log_rc = "JSON eventually: Temperature ";
-  char log_msg[LOG_BUFFER_SIZE] = "";
+  int8_t log_rc = 0;
+  char log_msg[LOG_BUFFER_SIZE] = "JSON eventually: Temperature ";
   create_influx_json(heater_temp_celcius,
       battery_temp_celcius,
       solar_input_voltage,
@@ -131,10 +131,10 @@ void loop(void) {
     delay(1000);
 
     //Setup ISR
-    pciSetup(SLEEP_WAKE_PIN);
+    //pciSetup(SLEEP_WAKE_PIN);
 
     //Turn everything off
-    power_off();
+    //power_off();
 
   } else {
     //for usb host timing
