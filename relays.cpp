@@ -79,8 +79,9 @@ int8_t set_relay_off(uint8_t relay_pin){
 
 //toggle blink led
 int8_t blink_led(){
-  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  digitalWrite(BLINK_LED, HIGH);
   delay(100);
-  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  digitalWrite(BLINK_LED, LOW);
   delay(100);
+  return 0;
 }

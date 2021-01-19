@@ -9,6 +9,10 @@
 
 #include "log.h"
 
+
+char current_sd_file_live_down[64] = "/live/defaultl.txt";
+char current_sd_file_stored[64] = "/stored/defaults.txt";
+
 int8_t create_influx_json(float heater_temp_celcius,
       float battery_temp_celcius,
       float solar_input_voltage,
@@ -20,7 +24,7 @@ int8_t create_influx_json(float heater_temp_celcius,
       int8_t charge_relay,
       int8_t output_relay,
       int8_t system_state,
-      DateTime time,
+      DateTime time, 
       char* buffer,
       uint16_t buffer_size){
 
@@ -47,11 +51,13 @@ int8_t create_influx_json(float heater_temp_celcius,
   if (ret >= buffer_size) {
       // Result was truncated - resize the buffer and retry.
   }
+
+  return ret;
 }
 
 
-uint8_t log_message(char* log_msg){
-  uint8_t rc = 0;
+uint32_t log_message(String log_msg){
+  int32_t rc = 0;
 
   rc += write_to_serial(log_msg);
   rc += write_to_ethernet(log_msg);
@@ -60,12 +66,12 @@ uint8_t log_message(char* log_msg){
   return rc;  
 }
 
-uint8_t write_to_ethernet(char* log_msg){
+uint32_t write_to_ethernet(String log_msg){
   return 1;
 }
 
 
-uint8_t write_to_serial(char* log_msg){
+uint32_t write_to_serial(String log_msg){
     if(Serial){
       Serial.println(log_msg);
       return 0;
@@ -74,17 +80,14 @@ uint8_t write_to_serial(char* log_msg){
     }
 }
 
-uint8_t write_to_sd_card(char* log_msg, bool has_internet){
+uint32_t write_to_sd_card(String log_msg, bool has_internet){
 
-  // open the file. note that only one file can be open at a time,
-  // so you have to close this one before opening another.
-  File dataFile; 
-
-  if(has_internet){
-    dataFile = SD.open("live_down/datalog.txt", FILE_WRITE);  
-  } else {
-    dataFile = SD.open("stored/datalog.txt", FILE_WRITE);
-  }
+  File dataFile;
+   if(has_internet){
+     dataFile = SD.open(current_sd_file_live_down, FILE_WRITE);
+   } else {
+     dataFile = SD.open(current_sd_file_stored, FILE_WRITE);
+   }
 
   // if the file is available, write to it:
   if (dataFile) {
@@ -94,52 +97,28 @@ uint8_t write_to_sd_card(char* log_msg, bool has_internet){
   }
   // if the file isn't open, pop up an error:
   else {
+    if(Serial){
+      Serial.println("unable to write to sd card");
+    }
     return 1;
   }
-
  }
 
- uint8_t rotate_sd_file(DateTime timeNow){
-  uint8_t rc = 1;
+uint8_t rotate_sd_file(DateTime timeNow){
+  uint8_t rc = 0;
 
-  //char buf1[20];
-  //sprintf(buf1, "%02d:%02d:%02d-%02d/%02d/%02d",  hour(timeNow), minute(timeNow), second(timeNow), day(timeNow), month(timeNow), year(timeNow));
-  Serial.println(timeNow.unixtime());
-
-  showTime(timeNow);
-
-  if (SD.exists("live_down/datalog.txt")) {
-    //SD.copy("live_down/datalog.txt", "live_down/rotated.txt");
-    rc = 0;
-  } 
-
-  if (SD.exists("stored/datalog.txt")) {
-    //SD.copy("stored/datalog.txt", "stored/rotated.txt");
-    rc = 0;
+  if(debug){
+    snprintf(current_sd_file_live_down, 64, "/live_db/db%02d%02d%02d.txt", timeNow.hour(), timeNow.minute(), timeNow.second());
+    snprintf(current_sd_file_stored, 64, "/stored_db/db%02d%02d%02d.txt", timeNow.hour(), timeNow.minute(), timeNow.second());
+  } else {
+    snprintf(current_sd_file_live_down, 64, "/live/%04d%02d%02d.txt", timeNow.year(), timeNow.month(), timeNow.day());
+    snprintf(current_sd_file_stored, 64, "/stored/%04d%02d%02d.txt", timeNow.year(), timeNow.month(), timeNow.day());
   }
 
+  if(Serial){
+    Serial.println(current_sd_file_live_down);
+    Serial.println(current_sd_file_stored);
+  }
+  
   return rc;
  }
-
- void showTime(DateTime now)
-{
-     Serial.print(now.year(), DEC);
-    Serial.print('/');
-    Serial.print(now.month(), DEC);
-    Serial.print('/');
-    Serial.print(now.day(), DEC);
-    Serial.print(" ");
-    Serial.print(now.hour(), DEC);
-    Serial.print(':');
-    Serial.print(now.minute(), DEC);
-    Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.println();
-
-    Serial.print(" since midnight 1/1/1970 = ");
-    Serial.print(now.unixtime());
-    Serial.print("s = ");
-    Serial.print(now.unixtime() / 86400L);
-    Serial.println("d");
-}
-

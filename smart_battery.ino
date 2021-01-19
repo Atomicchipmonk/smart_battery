@@ -7,37 +7,39 @@
 
 #include <stdint.h>
 
+#include "RTClib.h"
+#include <SD.h>
+
 #include "debug.h"
 #include "pin_selection.h"
-
-#include <SD.h>
-//#include <avr/power.h>
-#include "RTClib.h"
-
-
+#include "thermistor.c"
+#include "log.h"
 #include "relays.h"
 #include "power_readings.h"
-#include "log.h"
 #include "time.h"
-#include "thermistor.c"
-//#include "sleep.h"
 
+
+
+
+        
 
 #define LOG_BUFFER_SIZE 1024
- 
+
+
 uint8_t counter = 0;
 uint8_t system_state = 0;
+DateTime last_rotation;
 
+ 
 void setup(void) {
-  
-  if(debug){
-    Serial.begin(9600);
+  Serial.begin(9600);
+  while (!Serial){
+    delay(100);
   }
-  
+  analogReference(AR_DEFAULT);
 
-  //analogReference(5);
-  pinMode(LED_BUILTIN, OUTPUT);
 
+  pinMode(BLINK_LED, OUTPUT);
   //Set up relay pins
   pinMode(HEATER_RELAY_PIN, OUTPUT);
   pinMode(CHARGE_RELAY_ON_PIN, OUTPUT);
@@ -46,23 +48,29 @@ void setup(void) {
   pinMode(OUTPUT_RELAY_OFF_PIN, OUTPUT);
 
   initialize_rtc();
-  
-  
+
   if (!SD.begin(SD_CHIP_SELECT)) {
     return;
   }
 
+  SD.mkdir("/stored");
+  SD.mkdir("/live");
+  SD.mkdir("/stored_db");
+  SD.mkdir("/live_db");
+  
+  last_rotation = get_time();
+  rotate_sd_file(last_rotation);
 
 }
  
 void loop(void) {
 
+  DateTime loop_start_time = get_time();
+
   //im alive
-  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(BLINK_LED, HIGH);
 
-  //get time
-  DateTime timeNow = get_time();
-
+  //Set next timer (always do this first)
 
   //get data
   float heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
@@ -81,14 +89,9 @@ void loop(void) {
   int8_t output_relay = get_output_relay();
 
 
-  //do relay logic
-  //Set power mode (charging, operations, low power)
-  //Set heater mode (on, off)
-  //Set iridium mode (sending, not sending)
 
-  //log data
   int8_t log_rc = 0;
-  char log_msg[LOG_BUFFER_SIZE] = "JSON eventually: Temperature ";
+  char log_msg[LOG_BUFFER_SIZE] = "DEFAULT MESSAGE";
   create_influx_json(heater_temp_celcius,
       battery_temp_celcius,
       solar_input_voltage,
@@ -100,47 +103,51 @@ void loop(void) {
       charge_relay,
       output_relay,
       system_state,
-      timeNow,
+      loop_start_time,
       log_msg,
       LOG_BUFFER_SIZE);
 
   log_rc = log_message(log_msg);
 
-  //report logging via LED
-  //one blink for each logging method unable to be reached
-  for (int8_t i = 0; i < log_rc; i++){
+  int32_t rc = log_message(log_msg);
+
+/* Uncomment if you want to hear/see some latching action
+    set_latching_relay(CHARGE_RELAY_ON_PIN);
+    delay(500);
+    set_latching_relay(CHARGE_RELAY_OFF_PIN);
+    delay(100);
+    set_latching_relay(OUTPUT_RELAY_ON_PIN);
+    delay(500);
+    set_latching_relay(OUTPUT_RELAY_OFF_PIN);
+    delay(100);
+    set_relay_on(HEATER_RELAY_PIN);
+    delay(500);
+    set_relay_off(HEATER_RELAY_PIN);
+*/
+
+  for (int32_t i = 0; i < rc; i++){
     blink_led();
   }
 
 
+
   //fast rotation if debugging
   if(debug){
-    counter++;
-
-    if(counter > 5){
-      rotate_sd_file(timeNow);
-      counter = 0;
-    }
-  } 
-
-  //rotate every 24 hours
-
-  //Save power during production
-  if(!debug){
-    //for usb host timing
-    delay(1000);
-
-    //Setup ISR
-    //pciSetup(SLEEP_WAKE_PIN);
-
-    //Turn everything off
-    //power_off();
-
+    if(loop_start_time.minute() != last_rotation.minute()){
+      rotate_sd_file(loop_start_time);
+      memcpy(&last_rotation, &loop_start_time, sizeof(DateTime));
+    }    
   } else {
-    //for usb host timing
-    delay(1000);
+    if(loop_start_time.day() != last_rotation.day()){
+      rotate_sd_file(loop_start_time);
+      memcpy(&last_rotation, &loop_start_time, sizeof(DateTime));
+    }
   }
-  
 
-  
+  digitalWrite(BLINK_LED, LOW);
+
+
+  //Turn everything off
+
+  delay(1000);
 }
