@@ -6,8 +6,27 @@
 #include <SPI.h>
 #include <SD.h>
 #include "RTClib.h"
+#include <Ethernet.h>
 
+#include "pin_selection.h"
 #include "log.h"
+
+
+
+// Enter a MAC address for your controller below.
+// Newer Ethernet shields have a MAC address printed on a sticker on the shield
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+
+//IPAddress server(192,168,1,238); //Hardcoded internal IP address for debug
+char server[] = "granolamatt.net";    // Server address
+
+// Set the static IP address to use if the DHCP fails to assign
+IPAddress ip(192, 168, 1, 177);
+IPAddress myDns(8, 8, 8, 8);
+
+// Initialize the Ethernet client library
+// Only used to post log messages
+EthernetClient client;
 
 
 char current_sd_file_live_down[64] = "/live/defaultl.txt";
@@ -28,25 +47,25 @@ int8_t create_influx_json(float heater_temp_celcius,
       char* buffer,
       uint16_t buffer_size){
 
-
-        //dtostrf(f, 2, 2, &str[strlen(str)]);
-
   //this doesnt work, requires additional compiler linking for floats in printf. If this did work though, it would be great!
-  int8_t ret = snprintf(buffer, buffer_size, "INFLUX JSON: %f %f %f %f %f %f %d %d %d %d", 
+  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
+      BATTERY_ID, \
+      heater_temp_celcius, \
       battery_temp_celcius, \
       solar_input_voltage, \
       battery_input_voltage, \
-      battery_percent_charged, \
       solar_input_current, \
       battery_current, \
       heater_relay, \
       charge_relay, \
       output_relay, \
-      system_state);
+      battery_percent_charged, \
+      system_state, \
+      time.unixtime());
 
 
   if (ret < 0) {
-    return EXIT_FAILURE;
+    return ret;
   }
   if (ret >= buffer_size) {
       // Result was truncated - resize the buffer and retry.
@@ -58,16 +77,64 @@ int8_t create_influx_json(float heater_temp_celcius,
 
 uint32_t log_message(String log_msg){
   int32_t rc = 0;
+  int32_t has_internet = 0;
 
   rc += write_to_serial(log_msg);
-  rc += write_to_ethernet(log_msg);
-  rc += write_to_sd_card(log_msg, true);
+  has_internet = write_to_ethernet(log_msg);
+  rc += has_internet;
+  rc += write_to_sd_card(log_msg, ! has_internet);
 
   return rc;  
 }
 
+uint32_t initialize_ethernet(){
+
+  Ethernet.begin(mac, ip, myDns);
+
+  if (Ethernet.hardwareStatus() == EthernetNoHardware) {
+    if (Serial){
+      Serial.println("Ethernet shield was not found");
+    }
+    return -1;
+  }
+  if (Ethernet.linkStatus() == LinkOFF) {
+    if (Serial){
+      Serial.println("No ethernet cable found");
+    }
+    return -2;
+  }
+
+  return 0;
+}
+
 uint32_t write_to_ethernet(String log_msg){
-  return 1;
+  int32_t rc = client.connect(server, 8086);
+  if (rc) {
+      client.println("POST /write?db=mydb&precision=s HTTP/1.1");
+      client.println("Host:  blackmesa.com");
+      client.println("User-Agent: Arduino/1.0");
+      client.println("Connection: close");
+      client.println("Content-Type: application/x-www-form-urlencoded;");
+      client.print("Content-Length: ");
+      client.println(log_msg.length());
+      client.println();
+      client.println(log_msg);
+      rc = 0;
+  } else {
+    if(Serial){
+      Serial.println("connection failed");
+      Serial.println("POST /write?db=mydb&precision=s HTTP/1.1");
+      Serial.println("Host:  blackmesa.com");
+      Serial.println("User-Agent: Arduino/1.0");
+      Serial.println("Connection: close");
+      Serial.println("Content-Type: application/x-www-form-urlencoded;");
+      Serial.print("Content-Length: ");
+      Serial.println(log_msg.length());      
+    }
+    rc = 1;
+  }
+  client.stop();
+  return rc;
 }
 
 
@@ -109,7 +176,7 @@ uint8_t rotate_sd_file(DateTime timeNow){
 
   if(debug){
     snprintf(current_sd_file_live_down, 64, "/live_db/db%02d%02d%02d.txt", timeNow.hour(), timeNow.minute(), timeNow.second());
-    snprintf(current_sd_file_stored, 64, "/stored_db/db%02d%02d%02d.txt", timeNow.hour(), timeNow.minute(), timeNow.second());
+    snprintf(current_sd_file_stored, 64, "/stor_db/db%02d%02d%02d.txt", timeNow.hour(), timeNow.minute(), timeNow.second());
   } else {
     snprintf(current_sd_file_live_down, 64, "/live/%04d%02d%02d.txt", timeNow.year(), timeNow.month(), timeNow.day());
     snprintf(current_sd_file_stored, 64, "/stored/%04d%02d%02d.txt", timeNow.year(), timeNow.month(), timeNow.day());

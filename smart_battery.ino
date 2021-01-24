@@ -9,6 +9,7 @@
 
 #include "RTClib.h"
 #include <SD.h>
+#include <Ethernet.h>
 
 #include "debug.h"
 #include "pin_selection.h"
@@ -21,6 +22,7 @@
 
 
 
+
         
 
 #define LOG_BUFFER_SIZE 1024
@@ -29,6 +31,7 @@
 uint8_t counter = 0;
 uint8_t system_state = 0;
 DateTime last_rotation;
+
 
  
 void setup(void) {
@@ -47,7 +50,11 @@ void setup(void) {
   pinMode(OUTPUT_RELAY_ON_PIN, OUTPUT);
   pinMode(OUTPUT_RELAY_OFF_PIN, OUTPUT);
 
+
+
   initialize_rtc();
+
+
 
   if (!SD.begin(SD_CHIP_SELECT)) {
     return;
@@ -55,11 +62,15 @@ void setup(void) {
 
   SD.mkdir("/stored");
   SD.mkdir("/live");
-  SD.mkdir("/stored_db");
+  SD.mkdir("/stor_db");
   SD.mkdir("/live_db");
   
   last_rotation = get_time();
   rotate_sd_file(last_rotation);
+
+
+  Ethernet.init(ETHERNET_CHIP_SELECT);
+  initialize_ethernet();
 
 }
  
@@ -107,11 +118,12 @@ void loop(void) {
       log_msg,
       LOG_BUFFER_SIZE);
 
-  log_rc = log_message(log_msg);
+      set_latching_relay(CHARGE_RELAY_ON_PIN);
 
   int32_t rc = log_message(log_msg);
 
 /* Uncomment if you want to hear/see some latching action
+
     set_latching_relay(CHARGE_RELAY_ON_PIN);
     delay(500);
     set_latching_relay(CHARGE_RELAY_OFF_PIN);
@@ -130,17 +142,27 @@ void loop(void) {
   }
 
 
-
+  time_t ntp_time;
   //fast rotation if debugging
   if(debug){
     if(loop_start_time.minute() != last_rotation.minute()){
       rotate_sd_file(loop_start_time);
       memcpy(&last_rotation, &loop_start_time, sizeof(DateTime));
+      ntp_time = getNtpTime();
+      if (ntp_time != 0){
+        set_time(DateTime(ntp_time));
+      }
+      
     }    
   } else {
     if(loop_start_time.day() != last_rotation.day()){
       rotate_sd_file(loop_start_time);
       memcpy(&last_rotation, &loop_start_time, sizeof(DateTime));
+
+      ntp_time = getNtpTime();
+      if (ntp_time != 0){
+        set_time(DateTime(ntp_time));
+      }
     }
   }
 
@@ -149,5 +171,5 @@ void loop(void) {
 
   //Turn everything off
 
-  delay(1000);
+  delay(5000);
 }
