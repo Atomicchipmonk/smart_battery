@@ -87,6 +87,157 @@ X Pin_9 9 -200 -100 150 R 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
+# Device_R
+#
+DEF Device_R R 0 0 N Y 1 F N
+F0 "R" 80 0 50 V V C CNN
+F1 "Device_R" 0 0 50 V V C CNN
+F2 "" -70 0 50 V I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ R_*
+$ENDFPLIST
+DRAW
+S -40 -100 40 100 0 1 10 N
+X ~ 1 0 150 50 D 50 50 1 1 P
+X ~ 2 0 -150 50 U 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# Regulator_Linear_LM317_3PinPackage
+#
+DEF Regulator_Linear_LM317_3PinPackage U 0 10 Y Y 1 F N
+F0 "U" -150 125 50 H V C CNN
+F1 "Regulator_Linear_LM317_3PinPackage" 0 125 50 H V L CNN
+F2 "" 0 250 50 H I C CIN
+F3 "" 0 0 50 H I C CNN
+ALIAS AZ1117-ADJ
+$FPLIST
+ SOT?223*
+ SOT?89*
+ TO?220*
+ TO?252*
+ TO?263*
+$ENDFPLIST
+DRAW
+S -200 75 200 -200 0 1 10 f
+X ADJ 1 0 -300 100 U 50 50 1 1 I
+X VO 2 300 0 100 L 50 50 1 1 w
+X VI 3 -300 0 100 R 50 50 1 1 W
+ENDDRAW
+ENDDEF
+#
+# eec_LTC4151CS-2PBF
+#
+DEF eec_LTC4151CS-2PBF U 0 40 Y Y 1 L N
+F0 "U" 0 200 50 H V L CNN
+F1 "eec_LTC4151CS-2PBF" 0 300 50 H V L CNN
+F2 "Linear_Technology-LTC4151CS-2PBF-*" 0 400 50 H I L CNN
+F3 "http://cds.linear.com/docs/en/datasheet/4151fd.pdf" 0 500 50 H I L CNN
+F4 "1" 0 600 50 H I L CNN "Channels "
+F5 "Manufacturer URL" 0 700 50 H I L CNN "Component Link 1 Description"
+F6 "http://www.linear.com/" 0 800 50 H I L CNN "Component Link 1 URL"
+F7 "Package Specification" 0 900 50 H I L CNN "Component Link 3 Description"
+F8 "http://cds.linear.com/docs/en/packaging/S16%2005-08-1610%20Rev%20G.pdf" 0 1000 50 H I L CNN "Component Link 3 URL"
+F9 "Rev. D" 0 1100 50 H I L CNN "Datasheet Version"
+F10 "1.2" 0 1200 50 H I L CNN "Is mA Typical"
+F11 "LTC4151" 0 1300 50 H I L CNN "Linear Technology Part Number"
+F12 "Surface Mount" 0 1400 50 H I L CNN "Mounting Technology"
+F13 "16-Lead Plastic Small Outline, Body 9.9 x 3.9 mm, Pitch 1.27 mm" 0 1500 50 H I L CNN "Package Description"
+F14 "Rev G" 0 1600 50 H I L CNN "Package Version"
+F15 "CSA" 0 1700 50 H I L CNN "Type"
+F16 "80" 0 1800 50 H I L CNN "Vs Max V"
+F17 "7" 0 1900 50 H I L CNN "Vs Min V"
+F18 "IC" 0 2000 50 H I L CNN "category"
+F19 "1422219" 0 2100 50 H I L CNN "ciiva ids"
+F20 "17f8ba209de9ce53" 0 2200 50 H I L CNN "library id"
+F21 "Linear Technology" 0 2300 50 H I L CNN "manufacturer"
+F22 "LT-S-16" 0 2400 50 H I L CNN "package"
+F23 "1378745002" 0 2500 50 H I L CNN "release date"
+F24 "No" 0 2600 50 H I L CNN "rohs"
+F25 "011ACA5A-62DD-4C61-91D8-85E46D25C1B3" 0 2700 50 H I L CNN "vault revision"
+F26 "yes" 0 2800 50 H I L CNN "imported"
+DRAW
+S 100 100 900 -1100 1 1 0 f
+X SENSE+ 1 1000 0 100 L 40 40 1 1 I
+X SCL 10 0 -500 100 R 40 40 1 1 I C
+X SDAI 11 0 -600 100 R 40 40 1 1 I
+X SDAO 12 0 -700 100 R 40 40 1 1 C
+X GND 13 1000 -1000 100 L 40 40 1 1 W
+X NC 14 1000 -700 100 L 40 40 1 1 P
+X NC 15 1000 -800 100 L 40 40 1 1 P
+X SENSE- 16 1000 -100 100 L 40 40 1 1 I
+X VIN 2 0 -1000 100 R 40 40 1 1 W
+X NC 3 1000 -300 100 L 40 40 1 1 P
+X NC 4 1000 -400 100 L 40 40 1 1 P
+X ADR1 5 0 -300 100 R 40 40 1 1 I
+X NC 6 1000 -500 100 L 40 40 1 1 P
+X ADR0 7 0 -200 100 R 40 40 1 1 I
+X NC 8 1000 -600 100 L 40 40 1 1 P
+X ADIN 9 0 0 100 R 40 40 1 1 I
+ENDDRAW
+ENDDEF
+#
+# mp930_MP930-0.075-1
+#
+DEF mp930_MP930-0.075-1 R 0 40 Y Y 1 L N
+F0 "R" 0 200 50 H V L CNN
+F1 "mp930_MP930-0.075-1" 0 300 50 H V L CNN
+F2 "Caddock-MP930-0-0-*" 0 400 50 H I L CNN
+F3 "http://www.caddock.com/Online_catalog/Mrktg_Lit/MP9000_Series.pdf" 0 500 50 H I L CNN
+F4 "No" 0 600 50 H I L CNN "automotive"
+F5 "Res" 0 700 50 H I L CNN "category"
+F6 "Thick Film" 0 800 50 H I L CNN "composition"
+F7 "Passive Components" 0 900 50 H I L CNN "device class L1"
+F8 "Resistors" 0 1000 50 H I L CNN "device class L2"
+F9 "Through-Hole Resistors" 0 1100 50 H I L CNN "device class L3"
+F10 "RES 0.075 OHM 30W 1% TO220" 0 1200 50 H I L CNN "digikey description"
+F11 "MP930-0.075F-ND" 0 1300 50 H I L CNN "digikey part number"
+F12 "20.58mm" 0 1400 50 H I L CNN "height"
+F13 "Yes" 0 1500 50 H I L CNN "lead free"
+F14 "7184e12c71dccc63" 0 1600 50 H I L CNN "library id"
+F15 "Caddock" 0 1700 50 H I L CNN "manufacturer"
+F16 "Thick Film Resistors - Through Hole 0.075 ohm 30W 1% TO-220 PKG PWR FILM" 0 1800 50 H I L CNN "mouser description"
+F17 "684-MP930-0.075" 0 1900 50 H I L CNN "mouser part number"
+F18 "TO-220-2" 0 2000 50 H I L CNN "package"
+F19 "30W" 0 2100 50 H I L CNN "power rating"
+F20 "0.075Ω" 0 2200 50 H I L CNN "resistance"
+F21 "Yes" 0 2300 50 H I L CNN "rohs"
+F22 "MP930" 0 2400 50 H I L CNN "series"
+F23 "2.54mm" 0 2500 50 H I L CNN "standoff height"
+F24 "0/+200ppm/°C" 0 2600 50 H I L CNN "temperature coefficient"
+F25 "+150°C" 0 2700 50 H I L CNN "temperature range high"
+F26 "-55°C" 0 2800 50 H I L CNN "temperature range low"
+F27 "1%" 0 2900 50 H I L CNN "tolerance"
+F28 "250V" 0 3000 50 H I L CNN "voltage rating"
+DRAW
+P 2 1 1 0 200 0 230 50 N
+P 2 1 1 0 230 50 280 -50 N
+P 2 1 1 0 280 -50 330 50 N
+P 2 1 1 0 330 50 380 -50 N
+P 2 1 1 0 380 -50 430 50 N
+P 2 1 1 0 430 50 480 -50 N
+P 2 1 1 0 480 -50 500 0 N
+X 1 1 100 0 100 R 40 0 1 1 P
+X 2 2 600 0 100 L 40 0 1 1 P
+ENDDRAW
+ENDDEF
+#
+# power_+24V
+#
+DEF power_+24V #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "power_+24V" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +24V 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
 # power_+3.3V
 #
 DEF power_+3.3V #PWR 0 0 Y Y 1 F P
@@ -100,6 +251,36 @@ P 2 0 1 0 -30 50 0 100 N
 P 2 0 1 0 0 0 0 100 N
 P 2 0 1 0 0 100 30 50 N
 X +3V3 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# power_+48V
+#
+DEF power_+48V #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "power_+48V" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +48V 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# power_+5V
+#
+DEF power_+5V #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "power_+5V" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +5V 1 0 0 0 U 50 50 1 1 W N
 ENDDRAW
 ENDDEF
 #

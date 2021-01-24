@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name eec)(type Legacy)(uri /home/matt/icparts/LTC4151/eec.lib)(options "")(descr ""))
+  (lib (name mp930)(type Legacy)(uri /home/matt/icparts/MP930/mp930.lib)(options "")(descr ""))
+  (lib (name iso1541)(type Legacy)(uri /home/matt/icparts/ISO1541/iso1541.lib)(options "")(descr ""))
+)
