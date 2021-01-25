@@ -36,11 +36,17 @@ DateTime last_rotation;
  
 void setup(void) {
   Serial.begin(9600);
-  while (!Serial){
-    delay(100);
-  }
-  analogReference(AR_DEFAULT);
 
+  //If in debug mode, wait for serial to come up, otherwise just roll with it if you got it
+  if (debug){
+    while (!Serial){
+      delay(100);
+    }
+  }
+ 
+
+
+  analogReference(AR_DEFAULT);
 
   pinMode(BLINK_LED, OUTPUT);
   //Set up relay pins
@@ -51,21 +57,26 @@ void setup(void) {
   pinMode(OUTPUT_RELAY_OFF_PIN, OUTPUT);
 
 
-
+  //TODO currently if the rtc is not found it halts
   initialize_rtc();
-
+  last_rotation = get_time();
 
 
   if (!SD.begin(SD_CHIP_SELECT)) {
-    return;
+    Serial.println("ERR: SD Card not initialized");
+  } else {
+    SD.mkdir("/stored");
+    SD.mkdir("/live");
+    SD.mkdir("/stor_db");
+    SD.mkdir("/live_db");
+
+    //Go read configuration from files, or write those files if they dont exist
+    //Battery Id
+    //Server Endpoint
+    //TLS Key
   }
 
-  SD.mkdir("/stored");
-  SD.mkdir("/live");
-  SD.mkdir("/stor_db");
-  SD.mkdir("/live_db");
   
-  last_rotation = get_time();
   rotate_sd_file(last_rotation);
 
 
@@ -103,7 +114,13 @@ void loop(void) {
 
   int8_t log_rc = 0;
   char log_msg[LOG_BUFFER_SIZE] = "DEFAULT MESSAGE";
-  create_influx_json(heater_temp_celcius,
+
+  //figure out how to deal with live (chicken/egg problem)
+  
+  create_influx_json(
+      BATTERY_ID,
+      true,
+      heater_temp_celcius,
       battery_temp_celcius,
       solar_input_voltage,
       battery_input_voltage,
@@ -117,8 +134,6 @@ void loop(void) {
       loop_start_time,
       log_msg,
       LOG_BUFFER_SIZE);
-
-      set_latching_relay(CHARGE_RELAY_ON_PIN);
 
   int32_t rc = log_message(log_msg);
 
@@ -148,6 +163,7 @@ void loop(void) {
     if(loop_start_time.minute() != last_rotation.minute()){
       rotate_sd_file(loop_start_time);
       memcpy(&last_rotation, &loop_start_time, sizeof(DateTime));
+
       ntp_time = getNtpTime();
       if (ntp_time != 0){
         set_time(DateTime(ntp_time));

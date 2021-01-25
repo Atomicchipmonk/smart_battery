@@ -32,7 +32,9 @@ EthernetClient client;
 char current_sd_file_live_down[64] = "/live/defaultl.txt";
 char current_sd_file_stored[64] = "/stored/defaults.txt";
 
-int8_t create_influx_json(float heater_temp_celcius,
+int8_t create_influx_json(char batter_id[],
+      bool live,
+      float heater_temp_celcius,
       float battery_temp_celcius,
       float solar_input_voltage,
       float battery_input_voltage,
@@ -48,8 +50,10 @@ int8_t create_influx_json(float heater_temp_celcius,
       uint16_t buffer_size){
 
   //this doesnt work, requires additional compiler linking for floats in printf. If this did work though, it would be great!
-  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
+  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%S,live=%d,dbg=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
       BATTERY_ID, \
+      live, \
+      debug, \
       heater_temp_celcius, \
       battery_temp_celcius, \
       solar_input_voltage, \
@@ -93,13 +97,13 @@ uint32_t initialize_ethernet(){
 
   if (Ethernet.hardwareStatus() == EthernetNoHardware) {
     if (Serial){
-      Serial.println("Ethernet shield was not found");
+      Serial.println("ERR: Ethernet shield was not found");
     }
     return -1;
   }
   if (Ethernet.linkStatus() == LinkOFF) {
     if (Serial){
-      Serial.println("No ethernet cable found");
+      Serial.println("ERR: No ethernet cable found");
     }
     return -2;
   }
@@ -122,14 +126,7 @@ uint32_t write_to_ethernet(String log_msg){
       rc = 0;
   } else {
     if(Serial){
-      Serial.println("connection failed");
-      Serial.println("POST /write?db=mydb&precision=s HTTP/1.1");
-      Serial.println("Host:  blackmesa.com");
-      Serial.println("User-Agent: Arduino/1.0");
-      Serial.println("Connection: close");
-      Serial.println("Content-Type: application/x-www-form-urlencoded;");
-      Serial.print("Content-Length: ");
-      Serial.println(log_msg.length());      
+      Serial.println("ERR: Influx POST failed");     
     }
     rc = 1;
   }
@@ -165,7 +162,7 @@ uint32_t write_to_sd_card(String log_msg, bool has_internet){
   // if the file isn't open, pop up an error:
   else {
     if(Serial){
-      Serial.println("unable to write to sd card");
+      Serial.println("ERR: Unable to write to sd card");
     }
     return 1;
   }

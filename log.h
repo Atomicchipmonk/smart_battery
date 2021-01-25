@@ -2,7 +2,9 @@
 #ifndef LOGCPP_H
 #define LOGCPP_H
 
-int8_t create_influx_json(float heater_temp_celcius, \
+int8_t create_influx_json(char batter_id[], \
+      bool live, \
+      float heater_temp_celcius, \
       float battery_temp_celcius, \
       float solar_input_voltage, \
       float battery_input_voltage, \
