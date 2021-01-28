@@ -173,13 +173,13 @@ Text Label 3800 1050 0    50   ~ 0
 Text Label 3800 1250 0    50   ~ 0
 AREF
 Text Label 3800 1450 0    50   ~ 0
-A0
+THHTR
 Text Label 3800 1550 0    50   ~ 0
-A1
+THBAT
 Text Label 3800 1650 0    50   ~ 0
-A2
+VSSO
 Text Label 3800 1750 0    50   ~ 0
-A3
+VSPO
 Text Label 3800 1850 0    50   ~ 0
 A4
 Text Label 3800 1950 0    50   ~ 0
@@ -201,19 +201,19 @@ EN
 Text Label 5050 1650 2    50   ~ 0
 VUSB
 Text Label 5050 1750 2    50   ~ 0
-13
+VPIN
 Text Label 5050 1850 2    50   ~ 0
-12
+HTEN
 Text Label 5050 1950 2    50   ~ 0
-11
+SSET
 Text Label 5050 2050 2    50   ~ 0
-10
+ENCS
 Text Label 5050 2150 2    50   ~ 0
-9
+PUSET
 Text Label 5050 2250 2    50   ~ 0
-6
+PSET
 Text Label 5050 2350 2    50   ~ 0
-5
+SUSET
 Text Label 5050 2450 2    50   ~ 0
 SCL
 Text Label 5050 2550 2    50   ~ 0
@@ -963,4 +963,156 @@ Text Label 6350 4550 0    50   ~ 0
 POUT
 Wire Wire Line
 	6350 4550 6550 4550
+$Comp
+L power:GND #PWR?
+U 1 1 6015681A
+P 1200 4150
+F 0 "#PWR?" H 1200 3900 50  0001 C CNN
+F 1 "GND" H 1205 3977 50  0000 C CNN
+F 2 "" H 1200 4150 50  0001 C CNN
+F 3 "" H 1200 4150 50  0001 C CNN
+	1    1200 4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1400 4200 1350 4200
+Wire Wire Line
+	1350 4200 1350 4150
+Wire Wire Line
+	1350 4150 1200 4150
+$Comp
+L power:GND #PWR?
+U 1 1 6015AA91
+P 1400 5950
+F 0 "#PWR?" H 1400 5700 50  0001 C CNN
+F 1 "GND" H 1405 5777 50  0000 C CNN
+F 2 "" H 1400 5950 50  0001 C CNN
+F 3 "" H 1400 5950 50  0001 C CNN
+	1    1400 5950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1500 6250 1500 5950
+Wire Wire Line
+	1500 5950 1400 5950
+$Comp
+L Connector_Generic:Conn_01x05 J11
+U 1 1 60127D8D
+P 8100 5650
+F 0 "J11" H 8180 5692 50  0000 L CNN
+F 1 "Conn_01x05_RTC" H 8180 5601 50  0000 L CNN
+F 2 "" H 8100 5650 50  0001 C CNN
+F 3 "~" H 8100 5650 50  0001 C CNN
+	1    8100 5650
+	1    0    0    -1  
+$EndComp
+Text Label 7750 5550 0    50   ~ 0
+VPIN
+Text Label 7750 5650 0    50   ~ 0
+SDA
+Text Label 7750 5750 0    50   ~ 0
+SCL
+NoConn ~ 7900 5850
+$Comp
+L power:GND #PWR?
+U 1 1 6012C796
+P 7600 5450
+F 0 "#PWR?" H 7600 5200 50  0001 C CNN
+F 1 "GND" H 7605 5277 50  0000 C CNN
+F 2 "" H 7600 5450 50  0001 C CNN
+F 3 "" H 7600 5450 50  0001 C CNN
+	1    7600 5450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7600 5450 7900 5450
+Wire Wire Line
+	7750 5550 7900 5550
+Wire Wire Line
+	7750 5650 7900 5650
+Wire Wire Line
+	7750 5750 7900 5750
+$Comp
+L Device:R R3
+U 1 1 6013ECC6
+P 1500 1850
+F 0 "R3" H 1570 1896 50  0000 L CNN
+F 1 "R10k" H 1570 1805 50  0000 L CNN
+F 2 "" V 1430 1850 50  0001 C CNN
+F 3 "~" H 1500 1850 50  0001 C CNN
+	1    1500 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R4
+U 1 1 6013ED4E
+P 1800 1850
+F 0 "R4" H 1870 1896 50  0000 L CNN
+F 1 "R10k" H 1870 1805 50  0000 L CNN
+F 2 "" V 1730 1850 50  0001 C CNN
+F 3 "~" H 1800 1850 50  0001 C CNN
+	1    1800 1850
+	1    0    0    -1  
+$EndComp
+Text Label 1500 1500 0    50   ~ 0
+VPIN
+Wire Wire Line
+	1500 1500 1500 1550
+Wire Wire Line
+	1500 1550 1800 1550
+Wire Wire Line
+	1800 1550 1800 1700
+Connection ~ 1500 1550
+Wire Wire Line
+	1500 1550 1500 1700
+$Comp
+L Connector:Conn_01x02_Male J12
+U 1 1 60148FF6
+P 1300 2250
+F 0 "J12" H 1406 2428 50  0000 C CNN
+F 1 "Conn_HtrTh" H 1406 2337 50  0000 C CNN
+F 2 "" H 1300 2250 50  0001 C CNN
+F 3 "~" H 1300 2250 50  0001 C CNN
+	1    1300 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x02_Male J13
+U 1 1 60149078
+P 2000 2350
+F 0 "J13" H 1973 2230 50  0000 R CNN
+F 1 "Conn_BattTh" H 1973 2321 50  0000 R CNN
+F 2 "" H 2000 2350 50  0001 C CNN
+F 3 "~" H 2000 2350 50  0001 C CNN
+	1    2000 2350
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60149136
+P 1650 2500
+F 0 "#PWR?" H 1650 2250 50  0001 C CNN
+F 1 "GND" H 1655 2327 50  0000 C CNN
+F 2 "" H 1650 2500 50  0001 C CNN
+F 3 "" H 1650 2500 50  0001 C CNN
+	1    1650 2500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1500 2350 1500 2500
+Wire Wire Line
+	1500 2500 1650 2500
+Wire Wire Line
+	1800 2350 1800 2500
+Wire Wire Line
+	1800 2500 1650 2500
+Connection ~ 1650 2500
+Text Label 1800 2100 0    50   ~ 0
+THBAT
+Text Label 1500 2100 0    50   ~ 0
+THHTR
+Wire Wire Line
+	1500 2000 1500 2250
+Wire Wire Line
+	1800 2000 1800 2250
 $EndSCHEMATC

@@ -173,13 +173,13 @@ Text Label 3800 1050 0    50   ~ 0
 Text Label 3800 1250 0    50   ~ 0
 AREF
 Text Label 3800 1450 0    50   ~ 0
-A0
+THHTR
 Text Label 3800 1550 0    50   ~ 0
-A1
+THBAT
 Text Label 3800 1650 0    50   ~ 0
-A2
+VSSO
 Text Label 3800 1750 0    50   ~ 0
-A3
+VSPO
 Text Label 3800 1850 0    50   ~ 0
 A4
 Text Label 3800 1950 0    50   ~ 0
@@ -203,17 +203,17 @@ VUSB
 Text Label 5050 1750 2    50   ~ 0
 13
 Text Label 5050 1850 2    50   ~ 0
-12
+HTEN
 Text Label 5050 1950 2    50   ~ 0
-11
+SSET
 Text Label 5050 2050 2    50   ~ 0
-10
+ENCS
 Text Label 5050 2150 2    50   ~ 0
-9
+PUSET
 Text Label 5050 2250 2    50   ~ 0
-6
+PSET
 Text Label 5050 2350 2    50   ~ 0
-5
+SUSET
 Text Label 5050 2450 2    50   ~ 0
 SCL
 Text Label 5050 2550 2    50   ~ 0
@@ -262,10 +262,6 @@ Wire Wire Line
 	4800 2250 5050 2250
 Wire Wire Line
 	4800 2350 5050 2350
-Wire Wire Line
-	4800 2450 5050 2450
-Wire Wire Line
-	4800 2550 5050 2550
 $Comp
 L power:+3.3V #PWR?
 U 1 1 600BA630
@@ -454,8 +450,6 @@ NoConn ~ 8850 1150
 NoConn ~ 6450 1200
 NoConn ~ 6450 1500
 NoConn ~ 6450 1600
-NoConn ~ 6450 1700
-NoConn ~ 6450 1800
 NoConn ~ 6450 1900
 NoConn ~ 6450 2000
 NoConn ~ 6450 2100
@@ -477,19 +471,11 @@ NoConn ~ 7250 1500
 NoConn ~ 7250 1400
 NoConn ~ 8850 1350
 Text Label 6300 1400 0    50   ~ 0
-HTR
+HTEN
 Wire Wire Line
 	6300 1400 6450 1400
-Text Label 3850 4300 0    50   ~ 0
-SSET
-Wire Wire Line
-	3850 4300 4000 4300
-Text Label 3850 4400 0    50   ~ 0
+Text Label 3750 4400 0    50   ~ 0
 SUSET
-Wire Wire Line
-	3850 4400 4000 4400
-NoConn ~ 4000 4500
-NoConn ~ 4000 4600
 NoConn ~ 4000 4700
 NoConn ~ 4000 4800
 NoConn ~ 4000 4900
@@ -522,8 +508,6 @@ Text Label 6350 4350 0    50   ~ 0
 PUSET
 Wire Wire Line
 	6350 4350 6550 4350
-NoConn ~ 6550 4450
-NoConn ~ 6550 4550
 NoConn ~ 6550 4650
 NoConn ~ 6550 4750
 NoConn ~ 6550 4850
@@ -874,4 +858,178 @@ Wire Wire Line
 Connection ~ 1200 4500
 Wire Wire Line
 	1200 4500 1400 4500
+$Comp
+L Device:R R1
+U 1 1 6011E672
+P 5350 2300
+F 0 "R1" H 5420 2346 50  0000 L CNN
+F 1 "R2k" H 5420 2255 50  0000 L CNN
+F 2 "" V 5280 2300 50  0001 C CNN
+F 3 "~" H 5350 2300 50  0001 C CNN
+	1    5350 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 6011E72E
+P 5600 2300
+F 0 "R2" H 5670 2346 50  0000 L CNN
+F 1 "R2k" H 5670 2255 50  0000 L CNN
+F 2 "" V 5530 2300 50  0001 C CNN
+F 3 "~" H 5600 2300 50  0001 C CNN
+	1    5600 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 6011E814
+P 5450 2100
+F 0 "#PWR?" H 5450 1950 50  0001 C CNN
+F 1 "+3.3V" H 5465 2273 50  0000 C CNN
+F 2 "" H 5450 2100 50  0001 C CNN
+F 3 "" H 5450 2100 50  0001 C CNN
+	1    5450 2100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5450 2100 5350 2100
+Wire Wire Line
+	5350 2100 5350 2150
+Wire Wire Line
+	5450 2100 5600 2100
+Wire Wire Line
+	5600 2100 5600 2150
+Connection ~ 5450 2100
+Wire Wire Line
+	4800 2450 5350 2450
+Wire Wire Line
+	5600 2550 5600 2450
+Wire Wire Line
+	4800 2550 5600 2550
+$Comp
+L power:+24V #PWR?
+U 1 1 6012D930
+P 6250 1700
+F 0 "#PWR?" H 6250 1550 50  0001 C CNN
+F 1 "+24V" H 6265 1873 50  0000 C CNN
+F 2 "" H 6250 1700 50  0001 C CNN
+F 3 "" H 6250 1700 50  0001 C CNN
+	1    6250 1700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6250 1700 6450 1700
+Text Label 6250 1800 0    50   ~ 0
+HTOUT
+Wire Wire Line
+	6250 1800 6450 1800
+Wire Wire Line
+	3750 4400 4000 4400
+Text Label 3750 4300 0    50   ~ 0
+SSET
+Wire Wire Line
+	4000 4300 3750 4300
+$Comp
+L power:+5V #PWR?
+U 1 1 60141A92
+P 3700 4500
+F 0 "#PWR?" H 3700 4350 50  0001 C CNN
+F 1 "+5V" H 3715 4673 50  0000 C CNN
+F 2 "" H 3700 4500 50  0001 C CNN
+F 3 "" H 3700 4500 50  0001 C CNN
+	1    3700 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3700 4500 4000 4500
+Text Label 3750 4600 0    50   ~ 0
+SOUT
+Wire Wire Line
+	3750 4600 4000 4600
+$Comp
+L power:+5V #PWR?
+U 1 1 601491D1
+P 6200 4450
+F 0 "#PWR?" H 6200 4300 50  0001 C CNN
+F 1 "+5V" H 6215 4623 50  0000 C CNN
+F 2 "" H 6200 4450 50  0001 C CNN
+F 3 "" H 6200 4450 50  0001 C CNN
+	1    6200 4450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6200 4450 6550 4450
+Text Label 6350 4550 0    50   ~ 0
+POUT
+Wire Wire Line
+	6350 4550 6550 4550
+$Comp
+L power:GND #PWR?
+U 1 1 6015681A
+P 1200 4150
+F 0 "#PWR?" H 1200 3900 50  0001 C CNN
+F 1 "GND" H 1205 3977 50  0000 C CNN
+F 2 "" H 1200 4150 50  0001 C CNN
+F 3 "" H 1200 4150 50  0001 C CNN
+	1    1200 4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1400 4200 1350 4200
+Wire Wire Line
+	1350 4200 1350 4150
+Wire Wire Line
+	1350 4150 1200 4150
+$Comp
+L power:GND #PWR?
+U 1 1 6015AA91
+P 1400 5950
+F 0 "#PWR?" H 1400 5700 50  0001 C CNN
+F 1 "GND" H 1405 5777 50  0000 C CNN
+F 2 "" H 1400 5950 50  0001 C CNN
+F 3 "" H 1400 5950 50  0001 C CNN
+	1    1400 5950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1500 6250 1500 5950
+Wire Wire Line
+	1500 5950 1400 5950
+$Comp
+L Connector_Generic:Conn_01x05 J11
+U 1 1 60127D8D
+P 8100 5650
+F 0 "J11" H 8180 5692 50  0000 L CNN
+F 1 "Conn_01x05_RTC" H 8180 5601 50  0000 L CNN
+F 2 "" H 8100 5650 50  0001 C CNN
+F 3 "~" H 8100 5650 50  0001 C CNN
+	1    8100 5650
+	1    0    0    -1  
+$EndComp
+Text Label 7750 5550 0    50   ~ 0
+VPIN
+Text Label 7750 5650 0    50   ~ 0
+SDA
+Text Label 7750 5750 0    50   ~ 0
+SCL
+NoConn ~ 7900 5850
+$Comp
+L power:GND #PWR?
+U 1 1 6012C796
+P 7600 5450
+F 0 "#PWR?" H 7600 5200 50  0001 C CNN
+F 1 "GND" H 7605 5277 50  0000 C CNN
+F 2 "" H 7600 5450 50  0001 C CNN
+F 3 "" H 7600 5450 50  0001 C CNN
+	1    7600 5450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7600 5450 7900 5450
+Wire Wire Line
+	7750 5550 7900 5550
+Wire Wire Line
+	7750 5650 7900 5650
+Wire Wire Line
+	7750 5750 7900 5750
 $EndSCHEMATC
