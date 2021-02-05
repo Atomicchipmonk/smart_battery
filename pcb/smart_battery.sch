@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:smart_battery-cache
-EELAYER 26 0
+EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
@@ -104,10 +103,10 @@ Text Label 6250 1000 0    50   ~ 0
 Wire Wire Line
 	6250 1000 6450 1000
 $Comp
-L power:+3.3V #PWR?
+L power:+3.3V #PWR027
 U 1 1 600B8860
 P 6100 1000
-F 0 "#PWR?" H 6100 850 50  0001 C CNN
+F 0 "#PWR027" H 6100 850 50  0001 C CNN
 F 1 "+3.3V" H 6115 1173 50  0000 C CNN
 F 2 "" H 6100 1000 50  0001 C CNN
 F 3 "" H 6100 1000 50  0001 C CNN
@@ -115,10 +114,10 @@ F 3 "" H 6100 1000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR028
 U 1 1 600B8866
 P 6100 1400
-F 0 "#PWR?" H 6100 1150 50  0001 C CNN
+F 0 "#PWR028" H 6100 1150 50  0001 C CNN
 F 1 "GND" H 6105 1227 50  0000 C CNN
 F 2 "" H 6100 1400 50  0001 C CNN
 F 3 "" H 6100 1400 50  0001 C CNN
@@ -250,10 +249,10 @@ Wire Wire Line
 Wire Wire Line
 	4800 2350 5050 2350
 $Comp
-L power:+3.3V #PWR?
+L power:+3.3V #PWR014
 U 1 1 600BA630
 P 3650 1050
-F 0 "#PWR?" H 3650 900 50  0001 C CNN
+F 0 "#PWR014" H 3650 900 50  0001 C CNN
 F 1 "+3.3V" H 3665 1223 50  0000 C CNN
 F 2 "" H 3650 1050 50  0001 C CNN
 F 3 "" H 3650 1050 50  0001 C CNN
@@ -261,10 +260,10 @@ F 3 "" H 3650 1050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR015
 U 1 1 600BA636
 P 3650 1450
-F 0 "#PWR?" H 3650 1200 50  0001 C CNN
+F 0 "#PWR015" H 3650 1200 50  0001 C CNN
 F 1 "GND" H 3655 1277 50  0000 C CNN
 F 2 "" H 3650 1450 50  0001 C CNN
 F 3 "" H 3650 1450 50  0001 C CNN
@@ -332,10 +331,10 @@ Text Label 6350 3550 0    50   ~ 0
 Wire Wire Line
 	6350 3550 6550 3550
 $Comp
-L power:+5V #PWR?
+L power:+5V #PWR025
 U 1 1 600E4154
 P 5150 1650
-F 0 "#PWR?" H 5150 1500 50  0001 C CNN
+F 0 "#PWR025" H 5150 1500 50  0001 C CNN
 F 1 "+5V" H 5165 1823 50  0000 C CNN
 F 2 "" H 5150 1650 50  0001 C CNN
 F 3 "" H 5150 1650 50  0001 C CNN
@@ -444,12 +443,12 @@ NoConn ~ 7350 4150
 NoConn ~ 7350 4050
 NoConn ~ 7350 3950
 $Comp
-L eec:LTC4151CS-2PBF U1Batt
+L eec:LTC4151CS-2PBF U1Batt1
 U 1 1 600DF30E
 P 1500 6250
-F 0 "U1Batt" H 2000 6515 50  0000 C CNN
+F 0 "U1Batt1" H 2000 6515 50  0000 C CNN
 F 1 "LTC4151CS-2PBF" H 2000 6424 50  0000 C CNN
-F 2 "Linear_Technology-LTC4151CS-2PBF-*" H 1500 6650 50  0001 L CNN
+F 2 "eec:Linear_Technology-LTC4151CS-2PBF-Level_B" H 1500 6650 50  0001 L CNN
 F 3 "http://cds.linear.com/docs/en/datasheet/4151fd.pdf" H 1500 6750 50  0001 L CNN
 F 4 "1" H 1500 6850 50  0001 L CNN "Channels "
 F 5 "Manufacturer URL" H 1500 6950 50  0001 L CNN "Component Link 1 Description"
@@ -477,44 +476,8 @@ F 26 "yes" H 1500 9050 50  0001 L CNN "imported"
 	1    1500 6250
 	1    0    0    -1  
 $EndComp
-$Comp
-L mp930:MP930-0.075-1 RP1
-U 1 1 600DF7C9
-P 2750 5750
-F 0 "RP1" V 3054 5828 50  0000 L CNN
-F 1 "MP930-0.02-1" V 3145 5828 50  0000 L CNN
-F 2 "Caddock-MP930-0-0-*" H 2750 6150 50  0001 L CNN
-F 3 "http://www.caddock.com/Online_catalog/Mrktg_Lit/MP9000_Series.pdf" H 2750 6250 50  0001 L CNN
-F 4 "No" H 2750 6350 50  0001 L CNN "automotive"
-F 5 "Res" H 2750 6450 50  0001 L CNN "category"
-F 6 "Thick Film" H 2750 6550 50  0001 L CNN "composition"
-F 7 "Passive Components" H 2750 6650 50  0001 L CNN "device class L1"
-F 8 "Resistors" H 2750 6750 50  0001 L CNN "device class L2"
-F 9 "Through-Hole Resistors" H 2750 6850 50  0001 L CNN "device class L3"
-F 10 "RES 0.075 OHM 30W 1% TO220" H 2750 6950 50  0001 L CNN "digikey description"
-F 11 "MP930-0.075F-ND" H 2750 7050 50  0001 L CNN "digikey part number"
-F 12 "20.58mm" H 2750 7150 50  0001 L CNN "height"
-F 13 "Yes" H 2750 7250 50  0001 L CNN "lead free"
-F 14 "7184e12c71dccc63" H 2750 7350 50  0001 L CNN "library id"
-F 15 "Caddock" H 2750 7450 50  0001 L CNN "manufacturer"
-F 16 "Thick Film Resistors - Through Hole 0.075 ohm 30W 1% TO-220 PKG PWR FILM" H 2750 7550 50  0001 L CNN "mouser description"
-F 17 "684-MP930-0.075" H 2750 7650 50  0001 L CNN "mouser part number"
-F 18 "TO-220-2" H 2750 7750 50  0001 L CNN "package"
-F 19 "30W" H 2750 7850 50  0001 L CNN "power rating"
-F 20 "0.075Ω" H 2750 7950 50  0001 L CNN "resistance"
-F 21 "Yes" H 2750 8050 50  0001 L CNN "rohs"
-F 22 "MP930" H 2750 8150 50  0001 L CNN "series"
-F 23 "2.54mm" H 2750 8250 50  0001 L CNN "standoff height"
-F 24 "0/+200ppm/°C" H 2750 8350 50  0001 L CNN "temperature coefficient"
-F 25 "+150°C" H 2750 8450 50  0001 L CNN "temperature range high"
-F 26 "-55°C" H 2750 8550 50  0001 L CNN "temperature range low"
-F 27 "1%" H 2750 8650 50  0001 L CNN "tolerance"
-F 28 "250V" H 2750 8750 50  0001 L CNN "voltage rating"
-	1    2750 5750
-	0    1    1    0   
-$EndComp
 Wire Wire Line
-	2500 6350 2750 6350
+	2500 6350 2650 6350
 Wire Wire Line
 	2500 6250 2500 5850
 Wire Wire Line
@@ -526,10 +489,10 @@ NoConn ~ 2500 6850
 NoConn ~ 2500 6950
 NoConn ~ 2500 7050
 $Comp
-L power:+48V #PWR?
+L power:+48V #PWR013
 U 1 1 600F051E
 P 2750 5750
-F 0 "#PWR?" H 2750 5600 50  0001 C CNN
+F 0 "#PWR013" H 2750 5600 50  0001 C CNN
 F 1 "+48V" H 2765 5923 50  0000 C CNN
 F 2 "" H 2750 5750 50  0001 C CNN
 F 3 "" H 2750 5750 50  0001 C CNN
@@ -538,7 +501,6 @@ F 3 "" H 2750 5750 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2750 5750 2750 5850
-Connection ~ 2750 5850
 Text Label 1350 6750 2    50   ~ 0
 SCL
 Text Label 1350 6850 2    50   ~ 0
@@ -555,10 +517,10 @@ Connection ~ 1450 6850
 Wire Wire Line
 	1450 6850 1500 6850
 $Comp
-L power:+48V #PWR?
+L power:+48V #PWR08
 U 1 1 6010851E
 P 1450 7250
-F 0 "#PWR?" H 1450 7100 50  0001 C CNN
+F 0 "#PWR08" H 1450 7100 50  0001 C CNN
 F 1 "+48V" H 1465 7423 50  0000 C CNN
 F 2 "" H 1450 7250 50  0001 C CNN
 F 3 "" H 1450 7250 50  0001 C CNN
@@ -568,10 +530,10 @@ $EndComp
 Wire Wire Line
 	1450 7250 1500 7250
 $Comp
-L power:+48V #PWR?
+L power:+48V #PWR05
 U 1 1 6010A445
 P 1300 6400
-F 0 "#PWR?" H 1300 6250 50  0001 C CNN
+F 0 "#PWR05" H 1300 6250 50  0001 C CNN
 F 1 "+48V" H 1315 6573 50  0000 C CNN
 F 2 "" H 1300 6400 50  0001 C CNN
 F 3 "" H 1300 6400 50  0001 C CNN
@@ -583,10 +545,10 @@ Wire Wire Line
 Wire Wire Line
 	1300 6450 1500 6450
 $Comp
-L power:GND #PWR?
+L power:GND #PWR03
 U 1 1 6010E50A
 P 1100 6550
-F 0 "#PWR?" H 1100 6300 50  0001 C CNN
+F 0 "#PWR03" H 1100 6300 50  0001 C CNN
 F 1 "GND" H 1105 6377 50  0000 C CNN
 F 2 "" H 1100 6550 50  0001 C CNN
 F 3 "" H 1100 6550 50  0001 C CNN
@@ -596,10 +558,10 @@ $EndComp
 Wire Wire Line
 	1100 6550 1500 6550
 $Comp
-L power:GND #PWR?
+L power:GND #PWR011
 U 1 1 60110803
 P 2600 7250
-F 0 "#PWR?" H 2600 7000 50  0001 C CNN
+F 0 "#PWR011" H 2600 7000 50  0001 C CNN
 F 1 "GND" H 2605 7077 50  0000 C CNN
 F 2 "" H 2600 7250 50  0001 C CNN
 F 3 "" H 2600 7250 50  0001 C CNN
@@ -609,12 +571,12 @@ $EndComp
 Wire Wire Line
 	2600 7250 2500 7250
 $Comp
-L eec:LTC4151CS-2PBF U2Solar
+L eec:LTC4151CS-2PBF U2Solar1
 U 1 1 601178EA
 P 1400 4200
-F 0 "U2Solar" H 1900 4465 50  0000 C CNN
+F 0 "U2Solar1" H 1900 4465 50  0000 C CNN
 F 1 "LTC4151CS-2PBF" H 1900 4374 50  0000 C CNN
-F 2 "Linear_Technology-LTC4151CS-2PBF-*" H 1400 4600 50  0001 L CNN
+F 2 "eec:Linear_Technology-LTC4151CS-2PBF-Level_B" H 1400 4600 50  0001 L CNN
 F 3 "http://cds.linear.com/docs/en/datasheet/4151fd.pdf" H 1400 4700 50  0001 L CNN
 F 4 "1" H 1400 4800 50  0001 L CNN "Channels "
 F 5 "Manufacturer URL" H 1400 4900 50  0001 L CNN "Component Link 1 Description"
@@ -642,57 +604,14 @@ F 26 "yes" H 1400 7000 50  0001 L CNN "imported"
 	1    1400 4200
 	1    0    0    -1  
 $EndComp
-$Comp
-L mp930:MP930-0.075-1 RP2
-U 1 1 6011790A
-P 2650 3700
-F 0 "RP2" V 2954 3778 50  0000 L CNN
-F 1 "MP930-0.02-1" V 3045 3778 50  0000 L CNN
-F 2 "Caddock-MP930-0-0-*" H 2650 4100 50  0001 L CNN
-F 3 "http://www.caddock.com/Online_catalog/Mrktg_Lit/MP9000_Series.pdf" H 2650 4200 50  0001 L CNN
-F 4 "No" H 2650 4300 50  0001 L CNN "automotive"
-F 5 "Res" H 2650 4400 50  0001 L CNN "category"
-F 6 "Thick Film" H 2650 4500 50  0001 L CNN "composition"
-F 7 "Passive Components" H 2650 4600 50  0001 L CNN "device class L1"
-F 8 "Resistors" H 2650 4700 50  0001 L CNN "device class L2"
-F 9 "Through-Hole Resistors" H 2650 4800 50  0001 L CNN "device class L3"
-F 10 "RES 0.075 OHM 30W 1% TO220" H 2650 4900 50  0001 L CNN "digikey description"
-F 11 "MP930-0.075F-ND" H 2650 5000 50  0001 L CNN "digikey part number"
-F 12 "20.58mm" H 2650 5100 50  0001 L CNN "height"
-F 13 "Yes" H 2650 5200 50  0001 L CNN "lead free"
-F 14 "7184e12c71dccc63" H 2650 5300 50  0001 L CNN "library id"
-F 15 "Caddock" H 2650 5400 50  0001 L CNN "manufacturer"
-F 16 "Thick Film Resistors - Through Hole 0.075 ohm 30W 1% TO-220 PKG PWR FILM" H 2650 5500 50  0001 L CNN "mouser description"
-F 17 "684-MP930-0.075" H 2650 5600 50  0001 L CNN "mouser part number"
-F 18 "TO-220-2" H 2650 5700 50  0001 L CNN "package"
-F 19 "30W" H 2650 5800 50  0001 L CNN "power rating"
-F 20 "0.075Ω" H 2650 5900 50  0001 L CNN "resistance"
-F 21 "Yes" H 2650 6000 50  0001 L CNN "rohs"
-F 22 "MP930" H 2650 6100 50  0001 L CNN "series"
-F 23 "2.54mm" H 2650 6200 50  0001 L CNN "standoff height"
-F 24 "0/+200ppm/°C" H 2650 6300 50  0001 L CNN "temperature coefficient"
-F 25 "+150°C" H 2650 6400 50  0001 L CNN "temperature range high"
-F 26 "-55°C" H 2650 6500 50  0001 L CNN "temperature range low"
-F 27 "1%" H 2650 6600 50  0001 L CNN "tolerance"
-F 28 "250V" H 2650 6700 50  0001 L CNN "voltage rating"
-	1    2650 3700
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	2400 4300 2650 4300
 Wire Wire Line
 	2400 4200 2400 3800
-Wire Wire Line
-	2400 3800 2650 3800
 NoConn ~ 2400 4500
 NoConn ~ 2400 4600
 NoConn ~ 2400 4700
 NoConn ~ 2400 4800
 NoConn ~ 2400 4900
 NoConn ~ 2400 5000
-Wire Wire Line
-	2650 3700 2650 3800
-Connection ~ 2650 3800
 Text Label 1250 4700 2    50   ~ 0
 SCL
 Text Label 1250 4800 2    50   ~ 0
@@ -713,10 +632,10 @@ Wire Wire Line
 Wire Wire Line
 	1200 4400 1400 4400
 $Comp
-L power:GND #PWR?
+L power:GND #PWR01
 U 1 1 60117939
 P 1000 4500
-F 0 "#PWR?" H 1000 4250 50  0001 C CNN
+F 0 "#PWR01" H 1000 4250 50  0001 C CNN
 F 1 "GND" H 1005 4327 50  0000 C CNN
 F 2 "" H 1000 4500 50  0001 C CNN
 F 3 "" H 1000 4500 50  0001 C CNN
@@ -726,10 +645,10 @@ $EndComp
 Wire Wire Line
 	1000 4500 1200 4500
 $Comp
-L power:GND #PWR?
+L power:GND #PWR010
 U 1 1 60117940
 P 2500 5200
-F 0 "#PWR?" H 2500 4950 50  0001 C CNN
+F 0 "#PWR010" H 2500 4950 50  0001 C CNN
 F 1 "GND" H 2505 5027 50  0000 C CNN
 F 2 "" H 2500 5200 50  0001 C CNN
 F 3 "" H 2500 5200 50  0001 C CNN
@@ -739,10 +658,10 @@ $EndComp
 Wire Wire Line
 	2500 5200 2400 5200
 $Comp
-L power:+24V #PWR?
+L power:+24V #PWR012
 U 1 1 6011ADED
 P 2650 3700
-F 0 "#PWR?" H 2650 3550 50  0001 C CNN
+F 0 "#PWR012" H 2650 3550 50  0001 C CNN
 F 1 "+24V" H 2665 3873 50  0000 C CNN
 F 2 "" H 2650 3700 50  0001 C CNN
 F 3 "" H 2650 3700 50  0001 C CNN
@@ -750,10 +669,10 @@ F 3 "" H 2650 3700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+24V #PWR?
+L power:+24V #PWR06
 U 1 1 6011AE9F
 P 1350 5200
-F 0 "#PWR?" H 1350 5050 50  0001 C CNN
+F 0 "#PWR06" H 1350 5050 50  0001 C CNN
 F 1 "+24V" H 1365 5373 50  0000 C CNN
 F 2 "" H 1350 5200 50  0001 C CNN
 F 3 "" H 1350 5200 50  0001 C CNN
@@ -788,10 +707,10 @@ F 3 "~" H 5600 2300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+3.3V #PWR?
+L power:+3.3V #PWR026
 U 1 1 6011E814
 P 5450 2100
-F 0 "#PWR?" H 5450 1950 50  0001 C CNN
+F 0 "#PWR026" H 5450 1950 50  0001 C CNN
 F 1 "+3.3V" H 5465 2273 50  0000 C CNN
 F 2 "" H 5450 2100 50  0001 C CNN
 F 3 "" H 5450 2100 50  0001 C CNN
@@ -814,10 +733,10 @@ Wire Wire Line
 Wire Wire Line
 	4800 2550 5600 2550
 $Comp
-L power:+5V #PWR?
+L power:+5V #PWR016
 U 1 1 60141A92
 P 3700 4500
-F 0 "#PWR?" H 3700 4350 50  0001 C CNN
+F 0 "#PWR016" H 3700 4350 50  0001 C CNN
 F 1 "+5V" H 3715 4673 50  0000 C CNN
 F 2 "" H 3700 4500 50  0001 C CNN
 F 3 "" H 3700 4500 50  0001 C CNN
@@ -831,10 +750,10 @@ SOUT
 Wire Wire Line
 	3750 4600 4000 4600
 $Comp
-L power:+5V #PWR?
+L power:+5V #PWR029
 U 1 1 601491D1
 P 6200 4450
-F 0 "#PWR?" H 6200 4300 50  0001 C CNN
+F 0 "#PWR029" H 6200 4300 50  0001 C CNN
 F 1 "+5V" H 6215 4623 50  0000 C CNN
 F 2 "" H 6200 4450 50  0001 C CNN
 F 3 "" H 6200 4450 50  0001 C CNN
@@ -848,10 +767,10 @@ POUT
 Wire Wire Line
 	6350 4550 6550 4550
 $Comp
-L power:GND #PWR?
+L power:GND #PWR04
 U 1 1 6015681A
 P 1200 4150
-F 0 "#PWR?" H 1200 3900 50  0001 C CNN
+F 0 "#PWR04" H 1200 3900 50  0001 C CNN
 F 1 "GND" H 1205 3977 50  0000 C CNN
 F 2 "" H 1200 4150 50  0001 C CNN
 F 3 "" H 1200 4150 50  0001 C CNN
@@ -865,10 +784,10 @@ Wire Wire Line
 Wire Wire Line
 	1350 4150 1200 4150
 $Comp
-L power:GND #PWR?
+L power:GND #PWR07
 U 1 1 6015AA91
 P 1400 5950
-F 0 "#PWR?" H 1400 5700 50  0001 C CNN
+F 0 "#PWR07" H 1400 5700 50  0001 C CNN
 F 1 "GND" H 1405 5777 50  0000 C CNN
 F 2 "" H 1400 5950 50  0001 C CNN
 F 3 "" H 1400 5950 50  0001 C CNN
@@ -885,7 +804,7 @@ U 1 1 60127D8D
 P 8100 5650
 F 0 "J11" H 8180 5692 50  0000 L CNN
 F 1 "Conn_01x05_RTC" H 8180 5601 50  0000 L CNN
-F 2 "" H 8100 5650 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical" H 8100 5650 50  0001 C CNN
 F 3 "~" H 8100 5650 50  0001 C CNN
 	1    8100 5650
 	1    0    0    -1  
@@ -898,10 +817,10 @@ Text Label 7750 5750 0    50   ~ 0
 SCL
 NoConn ~ 7900 5850
 $Comp
-L power:GND #PWR?
+L power:GND #PWR031
 U 1 1 6012C796
 P 7600 5450
-F 0 "#PWR?" H 7600 5200 50  0001 C CNN
+F 0 "#PWR031" H 7600 5200 50  0001 C CNN
 F 1 "GND" H 7605 5277 50  0000 C CNN
 F 2 "" H 7600 5450 50  0001 C CNN
 F 3 "" H 7600 5450 50  0001 C CNN
@@ -972,10 +891,10 @@ F 3 "~" H 2000 2350 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR09
 U 1 1 60149136
 P 1650 2500
-F 0 "#PWR?" H 1650 2250 50  0001 C CNN
+F 0 "#PWR09" H 1650 2250 50  0001 C CNN
 F 1 "GND" H 1655 2327 50  0000 C CNN
 F 2 "" H 1650 2500 50  0001 C CNN
 F 3 "" H 1650 2500 50  0001 C CNN
@@ -1017,10 +936,10 @@ SSET
 NoConn ~ 4800 4800
 NoConn ~ 4800 4900
 $Comp
-L Connector:Conn_01x02_Male J15
+L Connector:Conn_01x02_Male JR2
 U 1 1 60168A13
 P 4950 5450
-F 0 "J15" H 4923 5330 50  0000 R CNN
+F 0 "JR2" H 4923 5330 50  0000 R CNN
 F 1 "SolarRelay" H 4923 5421 50  0000 R CNN
 F 2 "" H 4950 5450 50  0001 C CNN
 F 3 "~" H 4950 5450 50  0001 C CNN
@@ -1028,10 +947,10 @@ F 3 "~" H 4950 5450 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR021
 U 1 1 60168CFD
 P 4750 5450
-F 0 "#PWR?" H 4750 5200 50  0001 C CNN
+F 0 "#PWR021" H 4750 5200 50  0001 C CNN
 F 1 "GND" H 4755 5277 50  0000 C CNN
 F 2 "" H 4750 5450 50  0001 C CNN
 F 3 "" H 4750 5450 50  0001 C CNN
@@ -1043,10 +962,10 @@ SOUT
 Wire Wire Line
 	4550 5350 4750 5350
 $Comp
-L Connector:Conn_01x02_Male J14
+L Connector:Conn_01x02_Male JR1
 U 1 1 6016DE35
 P 7000 5500
-F 0 "J14" H 6973 5380 50  0000 R CNN
+F 0 "JR1" H 6973 5380 50  0000 R CNN
 F 1 "PowerRelay" H 6973 5471 50  0000 R CNN
 F 2 "" H 7000 5500 50  0001 C CNN
 F 3 "~" H 7000 5500 50  0001 C CNN
@@ -1054,10 +973,10 @@ F 3 "~" H 7000 5500 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR030
 U 1 1 6016DE3C
 P 6800 5500
-F 0 "#PWR?" H 6800 5250 50  0001 C CNN
+F 0 "#PWR030" H 6800 5250 50  0001 C CNN
 F 1 "GND" H 6805 5327 50  0000 C CNN
 F 2 "" H 6800 5500 50  0001 C CNN
 F 3 "" H 6800 5500 50  0001 C CNN
@@ -1074,10 +993,10 @@ NoConn ~ 6550 3850
 NoConn ~ 6550 3750
 NoConn ~ 6550 3650
 $Comp
-L Regulator_Linear:SPX3819M5-L-3-3 U?
+L Regulator_Linear:SPX3819M5-L-3-3 U1
 U 1 1 60178915
 P 9100 3450
-F 0 "U?" H 9100 3792 50  0000 C CNN
+F 0 "U1" H 9100 3792 50  0000 C CNN
 F 1 "SPX3819M5-L-3-3" H 9100 3701 50  0000 C CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-5" H 9100 3775 50  0001 C CNN
 F 3 "https://www.exar.com/content/document.ashx?id=22106&languageid=1033&type=Datasheet&partnumber=SPX3819&filename=SPX3819.pdf&part=SPX3819" H 9100 3450 50  0001 C CNN
@@ -1085,10 +1004,10 @@ F 3 "https://www.exar.com/content/document.ashx?id=22106&languageid=1033&type=Da
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR033
 U 1 1 60178A97
 P 9100 3750
-F 0 "#PWR?" H 9100 3500 50  0001 C CNN
+F 0 "#PWR033" H 9100 3500 50  0001 C CNN
 F 1 "GND" H 9105 3577 50  0000 C CNN
 F 2 "" H 9100 3750 50  0001 C CNN
 F 3 "" H 9100 3750 50  0001 C CNN
@@ -1096,10 +1015,10 @@ F 3 "" H 9100 3750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C?
+L Device:C C2
 U 1 1 60178C04
 P 9550 3600
-F 0 "C?" H 9665 3646 50  0000 L CNN
+F 0 "C2" H 9665 3646 50  0000 L CNN
 F 1 "C10uF" H 9665 3555 50  0000 L CNN
 F 2 "" H 9588 3450 50  0001 C CNN
 F 3 "~" H 9550 3600 50  0001 C CNN
@@ -1107,10 +1026,10 @@ F 3 "~" H 9550 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C?
+L Device:C C3
 U 1 1 60178CA6
 P 9900 3600
-F 0 "C?" H 10015 3646 50  0000 L CNN
+F 0 "C3" H 10015 3646 50  0000 L CNN
 F 1 "C1uF" H 10015 3555 50  0000 L CNN
 F 2 "" H 9938 3450 50  0001 C CNN
 F 3 "~" H 9900 3600 50  0001 C CNN
@@ -1118,10 +1037,10 @@ F 3 "~" H 9900 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR034
 U 1 1 60178D25
 P 9550 3850
-F 0 "#PWR?" H 9550 3600 50  0001 C CNN
+F 0 "#PWR034" H 9550 3600 50  0001 C CNN
 F 1 "GND" H 9555 3677 50  0000 C CNN
 F 2 "" H 9550 3850 50  0001 C CNN
 F 3 "" H 9550 3850 50  0001 C CNN
@@ -1151,10 +1070,10 @@ Text Label 8500 1050 0    50   ~ 0
 Eth3.3
 NoConn ~ 9400 3450
 $Comp
-L Device:R_Small R?
+L Device:R_Small R5
 U 1 1 601A923F
 P 8600 3550
-F 0 "R?" V 8404 3550 50  0000 C CNN
+F 0 "R5" V 8404 3550 50  0000 C CNN
 F 1 "100K" V 8495 3550 50  0000 C CNN
 F 2 "" H 8600 3550 50  0001 C CNN
 F 3 "~" H 8600 3550 50  0001 C CNN
@@ -1173,10 +1092,10 @@ Wire Wire Line
 Wire Wire Line
 	8700 3450 8800 3450
 $Comp
-L Device:C C?
+L Device:C C1
 U 1 1 601B844F
 P 8500 3700
-F 0 "C?" H 8615 3746 50  0000 L CNN
+F 0 "C1" H 8615 3746 50  0000 L CNN
 F 1 "C10uF" H 8615 3655 50  0000 L CNN
 F 2 "" H 8538 3550 50  0001 C CNN
 F 3 "~" H 8500 3700 50  0001 C CNN
@@ -1185,10 +1104,10 @@ F 3 "~" H 8500 3700 50  0001 C CNN
 $EndComp
 Connection ~ 8500 3550
 $Comp
-L power:GND #PWR?
+L power:GND #PWR032
 U 1 1 601B8538
 P 8500 3850
-F 0 "#PWR?" H 8500 3600 50  0001 C CNN
+F 0 "#PWR032" H 8500 3600 50  0001 C CNN
 F 1 "GND" H 8505 3677 50  0000 C CNN
 F 2 "" H 8500 3850 50  0001 C CNN
 F 3 "" H 8500 3850 50  0001 C CNN
@@ -1199,4 +1118,299 @@ Text Label 8300 3200 0    50   ~ 0
 POUT
 Wire Wire Line
 	8300 3200 8500 3200
+$Comp
+L Regulator_Switching:TSR_1-2450 PS1
+U 1 1 601BDF5C
+P 4100 6650
+F 0 "PS1" H 4100 7017 50  0000 C CNN
+F 1 "TSR_1-2450" H 4100 6926 50  0000 C CNN
+F 2 "Converter_DCDC:Converter_DCDC_TRACO_TSR-1_THT" H 4100 6500 50  0001 L CIN
+F 3 "http://www.tracopower.com/products/tsr1.pdf" H 4100 6650 50  0001 C CNN
+	1    4100 6650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR018
+U 1 1 601C73D5
+P 4100 6950
+F 0 "#PWR018" H 4100 6700 50  0001 C CNN
+F 1 "GND" H 4105 6777 50  0000 C CNN
+F 2 "" H 4100 6950 50  0001 C CNN
+F 3 "" H 4100 6950 50  0001 C CNN
+	1    4100 6950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 6950 4100 6850
+$Comp
+L power:+5V #PWR019
+U 1 1 601CCD37
+P 4500 6450
+F 0 "#PWR019" H 4500 6300 50  0001 C CNN
+F 1 "+5V" H 4515 6623 50  0000 C CNN
+F 2 "" H 4500 6450 50  0001 C CNN
+F 3 "" H 4500 6450 50  0001 C CNN
+	1    4500 6450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4500 6450 4500 6550
+$Comp
+L TEC_2-2411:TEC_2-2411 PS2
+U 1 1 601D750D
+P 5000 6000
+F 0 "PS2" H 6030 5746 50  0000 L CNN
+F 1 "TEC_2-2411" H 6030 5655 50  0000 L CNN
+F 2 "TEC_2:TEC24811" H 5000 6000 50  0001 L BNN
+F 3 "" H 5000 6000 50  0001 L BNN
+F 4 "https://www.mouser.co.uk/ProductDetail/TRACO-Power/TEC-2-2411?qs=55YtniHzbhC8puD1fVWd5Q%3D%3D" H 5000 6000 50  0001 L BNN "MOUSER_PRICE-STOCK"
+F 5 "TEC 2-2411" H 5000 6000 50  0001 L BNN "MANUFACTURER_PART_NUMBER"
+F 6 "mm" H 5000 6000 50  0001 L BNN "HEIGHT"
+F 7 "495-TEC2-2411" H 5000 6000 50  0001 L BNN "MOUSER_PART_NUMBER"
+F 8 "Traco Power" H 5000 6000 50  0001 L BNN "MANUFACTURER_NAME"
+F 9 "Isolated DC/DC Converters 2W 18-36Vin 5V 400mA SIP8 Iso Reg" H 5000 6000 50  0001 L BNN "DESCRIPTION"
+	1    5000 6000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR022
+U 1 1 601D774F
+P 4800 5850
+F 0 "#PWR022" H 4800 5600 50  0001 C CNN
+F 1 "GND" H 4805 5677 50  0000 C CNN
+F 2 "" H 4800 5850 50  0001 C CNN
+F 3 "" H 4800 5850 50  0001 C CNN
+	1    4800 5850
+	1    0    0    -1  
+$EndComp
+NoConn ~ 5000 6300
+NoConn ~ 5000 6600
+$Comp
+L power:GND #PWR024
+U 1 1 601E1E96
+P 4900 6650
+F 0 "#PWR024" H 4900 6400 50  0001 C CNN
+F 1 "GND" H 4905 6477 50  0000 C CNN
+F 2 "" H 4900 6650 50  0001 C CNN
+F 3 "" H 4900 6650 50  0001 C CNN
+	1    4900 6650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR023
+U 1 1 601E1F27
+P 4800 6400
+F 0 "#PWR023" H 4800 6250 50  0001 C CNN
+F 1 "+5V" H 4815 6573 50  0000 C CNN
+F 2 "" H 4800 6400 50  0001 C CNN
+F 3 "" H 4800 6400 50  0001 C CNN
+	1    4800 6400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4800 6400 5000 6400
+Wire Wire Line
+	4900 6650 4900 6500
+Wire Wire Line
+	4900 6500 5000 6500
+Wire Wire Line
+	4800 5850 5000 5850
+Wire Wire Line
+	5000 5850 5000 6000
+Text Label 4900 6200 0    50   ~ 0
+A4
+Wire Wire Line
+	4900 6200 5000 6200
+Wire Wire Line
+	2400 3800 2650 3800
+Wire Wire Line
+	2650 3800 2650 3700
+Wire Wire Line
+	2650 4300 2550 4300
+$Comp
+L mp930:MP930-0.002-1 RP1
+U 1 1 601F8C31
+P 2650 3700
+F 0 "RP1" V 2954 3778 50  0000 L CNN
+F 1 "MP930-0.002-1" V 3045 3778 50  0000 L CNN
+F 2 "mp930:Caddock-MP930-0-0-Recommended_Land_Pattern_" H 2650 4100 50  0001 L CNN
+F 3 "http://www.caddock.com/Online_catalog/Mrktg_Lit/MP9000_Series.pdf" H 2650 4200 50  0001 L CNN
+F 4 "No" H 2650 4300 50  0001 L CNN "automotive"
+F 5 "Res" H 2650 4400 50  0001 L CNN "category"
+F 6 "Thick Film" H 2650 4500 50  0001 L CNN "composition"
+F 7 "Passive Components" H 2650 4600 50  0001 L CNN "device class L1"
+F 8 "Resistors" H 2650 4700 50  0001 L CNN "device class L2"
+F 9 "Through-Hole Resistors" H 2650 4800 50  0001 L CNN "device class L3"
+F 10 "RES 0.075 OHM 30W 1% TO220" H 2650 4900 50  0001 L CNN "digikey description"
+F 11 "MP930-0.075F-ND" H 2650 5000 50  0001 L CNN "digikey part number"
+F 12 "20.58mm" H 2650 5100 50  0001 L CNN "height"
+F 13 "Yes" H 2650 5200 50  0001 L CNN "lead free"
+F 14 "7184e12c71dccc63" H 2650 5300 50  0001 L CNN "library id"
+F 15 "Caddock" H 2650 5400 50  0001 L CNN "manufacturer"
+F 16 "Thick Film Resistors - Through Hole 0.075 ohm 30W 1% TO-220 PKG PWR FILM" H 2650 5500 50  0001 L CNN "mouser description"
+F 17 "684-MP930-0.075" H 2650 5600 50  0001 L CNN "mouser part number"
+F 18 "TO-220-2" H 2650 5700 50  0001 L CNN "package"
+F 19 "30W" H 2650 5800 50  0001 L CNN "power rating"
+F 20 "0.075Ω" H 2650 5900 50  0001 L CNN "resistance"
+F 21 "Yes" H 2650 6000 50  0001 L CNN "rohs"
+F 22 "MP930" H 2650 6100 50  0001 L CNN "series"
+F 23 "2.54mm" H 2650 6200 50  0001 L CNN "standoff height"
+F 24 "0/+200ppm/°C" H 2650 6300 50  0001 L CNN "temperature coefficient"
+F 25 "+150°C" H 2650 6400 50  0001 L CNN "temperature range high"
+F 26 "-55°C" H 2650 6500 50  0001 L CNN "temperature range low"
+F 27 "1%" H 2650 6600 50  0001 L CNN "tolerance"
+F 28 "250V" H 2650 6700 50  0001 L CNN "voltage rating"
+	1    2650 3700
+	0    1    1    0   
+$EndComp
+Connection ~ 2650 3800
+$Comp
+L mp930:MP930-0.002-1 RP2
+U 1 1 601F9011
+P 2750 5750
+F 0 "RP2" V 3054 5828 50  0000 L CNN
+F 1 "MP930-0.002-1" V 3145 5828 50  0000 L CNN
+F 2 "mp930:Caddock-MP930-0-0-Recommended_Land_Pattern_" H 2750 6150 50  0001 L CNN
+F 3 "http://www.caddock.com/Online_catalog/Mrktg_Lit/MP9000_Series.pdf" H 2750 6250 50  0001 L CNN
+F 4 "No" H 2750 6350 50  0001 L CNN "automotive"
+F 5 "Res" H 2750 6450 50  0001 L CNN "category"
+F 6 "Thick Film" H 2750 6550 50  0001 L CNN "composition"
+F 7 "Passive Components" H 2750 6650 50  0001 L CNN "device class L1"
+F 8 "Resistors" H 2750 6750 50  0001 L CNN "device class L2"
+F 9 "Through-Hole Resistors" H 2750 6850 50  0001 L CNN "device class L3"
+F 10 "RES 0.075 OHM 30W 1% TO220" H 2750 6950 50  0001 L CNN "digikey description"
+F 11 "MP930-0.075F-ND" H 2750 7050 50  0001 L CNN "digikey part number"
+F 12 "20.58mm" H 2750 7150 50  0001 L CNN "height"
+F 13 "Yes" H 2750 7250 50  0001 L CNN "lead free"
+F 14 "7184e12c71dccc63" H 2750 7350 50  0001 L CNN "library id"
+F 15 "Caddock" H 2750 7450 50  0001 L CNN "manufacturer"
+F 16 "Thick Film Resistors - Through Hole 0.075 ohm 30W 1% TO-220 PKG PWR FILM" H 2750 7550 50  0001 L CNN "mouser description"
+F 17 "684-MP930-0.075" H 2750 7650 50  0001 L CNN "mouser part number"
+F 18 "TO-220-2" H 2750 7750 50  0001 L CNN "package"
+F 19 "30W" H 2750 7850 50  0001 L CNN "power rating"
+F 20 "0.075Ω" H 2750 7950 50  0001 L CNN "resistance"
+F 21 "Yes" H 2750 8050 50  0001 L CNN "rohs"
+F 22 "MP930" H 2750 8150 50  0001 L CNN "series"
+F 23 "2.54mm" H 2750 8250 50  0001 L CNN "standoff height"
+F 24 "0/+200ppm/°C" H 2750 8350 50  0001 L CNN "temperature coefficient"
+F 25 "+150°C" H 2750 8450 50  0001 L CNN "temperature range high"
+F 26 "-55°C" H 2750 8550 50  0001 L CNN "temperature range low"
+F 27 "1%" H 2750 8650 50  0001 L CNN "tolerance"
+F 28 "250V" H 2750 8750 50  0001 L CNN "voltage rating"
+	1    2750 5750
+	0    1    1    0   
+$EndComp
+Connection ~ 2750 5850
+Wire Wire Line
+	4800 6100 5000 6100
+Wire Wire Line
+	2850 6350 2750 6350
+Connection ~ 2750 6350
+Text Label 4800 6100 0    50   ~ 0
+BATPWR
+Text Label 2850 6350 0    50   ~ 0
+BATPWR
+Text Label 2750 4300 0    50   ~ 0
+SOLPWR
+Wire Wire Line
+	2750 4300 2650 4300
+Connection ~ 2650 4300
+Text Label 3450 6550 0    50   ~ 0
+SOLPWR
+Wire Wire Line
+	3450 6550 3700 6550
+$Comp
+L Connector:Screw_Terminal_01x04 JP2
+U 1 1 602F12FE
+P 3400 5750
+F 0 "JP2" H 3480 5742 50  0000 L CNN
+F 1 "Batt_Screw" H 3480 5651 50  0000 L CNN
+F 2 "" H 3400 5750 50  0001 C CNN
+F 3 "~" H 3400 5750 50  0001 C CNN
+	1    3400 5750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x04 JP1
+U 1 1 60307790
+P 3450 3850
+F 0 "JP1" H 3530 3842 50  0000 L CNN
+F 1 "Solar_Screw" H 3530 3751 50  0000 L CNN
+F 2 "" H 3450 3850 50  0001 C CNN
+F 3 "~" H 3450 3850 50  0001 C CNN
+	1    3450 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2750 5850 2900 5850
+Wire Wire Line
+	2900 5850 2900 5650
+Wire Wire Line
+	2900 5650 3200 5650
+Wire Wire Line
+	2650 6350 2650 6500
+Wire Wire Line
+	2650 6500 3200 6500
+Wire Wire Line
+	3200 6500 3200 5950
+Connection ~ 2650 6350
+Wire Wire Line
+	2650 6350 2750 6350
+$Comp
+L power:GND #PWR0101
+U 1 1 60317591
+P 3050 5800
+F 0 "#PWR0101" H 3050 5550 50  0001 C CNN
+F 1 "GND" H 3055 5627 50  0000 C CNN
+F 2 "" H 3050 5800 50  0001 C CNN
+F 3 "" H 3050 5800 50  0001 C CNN
+	1    3050 5800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3050 5800 3050 5750
+Wire Wire Line
+	3050 5750 3150 5750
+Wire Wire Line
+	3150 5750 3150 5850
+Wire Wire Line
+	3150 5850 3200 5850
+Connection ~ 3150 5750
+Wire Wire Line
+	3150 5750 3200 5750
+Wire Wire Line
+	2650 3800 2950 3800
+Wire Wire Line
+	2950 3800 2950 3750
+Wire Wire Line
+	2950 3750 3250 3750
+Wire Wire Line
+	2550 4300 2550 4400
+Wire Wire Line
+	2550 4400 3250 4400
+Wire Wire Line
+	3250 4400 3250 4050
+Connection ~ 2550 4300
+Wire Wire Line
+	2550 4300 2400 4300
+$Comp
+L power:GND #PWR0102
+U 1 1 6033F71A
+P 3100 3850
+F 0 "#PWR0102" H 3100 3600 50  0001 C CNN
+F 1 "GND" H 3105 3677 50  0000 C CNN
+F 2 "" H 3100 3850 50  0001 C CNN
+F 3 "" H 3100 3850 50  0001 C CNN
+	1    3100 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3100 3850 3200 3850
+Wire Wire Line
+	3200 3850 3200 3950
+Wire Wire Line
+	3200 3950 3250 3950
+Connection ~ 3200 3850
+Wire Wire Line
+	3200 3850 3250 3850
 $EndSCHEMATC

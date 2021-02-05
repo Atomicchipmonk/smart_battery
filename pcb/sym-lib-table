@@ -1,5 +1,6 @@
 (sym_lib_table
   (lib (name eec)(type Legacy)(uri /home/matt/icparts/LTC4151/eec.lib)(options "")(descr ""))
+  (lib (name TEC_2-2411)(type Legacy)(uri /home/matt/icparts/TEC_2/TEC_2-2411.lib)(options "")(descr ""))
+  (lib (name TSR_1-2450)(type Legacy)(uri /home/matt/icparts/TSR1/TSR_1-2450.lib)(options "")(descr ""))
   (lib (name mp930)(type Legacy)(uri /home/matt/icparts/MP930/mp930.lib)(options "")(descr ""))
-  (lib (name iso1541)(type Legacy)(uri /home/matt/icparts/ISO1541/iso1541.lib)(options "")(descr ""))
 )
