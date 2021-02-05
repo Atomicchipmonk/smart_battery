@@ -1,0 +1,7 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LTC4151CS-2PBF
+D LTC4151CS-2PBF
+F http://cds.linear.com/docs/en/datasheet/4151fd.pdf
+$ENDCMP
+# end doc library

@@ -1,0 +1,49 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# MP930-0.002-1
+#
+DEF MP930-0.002-1 R 0 40 Y Y 1 L N
+F0 "R" 0 200 50 H V L CNN
+F1 "MP930-0.002-1" 0 300 50 H V L CNN
+F2 "Caddock-MP930-0-0-*" 0 400 50 H I L CNN
+F3 "http://www.caddock.com/Online_catalog/Mrktg_Lit/MP9000_Series.pdf" 0 500 50 H I L CNN
+F4 "No" 0 600 50 H I L CNN "automotive"
+F5 "Res" 0 700 50 H I L CNN "category"
+F6 "Thick Film" 0 800 50 H I L CNN "composition"
+F7 "Passive Components" 0 900 50 H I L CNN "device class L1"
+F8 "Resistors" 0 1000 50 H I L CNN "device class L2"
+F9 "Through-Hole Resistors" 0 1100 50 H I L CNN "device class L3"
+F10 "RES 0.075 OHM 30W 1% TO220" 0 1200 50 H I L CNN "digikey description"
+F11 "MP930-0.075F-ND" 0 1300 50 H I L CNN "digikey part number"
+F12 "20.58mm" 0 1400 50 H I L CNN "height"
+F13 "Yes" 0 1500 50 H I L CNN "lead free"
+F14 "7184e12c71dccc63" 0 1600 50 H I L CNN "library id"
+F15 "Caddock" 0 1700 50 H I L CNN "manufacturer"
+F16 "Thick Film Resistors - Through Hole 0.075 ohm 30W 1% TO-220 PKG PWR FILM" 0 1800 50 H I L CNN "mouser description"
+F17 "684-MP930-0.075" 0 1900 50 H I L CNN "mouser part number"
+F18 "TO-220-2" 0 2000 50 H I L CNN "package"
+F19 "30W" 0 2100 50 H I L CNN "power rating"
+F20 "0.075Ω" 0 2200 50 H I L CNN "resistance"
+F21 "Yes" 0 2300 50 H I L CNN "rohs"
+F22 "MP930" 0 2400 50 H I L CNN "series"
+F23 "2.54mm" 0 2500 50 H I L CNN "standoff height"
+F24 "0/+200ppm/°C" 0 2600 50 H I L CNN "temperature coefficient"
+F25 "+150°C" 0 2700 50 H I L CNN "temperature range high"
+F26 "-55°C" 0 2800 50 H I L CNN "temperature range low"
+F27 "1%" 0 2900 50 H I L CNN "tolerance"
+F28 "250V" 0 3000 50 H I L CNN "voltage rating"
+DRAW
+P 2 1 1 0 200 0 230 50 N
+P 2 1 1 0 230 50 280 -50 N
+P 2 1 1 0 280 -50 330 50 N
+P 2 1 1 0 330 50 380 -50 N
+P 2 1 1 0 380 -50 430 50 N
+P 2 1 1 0 430 50 480 -50 N
+P 2 1 1 0 480 -50 500 0 N
+X 1 1 100 0 100 R 40 0 1 1 P
+X 2 2 600 0 100 L 40 0 1 1 P
+ENDDRAW
+ENDDEF
+#
+#End Library
