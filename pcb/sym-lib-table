@@ -3,4 +3,5 @@
   (lib (name TSR_1-2450)(type Legacy)(uri ${KIPRJMOD}/lib_sch/TSR_1-2450.lib)(options "")(descr ""))
   (lib (name mp930)(type Legacy)(uri ${KIPRJMOD}/lib_sch/mp930.lib)(options "")(descr ""))
   (lib (name eec)(type Legacy)(uri ${KIPRJMOD}/lib_sch/eec.lib)(options "")(descr ""))
+  (lib (name Adafruit)(type Legacy)(uri ${KIPRJMOD}/lib_sch/FEATHER_M0_BASIC_PROTO.lib)(options "")(descr ""))
 )
