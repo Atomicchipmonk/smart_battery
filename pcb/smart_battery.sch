@@ -14,7 +14,7 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text Label 8200 1150 0    50   ~ 0
+Text Label 8200 1050 0    50   ~ 0
 ~RST
 Text Label 8150 2150 0    50   ~ 0
 SCK
@@ -35,17 +35,17 @@ F 3 "" H 9750 2800 50  0001 C CNN
 	1    9750 2800
 	1    0    0    -1  
 $EndComp
-Text Label 5450 1050 0    50   ~ 0
+Text Label 5400 950  0    50   ~ 0
 ~RST
 $Comp
 L power:+3.3V #PWR027
 U 1 1 600B8860
-P 6950 900
-F 0 "#PWR027" H 6950 750 50  0001 C CNN
-F 1 "+3.3V" H 6965 1073 50  0000 C CNN
-F 2 "" H 6950 900 50  0001 C CNN
-F 3 "" H 6950 900 50  0001 C CNN
-	1    6950 900 
+P 5300 1050
+F 0 "#PWR027" H 5300 900 50  0001 C CNN
+F 1 "+3.3V" H 5315 1223 50  0000 C CNN
+F 2 "" H 5300 1050 50  0001 C CNN
+F 3 "" H 5300 1050 50  0001 C CNN
+	1    5300 1050
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -59,7 +59,7 @@ F 3 "" H 7000 2650 50  0001 C CNN
 	1    7000 2650
 	1    0    0    -1  
 $EndComp
-Text Label 2400 1050 0    50   ~ 0
+Text Label 2350 950  0    50   ~ 0
 ~RST
 Text Label 2350 1350 0    50   ~ 0
 AREF
@@ -67,14 +67,14 @@ Text Label 2350 1450 0    50   ~ 0
 THHTR
 Text Label 2350 1550 0    50   ~ 0
 THBAT
-Text Label 2350 1650 0    50   ~ 0
-VSSO
 Text Label 2350 1750 0    50   ~ 0
-VSPO
+RBTX
+Text Label 2350 1650 0    50   ~ 0
+RBRX
 Text Label 2350 1850 0    50   ~ 0
-A4
+48VEN
 Text Label 2350 1950 0    50   ~ 0
-A5
+RBEN
 Text Label 2350 2050 0    50   ~ 0
 SCK
 Text Label 2350 2150 0    50   ~ 0
@@ -85,12 +85,6 @@ Text Label 2350 2350 0    50   ~ 0
 RX
 Text Label 2350 2450 0    50   ~ 0
 TX
-Text Label 4700 1000 2    50   ~ 0
-VBAT
-Text Label 2500 1150 2    50   ~ 0
-EN
-Text Label 4700 1100 2    50   ~ 0
-VUSB
 Text Label 4650 1600 2    50   ~ 0
 VPIN
 Text Label 4700 1700 2    50   ~ 0
@@ -112,12 +106,12 @@ SDA
 $Comp
 L power:+3.3V #PWR014
 U 1 1 600BA630
-P 4600 900
-F 0 "#PWR014" H 4600 750 50  0001 C CNN
-F 1 "+3.3V" H 4615 1073 50  0000 C CNN
-F 2 "" H 4600 900 50  0001 C CNN
-F 3 "" H 4600 900 50  0001 C CNN
-	1    4600 900 
+P 2150 1050
+F 0 "#PWR014" H 2150 900 50  0001 C CNN
+F 1 "+3.3V" H 2165 1223 50  0000 C CNN
+F 2 "" H 2150 1050 50  0001 C CNN
+F 3 "" H 2150 1050 50  0001 C CNN
+	1    2150 1050
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -131,7 +125,7 @@ F 3 "" H 4550 2600 50  0001 C CNN
 	1    4550 2600
 	1    0    0    -1  
 $EndComp
-Text Label 5900 3400 0    50   ~ 0
+Text Label 5900 3300 0    50   ~ 0
 ~RST
 Text Label 7500 4500 0    50   ~ 0
 PSET
@@ -664,7 +658,7 @@ Eth3.3
 Wire Wire Line
 	10000 3350 9900 3350
 Connection ~ 9900 3350
-Text Label 9700 1050 0    50   ~ 0
+Text Label 8100 1150 0    50   ~ 0
 Eth3.3
 NoConn ~ 9400 3450
 $Comp
@@ -811,8 +805,8 @@ Wire Wire Line
 	4900 6650 4900 6500
 Wire Wire Line
 	4900 6500 5000 6500
-Text Label 3450 6500 0    50   ~ 0
-A4
+Text Label 3300 6500 0    50   ~ 0
+48VEN
 Wire Wire Line
 	2400 3800 2650 3800
 Wire Wire Line
@@ -911,28 +905,6 @@ Text Label 2950 7050 0    50   ~ 0
 SOLPWR
 Wire Wire Line
 	2950 7050 3200 7050
-$Comp
-L Connector:Screw_Terminal_01x04 JP2
-U 1 1 602F12FE
-P 3400 5750
-F 0 "JP2" H 3480 5742 50  0000 L CNN
-F 1 "Batt_Screw" H 3480 5651 50  0000 L CNN
-F 2 "" H 3400 5750 50  0001 C CNN
-F 3 "~" H 3400 5750 50  0001 C CNN
-	1    3400 5750
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:Screw_Terminal_01x04 JP1
-U 1 1 60307790
-P 3450 3850
-F 0 "JP1" H 3530 3842 50  0000 L CNN
-F 1 "Solar_Screw" H 3530 3751 50  0000 L CNN
-F 2 "" H 3450 3850 50  0001 C CNN
-F 3 "~" H 3450 3850 50  0001 C CNN
-	1    3450 3850
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	2750 5850 2900 5850
 Wire Wire Line
@@ -941,10 +913,6 @@ Wire Wire Line
 	2900 5650 3200 5650
 Wire Wire Line
 	2650 6350 2650 6500
-Wire Wire Line
-	2650 6500 3200 6500
-Wire Wire Line
-	3200 6500 3200 5950
 Connection ~ 2650 6350
 Wire Wire Line
 	2650 6350 2750 6350
@@ -962,15 +930,6 @@ $EndComp
 Wire Wire Line
 	3050 5800 3050 5750
 Wire Wire Line
-	3050 5750 3150 5750
-Wire Wire Line
-	3150 5750 3150 5850
-Wire Wire Line
-	3150 5850 3200 5850
-Connection ~ 3150 5750
-Wire Wire Line
-	3150 5750 3200 5750
-Wire Wire Line
 	2650 3800 2950 3800
 Wire Wire Line
 	2950 3800 2950 3750
@@ -978,10 +937,6 @@ Wire Wire Line
 	2950 3750 3250 3750
 Wire Wire Line
 	2550 4300 2550 4400
-Wire Wire Line
-	2550 4400 3250 4400
-Wire Wire Line
-	3250 4400 3250 4050
 Connection ~ 2550 4300
 Wire Wire Line
 	2550 4300 2400 4300
@@ -998,10 +953,6 @@ F 3 "" H 3100 3850 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	3100 3850 3200 3850
-Wire Wire Line
-	3200 3850 3200 3950
-Wire Wire Line
-	3200 3950 3250 3950
 Connection ~ 3200 3850
 Wire Wire Line
 	3200 3850 3250 3850
@@ -1087,8 +1038,6 @@ F 3 "~" H 3650 6350 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	3450 6500 3550 6500
-Wire Wire Line
 	3550 6500 3550 6350
 Wire Wire Line
 	3750 6350 3900 6350
@@ -1144,27 +1093,19 @@ F 1 "GND" H 1405 3077 50  0000 C CNN
 F 2 "" H 1400 3250 50  0001 C CNN
 F 3 "" H 1400 3250 50  0001 C CNN
 	1    1400 3250
-	1    0    0    -1  
+	0    -1   -1   0   
 $EndComp
 Wire Wire Line
 	1200 3250 1400 3250
-Text Label 1250 3350 0    50   ~ 0
-RX
-Text Label 1250 3450 0    50   ~ 0
-TX
-Wire Wire Line
-	1200 3350 1250 3350
-Wire Wire Line
-	1200 3450 1250 3450
 $Comp
-L Connector:Conn_01x04_Male JM1
+L Connector:Conn_01x06_Male JM1
 U 1 1 601F67BE
-P 1000 3250
-F 0 "JM1" H 1106 3528 50  0000 C CNN
-F 1 "RockBLOCK Modem" H 1106 3437 50  0000 C CNN
-F 2 "Connector_Molex:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical" H 1000 3250 50  0001 C CNN
-F 3 "~" H 1000 3250 50  0001 C CNN
-	1    1000 3250
+P 1000 3350
+F 0 "JM1" H 1106 3628 50  0000 C CNN
+F 1 "RockBLOCK Modem" H 1106 3537 50  0000 C CNN
+F 2 "Connector_Molex:Molex_KK-254_AE-6410-06A_1x06_P2.54mm_Vertical" H 1000 3350 50  0001 C CNN
+F 3 "~" H 1000 3350 50  0001 C CNN
+	1    1000 3350
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1221,23 +1162,23 @@ Wire Wire Line
 $Comp
 L power:+5V #PWR0108
 U 1 1 601FBCB3
-P 7000 1150
-F 0 "#PWR0108" H 7000 1000 50  0001 C CNN
-F 1 "+5V" H 7015 1323 50  0000 C CNN
-F 2 "" H 7000 1150 50  0001 C CNN
-F 3 "" H 7000 1150 50  0001 C CNN
-	1    7000 1150
+P 7200 1150
+F 0 "#PWR0108" H 7200 1000 50  0001 C CNN
+F 1 "+5V" H 7215 1323 50  0000 C CNN
+F 2 "" H 7200 1150 50  0001 C CNN
+F 3 "" H 7200 1150 50  0001 C CNN
+	1    7200 1150
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:+3.3V #PWR0110
 U 1 1 60285910
-P 7550 3300
-F 0 "#PWR0110" H 7550 3150 50  0001 C CNN
-F 1 "+3.3V" H 7565 3473 50  0000 C CNN
-F 2 "" H 7550 3300 50  0001 C CNN
-F 3 "" H 7550 3300 50  0001 C CNN
-	1    7550 3300
+P 5800 3400
+F 0 "#PWR0110" H 5800 3250 50  0001 C CNN
+F 1 "+3.3V" H 5815 3573 50  0000 C CNN
+F 2 "" H 5800 3400 50  0001 C CNN
+F 3 "" H 5800 3400 50  0001 C CNN
+	1    5800 3400
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1249,17 +1190,6 @@ F 1 "GND" H 7505 4827 50  0000 C CNN
 F 2 "" H 7500 5000 50  0001 C CNN
 F 3 "" H 7500 5000 50  0001 C CNN
 	1    7500 5000
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+5V #PWR0113
-U 1 1 602BC196
-P 9800 1250
-F 0 "#PWR0113" H 9800 1100 50  0001 C CNN
-F 1 "+5V" H 9815 1423 50  0000 C CNN
-F 2 "" H 9800 1250 50  0001 C CNN
-F 3 "" H 9800 1250 50  0001 C CNN
-	1    9800 1250
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1275,10 +1205,6 @@ F 5 "Manufacturer Recommendation" H 3500 1750 50  0001 L BNN "STANDARD"
 	1    3500 1750
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2400 1050 2600 1050
-Wire Wire Line
-	4600 900  4450 900 
 Wire Wire Line
 	4450 2600 4550 2600
 Wire Wire Line
@@ -1305,10 +1231,6 @@ Wire Wire Line
 	2350 2350 2600 2350
 Wire Wire Line
 	2350 2450 2600 2450
-Wire Wire Line
-	4700 1000 4450 1000
-Wire Wire Line
-	2500 1150 2600 1150
 Wire Wire Line
 	4750 2200 4450 2200
 Wire Wire Line
@@ -1345,7 +1267,7 @@ L Adafruit:FEATHERWING_POWER_RELAY U11
 U 1 1 6024B34D
 P 6200 1800
 F 0 "U11" H 6250 2967 50  0000 C CNN
-F 1 "FEATHERWING_POWER_RELAY" H 6250 2876 50  0000 C CNN
+F 1 "FEATHERWING_HEATER_RELAY" H 6250 2876 50  0000 C CNN
 F 2 "SMARTBATT:MODULE_FEATHER_POWER_RELAY" H 5950 2900 50  0001 L BNN
 F 3 "" H 6800 1750 50  0001 L BNN
 F 4 "Adafruit" H 5950 3100 50  0001 L BNN "MANUFACTURER"
@@ -1357,14 +1279,6 @@ Wire Wire Line
 	7000 1750 6900 1750
 Wire Wire Line
 	6900 2650 7000 2650
-Wire Wire Line
-	7000 1150 6900 1150
-Wire Wire Line
-	6950 900  6950 950 
-Wire Wire Line
-	6950 950  6900 950 
-Wire Wire Line
-	5450 1050 5600 1050
 $Comp
 L Adafruit:FEATHERWING_ETHERNET U12
 U 1 1 602BBF46
@@ -1378,14 +1292,7 @@ F 5 "Manufacturer Recommendation" H 8700 3100 50  0001 L BNN "STANDARD"
 	1    8950 1900
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8200 1150 8350 1150
-Wire Wire Line
-	9650 1050 9700 1050
 NoConn ~ 9650 1150
-NoConn ~ 6900 1050
-Wire Wire Line
-	9650 1250 9800 1250
 Wire Wire Line
 	8150 2350 8350 2350
 Wire Wire Line
@@ -1398,7 +1305,6 @@ Wire Wire Line
 	9750 2750 9750 2800
 Wire Wire Line
 	9900 2050 9650 2050
-NoConn ~ 5600 1150
 NoConn ~ 5600 1350
 NoConn ~ 5600 1450
 NoConn ~ 5600 1550
@@ -1419,7 +1325,6 @@ NoConn ~ 6900 2150
 NoConn ~ 6900 2250
 NoConn ~ 6900 2350
 NoConn ~ 6900 2450
-NoConn ~ 8350 1250
 NoConn ~ 8350 1450
 NoConn ~ 8350 1550
 NoConn ~ 8350 1650
@@ -1451,10 +1356,6 @@ F 5 "Manufacturer Recommendation" H 6450 5350 50  0001 L BNN "STANDARD"
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5900 3400 6100 3400
-Wire Wire Line
-	7550 3300 7400 3300
-Wire Wire Line
 	7500 5000 7400 5000
 Wire Wire Line
 	7500 4400 7400 4400
@@ -1462,9 +1363,7 @@ Wire Wire Line
 	7500 4500 7400 4500
 Wire Wire Line
 	7600 3500 7400 3500
-Wire Wire Line
-	7500 3400 7400 3400
-Text Label 3900 3500 0    50   ~ 0
+Text Label 3900 3400 0    50   ~ 0
 ~RST
 $Comp
 L power:+5V #PWR0112
@@ -1480,12 +1379,12 @@ $EndComp
 $Comp
 L power:+3.3V #PWR0114
 U 1 1 6056486B
-P 5550 3400
-F 0 "#PWR0114" H 5550 3250 50  0001 C CNN
-F 1 "+3.3V" H 5565 3573 50  0000 C CNN
-F 2 "" H 5550 3400 50  0001 C CNN
-F 3 "" H 5550 3400 50  0001 C CNN
-	1    5550 3400
+P 3800 3500
+F 0 "#PWR0114" H 3800 3350 50  0001 C CNN
+F 1 "+3.3V" H 3815 3673 50  0000 C CNN
+F 2 "" H 3800 3500 50  0001 C CNN
+F 3 "" H 3800 3500 50  0001 C CNN
+	1    3800 3500
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1513,10 +1412,6 @@ F 5 "Manufacturer Recommendation" H 4450 5450 50  0001 L BNN "STANDARD"
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3900 3500 4100 3500
-Wire Wire Line
-	5550 3400 5400 3400
-Wire Wire Line
 	5500 5100 5400 5100
 Wire Wire Line
 	5600 3600 5400 3600
@@ -1528,7 +1423,6 @@ Text Label 5650 4700 2    50   ~ 0
 SUSET
 Wire Wire Line
 	5650 4700 5400 4700
-NoConn ~ 4100 3600
 NoConn ~ 4100 3800
 NoConn ~ 4100 3900
 NoConn ~ 4100 4000
@@ -1549,7 +1443,6 @@ NoConn ~ 5400 4400
 NoConn ~ 5400 4200
 NoConn ~ 5400 4100
 NoConn ~ 5400 3500
-NoConn ~ 6100 3500
 NoConn ~ 6100 3700
 NoConn ~ 6100 3800
 NoConn ~ 6100 3900
@@ -1569,4 +1462,133 @@ NoConn ~ 7400 4300
 NoConn ~ 7400 4200
 NoConn ~ 7400 4100
 NoConn ~ 7400 4000
+$Comp
+L Connector:Screw_Terminal_01x02 JP1
+U 1 1 6020D040
+P 3450 3750
+F 0 "JP1" H 3529 3742 50  0000 L CNN
+F 1 "SolarIn" H 3529 3651 50  0000 L CNN
+F 2 "eec:7.5mm_screw_conn_1x2" H 3450 3750 50  0001 C CNN
+F 3 "~" H 3450 3750 50  0001 C CNN
+	1    3450 3750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x03 JP2
+U 1 1 6020D31F
+P 3450 4100
+F 0 "JP2" H 3530 4092 50  0000 L CNN
+F 1 "SolarOut" H 3530 4001 50  0000 L CNN
+F 2 "eec:7.5mm_screw_conn_1x3" H 3450 4100 50  0001 C CNN
+F 3 "~" H 3450 4100 50  0001 C CNN
+	1    3450 4100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2550 4400 2950 4400
+Wire Wire Line
+	2950 4400 2950 4000
+Wire Wire Line
+	2950 4000 3250 4000
+Wire Wire Line
+	3200 4100 3250 4100
+Wire Wire Line
+	3200 3850 3200 4100
+$Comp
+L Connector:Screw_Terminal_01x02 JP3
+U 1 1 6022A3A6
+P 3400 5650
+F 0 "JP3" H 3480 5642 50  0000 L CNN
+F 1 "BatteryIn" H 3480 5551 50  0000 L CNN
+F 2 "eec:7.5mm_screw_conn_1x2" H 3400 5650 50  0001 C CNN
+F 3 "~" H 3400 5650 50  0001 C CNN
+	1    3400 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x03 JP4
+U 1 1 6022A3AD
+P 3400 6000
+F 0 "JP4" H 3479 5992 50  0000 L CNN
+F 1 "BatteryOut" H 3479 5901 50  0000 L CNN
+F 2 "eec:7.5mm_screw_conn_1x3" H 3400 6000 50  0001 C CNN
+F 3 "~" H 3400 6000 50  0001 C CNN
+	1    3400 6000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3050 5750 3150 5750
+Wire Wire Line
+	2650 6500 2950 6500
+Wire Wire Line
+	2950 6500 2950 5900
+Wire Wire Line
+	2950 5900 3200 5900
+Wire Wire Line
+	3150 5750 3150 6000
+Wire Wire Line
+	3150 6000 3200 6000
+Connection ~ 3150 5750
+Wire Wire Line
+	3150 5750 3200 5750
+Wire Wire Line
+	3200 4100 3200 4200
+Wire Wire Line
+	3200 4200 3250 4200
+Connection ~ 3200 4100
+Wire Wire Line
+	3150 6000 3150 6100
+Wire Wire Line
+	3150 6100 3200 6100
+Connection ~ 3150 6000
+Text Label 4650 900  2    50   ~ 0
+VBAT
+Wire Wire Line
+	4450 900  4650 900 
+Wire Wire Line
+	2150 1050 2600 1050
+Wire Wire Line
+	2350 950  2600 950 
+Wire Wire Line
+	5400 950  5600 950 
+Wire Wire Line
+	5300 1050 5600 1050
+Wire Wire Line
+	6900 1150 7200 1150
+NoConn ~ 6900 1050
+NoConn ~ 4450 1000
+Wire Wire Line
+	8350 1050 8200 1050
+Wire Wire Line
+	8350 1150 8100 1150
+NoConn ~ 6900 950 
+NoConn ~ 9650 1050
+Wire Wire Line
+	5900 3300 6100 3300
+Wire Wire Line
+	5800 3400 6100 3400
+Wire Wire Line
+	7400 3400 7500 3400
+NoConn ~ 7400 3300
+Wire Wire Line
+	3900 3400 4100 3400
+Wire Wire Line
+	3800 3500 4100 3500
+NoConn ~ 5400 3400
+Wire Wire Line
+	3300 6500 3550 6500
+Text Label 1300 3450 0    50   ~ 0
+RBTX
+Text Label 1300 3350 0    50   ~ 0
+RBRX
+Wire Wire Line
+	1200 3350 1300 3350
+Wire Wire Line
+	1200 3450 1300 3450
+NoConn ~ 9650 1250
+NoConn ~ 1200 3550
+Text Label 1300 3650 0    50   ~ 0
+RBEN
+Wire Wire Line
+	1300 3650 1200 3650
 $EndSCHEMATC
