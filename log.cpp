@@ -49,10 +49,15 @@ int8_t create_influx_json(char batter_id[],
       char* buffer,
       uint16_t buffer_size){
 
+      int8_t live_int = 0;
+      if (live){
+        live_int = 1;
+      }
+      
   //this doesnt work, requires additional compiler linking for floats in printf. If this did work though, it would be great!
-  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%S,live=%d,dbg=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
+  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%d,live=%d,dbg=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
       BATTERY_ID, \
-      live, \
+      live_int, \
       debug, \
       heater_temp_celcius, \
       battery_temp_celcius, \

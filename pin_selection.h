@@ -5,6 +5,9 @@
 //Blink LED
 #define BLINK_LED 8
 
+//3.3v enable rail
+#define VPIN 13
+
 //Thermistor pins
 #define THERMISTOR_PIN_HEATER A0
 #define THERMISTOR_PIN_BATTERY A1
