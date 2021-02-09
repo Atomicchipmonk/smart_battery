@@ -1489,11 +1489,7 @@ Wire Wire Line
 Wire Wire Line
 	2950 4400 2950 4000
 Wire Wire Line
-	2950 4000 3250 4000
-Wire Wire Line
-	3200 4100 3250 4100
-Wire Wire Line
-	3200 3850 3200 4100
+	2950 4000 3100 4000
 $Comp
 L Connector:Screw_Terminal_01x02 JP3
 U 1 1 6022A3A6
@@ -1524,23 +1520,13 @@ Wire Wire Line
 	2950 6500 2950 5900
 Wire Wire Line
 	2950 5900 3200 5900
-Wire Wire Line
-	3150 5750 3150 6000
-Wire Wire Line
-	3150 6000 3200 6000
 Connection ~ 3150 5750
 Wire Wire Line
 	3150 5750 3200 5750
 Wire Wire Line
-	3200 4100 3200 4200
-Wire Wire Line
 	3200 4200 3250 4200
-Connection ~ 3200 4100
-Wire Wire Line
-	3150 6000 3150 6100
 Wire Wire Line
 	3150 6100 3200 6100
-Connection ~ 3150 6000
 Text Label 4650 900  2    50   ~ 0
 VBAT
 Wire Wire Line
@@ -1591,4 +1577,20 @@ Text Label 1300 3650 0    50   ~ 0
 RBEN
 Wire Wire Line
 	1300 3650 1200 3650
+Wire Wire Line
+	3200 3850 3200 4200
+Wire Wire Line
+	3100 4000 3100 4100
+Wire Wire Line
+	3100 4100 3250 4100
+Connection ~ 3100 4000
+Wire Wire Line
+	3100 4000 3250 4000
+Wire Wire Line
+	3150 6000 3150 6100
+Wire Wire Line
+	3150 5750 3150 6000
+Connection ~ 3150 6000
+Wire Wire Line
+	3150 6000 3200 6000
 $EndSCHEMATC
