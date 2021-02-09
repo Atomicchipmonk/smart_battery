@@ -49,6 +49,7 @@ void setup(void) {
   analogReference(AR_DEFAULT);
 
   pinMode(BLINK_LED, OUTPUT);
+  pinMode(VPIN, OUTPUT);
   //Set up relay pins
   pinMode(HEATER_RELAY_PIN, OUTPUT);
   pinMode(CHARGE_RELAY_ON_PIN, OUTPUT);
@@ -56,6 +57,9 @@ void setup(void) {
   pinMode(OUTPUT_RELAY_ON_PIN, OUTPUT);
   pinMode(OUTPUT_RELAY_OFF_PIN, OUTPUT);
 
+
+  //Turn 3.3V rail on
+  digitalWrite(VPIN, HIGH);
 
   //TODO currently if the rtc is not found it halts
   initialize_rtc();
@@ -74,6 +78,8 @@ void setup(void) {
     //Battery Id
     //Server Endpoint
     //TLS Key
+
+    digitalWrite(VPIN, LOW);
   }
 
   
@@ -87,14 +93,21 @@ void setup(void) {
  
 void loop(void) {
 
+  digitalWrite(VPIN, HIGH);
+  delay(1000);
+  initialize_rtc();
+
   DateTime loop_start_time = get_time();
 
   //im alive
   digitalWrite(BLINK_LED, HIGH);
+  
 
   //Set next timer (always do this first)
 
-  //get data
+  //get data, first turn 3.3v peripheral rail on
+  
+  
   float heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
   float battery_temp_celcius = get_temperature(THERMISTOR_PIN_BATTERY);
 
@@ -109,6 +122,8 @@ void loop(void) {
   int8_t heater_relay = get_heater_relay();
   int8_t charge_relay = get_charge_relay();
   int8_t output_relay = get_output_relay();
+
+ 
 
 
 
@@ -182,6 +197,7 @@ void loop(void) {
     }
   }
 
+  digitalWrite(VPIN, LOW);
   digitalWrite(BLINK_LED, LOW);
 
 
