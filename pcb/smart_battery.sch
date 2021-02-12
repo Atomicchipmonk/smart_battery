@@ -737,16 +737,14 @@ Wire Wire Line
 $Comp
 L power:+5V #PWR019
 U 1 1 601CCD37
-P 4000 6950
-F 0 "#PWR019" H 4000 6800 50  0001 C CNN
-F 1 "+5V" H 4015 7123 50  0000 C CNN
-F 2 "" H 4000 6950 50  0001 C CNN
-F 3 "" H 4000 6950 50  0001 C CNN
-	1    4000 6950
+P 4100 7050
+F 0 "#PWR019" H 4100 6900 50  0001 C CNN
+F 1 "+5V" H 4115 7223 50  0000 C CNN
+F 2 "" H 4100 7050 50  0001 C CNN
+F 3 "" H 4100 7050 50  0001 C CNN
+	1    4100 7050
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	4000 6950 4000 7050
 $Comp
 L TEC_2-2411:TEC_2-2411 PS2
 U 1 1 601D750D
@@ -892,7 +890,7 @@ Wire Wire Line
 Wire Wire Line
 	2850 6350 2750 6350
 Connection ~ 2750 6350
-Text Label 4800 6100 0    50   ~ 0
+Text Label 4800 5800 0    50   ~ 0
 BATPWR
 Text Label 2850 6350 0    50   ~ 0
 BATPWR
@@ -901,7 +899,7 @@ SOLPWR
 Wire Wire Line
 	2750 4300 2650 4300
 Connection ~ 2650 4300
-Text Label 2950 7050 0    50   ~ 0
+Text Label 2950 7350 0    50   ~ 0
 SOLPWR
 Wire Wire Line
 	2950 7050 3200 7050
@@ -978,8 +976,6 @@ F 3 "www.onsemi.com/pub/Collateral/MMBT5550LT1-D.PDF" H 4100 6250 50  0001 L CNN
 	1    4100 6250
 	1    0    0    -1  
 $EndComp
-Text Label 3800 5300 0    50   ~ 0
-BATPWR
 Wire Wire Line
 	3800 5300 3800 5350
 Wire Wire Line
@@ -1593,4 +1589,32 @@ Wire Wire Line
 Connection ~ 3150 6000
 Wire Wire Line
 	3150 6000 3200 6000
+$Comp
+L Diode:1N4001 D2
+U 1 1 60267D7A
+P 2950 7200
+F 0 "D2" V 2904 7279 50  0000 L CNN
+F 1 "1N4001" V 2995 7279 50  0000 L CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 2950 7025 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 2950 7200 50  0001 C CNN
+	1    2950 7200
+	0    1    1    0   
+$EndComp
+$Comp
+L Diode:1N4002 D1
+U 1 1 602681D6
+P 4800 5950
+F 0 "D1" V 4754 6029 50  0000 L CNN
+F 1 "1N4002" V 4845 6029 50  0000 L CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 4800 5775 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 4800 5950 50  0001 C CNN
+	1    4800 5950
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4000 7050 4100 7050
+Text Label 3800 5300 0    50   ~ 0
+DBPWR
+Text Label 4800 6100 0    50   ~ 0
+DBPWR
 $EndSCHEMATC
