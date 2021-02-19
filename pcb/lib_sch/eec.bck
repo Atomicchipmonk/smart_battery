@@ -5,11 +5,6 @@ D Power flag, +24V
 K power-flag
 $ENDCMP
 #
-$CMP +3.3VEth
-D Power flag, +3.3V for Eth
-K power-flag
-$ENDCMP
-#
 $CMP +48VPower
 D Power flag, +48V
 K power-flag

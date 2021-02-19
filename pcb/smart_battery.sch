@@ -221,16 +221,14 @@ Wire Wire Line
 $Comp
 L power:+48V #PWR05
 U 1 1 6010A445
-P 1300 6400
-F 0 "#PWR05" H 1300 6250 50  0001 C CNN
-F 1 "+48V" H 1315 6573 50  0000 C CNN
-F 2 "" H 1300 6400 50  0001 C CNN
-F 3 "" H 1300 6400 50  0001 C CNN
-	1    1300 6400
+P 1150 6500
+F 0 "#PWR05" H 1150 6350 50  0001 C CNN
+F 1 "+48V" H 1165 6673 50  0000 C CNN
+F 2 "" H 1150 6500 50  0001 C CNN
+F 3 "" H 1150 6500 50  0001 C CNN
+	1    1150 6500
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1300 6400 1300 6450
 Wire Wire Line
 	1300 6450 1500 6450
 $Comp
@@ -428,8 +426,6 @@ F 3 "" H 7600 3500 50  0001 C CNN
 	1    7600 3500
 	-1   0    0    1   
 $EndComp
-Text Label 7500 3400 0    50   ~ 0
-POUT
 $Comp
 L Connector_Generic:Conn_01x05 J11
 U 1 1 60127D8D
@@ -616,8 +612,6 @@ Wire Wire Line
 	10150 3350 10150 3450
 Wire Wire Line
 	10250 3350 10150 3350
-Text Label 8100 1150 0    50   ~ 0
-Eth3.3
 $Comp
 L Device:R_Small R5
 U 1 1 601A923F
@@ -663,8 +657,6 @@ F 3 "" H 8350 3850 50  0001 C CNN
 	1    8350 3850
 	1    0    0    -1  
 $EndComp
-Text Label 8150 3200 0    50   ~ 0
-POUT
 Wire Wire Line
 	8150 3200 8350 3200
 $Comp
@@ -847,17 +839,7 @@ Wire Wire Line
 Wire Wire Line
 	2850 6350 2750 6350
 Connection ~ 2750 6350
-Text Label 5900 5800 0    50   ~ 0
-BATPWR
-Text Label 2850 6350 0    50   ~ 0
-BATPWR
-Text Label 2750 4300 0    50   ~ 0
-SOLPWR
-Wire Wire Line
-	2750 4300 2650 4300
 Connection ~ 2650 4300
-Text Label 2950 6750 0    50   ~ 0
-SOLPWR
 Wire Wire Line
 	2950 7050 3050 7050
 Wire Wire Line
@@ -933,10 +915,6 @@ F 3 "www.onsemi.com/pub/Collateral/MMBT5550LT1-D.PDF" H 4950 6250 50  0001 L CNN
 	1    4950 6250
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	4650 5300 4650 5350
-Wire Wire Line
-	4650 5350 4950 5350
 $Comp
 L Device:R R6
 U 1 1 602110C3
@@ -1010,7 +988,6 @@ Wire Wire Line
 	4950 5350 5250 5350
 Wire Wire Line
 	5250 5350 5250 5500
-Connection ~ 4950 5350
 $Comp
 L power:+5V #PWR0104
 U 1 1 601F6B4D
@@ -1487,8 +1464,6 @@ NoConn ~ 6900 1050
 NoConn ~ 4450 1000
 Wire Wire Line
 	8350 1050 8200 1050
-Wire Wire Line
-	8350 1150 8100 1150
 NoConn ~ 6900 950 
 NoConn ~ 9650 1050
 Wire Wire Line
@@ -1538,29 +1513,25 @@ Wire Wire Line
 $Comp
 L Diode:1N4001 D2
 U 1 1 60267D7A
-P 2950 6900
-F 0 "D2" V 2904 6979 50  0000 L CNN
-F 1 "1N4001" V 2995 6979 50  0000 L CNN
-F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 2950 6725 50  0001 C CNN
-F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 2950 6900 50  0001 C CNN
-	1    2950 6900
-	0    -1   -1   0   
+P 3200 4350
+F 0 "D2" V 3154 4429 50  0000 L CNN
+F 1 "1N4001" V 3245 4429 50  0000 L CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 3200 4175 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 3200 4350 50  0001 C CNN
+	1    3200 4350
+	-1   0    0    1   
 $EndComp
 $Comp
 L Diode:1N4002 D1
 U 1 1 602681D6
-P 5900 5950
-F 0 "D1" V 5854 6029 50  0000 L CNN
-F 1 "1N4002" V 5945 6029 50  0000 L CNN
-F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 5900 5775 50  0001 C CNN
-F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 5900 5950 50  0001 C CNN
-	1    5900 5950
-	0    -1   -1   0   
+P 3150 6400
+F 0 "D1" V 3104 6479 50  0000 L CNN
+F 1 "1N4002" V 3195 6479 50  0000 L CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 3150 6225 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/88503/1n4001.pdf" H 3150 6400 50  0001 C CNN
+	1    3150 6400
+	-1   0    0    1   
 $EndComp
-Text Label 4650 5300 0    50   ~ 0
-DBPWR
-Text Label 5900 6100 0    50   ~ 0
-DBPWR
 Wire Wire Line
 	4950 5700 4950 6050
 Connection ~ 4950 5700
@@ -1752,8 +1723,146 @@ Wire Wire Line
 Wire Wire Line
 	1450 6250 1500 6250
 Connection ~ 1450 6250
-Text Label 10250 3350 0    50   ~ 0
-Eth3.3
-Text Label 1450 5950 0    50   ~ 0
-Eth3.3
+Wire Wire Line
+	2850 6350 2850 6400
+$Comp
+L eec:+48VPower #PWR?
+U 1 1 603099AD
+P 5900 6100
+F 0 "#PWR?" H 5900 5950 50  0001 C CNN
+F 1 "+48VPower" H 5915 6273 50  0000 C CNN
+F 2 "" H 5900 6100 50  0001 C CNN
+F 3 "" H 5900 6100 50  0001 C CNN
+	1    5900 6100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 6400 3000 6400
+$Comp
+L Device:Fuse_Small F1
+U 1 1 60316340
+P 3400 6400
+F 0 "F1" H 3400 6585 50  0000 C CNN
+F 1 "Fuse_Small" H 3400 6494 50  0000 C CNN
+F 2 "" H 3400 6400 50  0001 C CNN
+F 3 "~" H 3400 6400 50  0001 C CNN
+	1    3400 6400
+	1    0    0    -1  
+$EndComp
+$Comp
+L eec:+48VPower #PWR?
+U 1 1 60316928
+P 3500 6400
+F 0 "#PWR?" H 3500 6250 50  0001 C CNN
+F 1 "+48VPower" V 3515 6528 50  0000 L CNN
+F 2 "" H 3500 6400 50  0001 C CNN
+F 3 "" H 3500 6400 50  0001 C CNN
+	1    3500 6400
+	0    1    1    0   
+$EndComp
+$Comp
+L eec:+48VPower #PWR?
+U 1 1 60316F04
+P 4700 5400
+F 0 "#PWR?" H 4700 5250 50  0001 C CNN
+F 1 "+48VPower" H 4715 5573 50  0000 C CNN
+F 2 "" H 4700 5400 50  0001 C CNN
+F 3 "" H 4700 5400 50  0001 C CNN
+	1    4700 5400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 5400 4800 5400
+Wire Wire Line
+	4800 5400 4800 5350
+Wire Wire Line
+	4800 5350 4950 5350
+Connection ~ 4950 5350
+Wire Wire Line
+	3050 4300 3050 4350
+Wire Wire Line
+	2650 4300 3050 4300
+$Comp
+L eec:+24VPower #PWR?
+U 1 1 6033DA59
+P 3350 4350
+F 0 "#PWR?" H 3350 4200 50  0001 C CNN
+F 1 "+24VPower" V 3365 4478 50  0000 L CNN
+F 2 "" H 3350 4350 50  0001 C CNN
+F 3 "" H 3350 4350 50  0001 C CNN
+	1    3350 4350
+	0    1    1    0   
+$EndComp
+$Comp
+L eec:+24VPower #PWR?
+U 1 1 6033E548
+P 2950 7050
+F 0 "#PWR?" H 2950 6900 50  0001 C CNN
+F 1 "+24VPower" H 2965 7223 50  0000 C CNN
+F 2 "" H 2950 7050 50  0001 C CNN
+F 3 "" H 2950 7050 50  0001 C CNN
+	1    2950 7050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1300 6450 1300 6500
+Wire Wire Line
+	1300 6500 1150 6500
+$Comp
+L eec:+5VRelay #PWR?
+U 1 1 6038C736
+P 7500 3400
+F 0 "#PWR?" H 7500 3250 50  0001 C CNN
+F 1 "+5VRelay" H 7515 3573 50  0000 C CNN
+F 2 "" H 7500 3400 50  0001 C CNN
+F 3 "" H 7500 3400 50  0001 C CNN
+	1    7500 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L eec:+5VRelay #PWR?
+U 1 1 6038C83C
+P 8150 3200
+F 0 "#PWR?" H 8150 3050 50  0001 C CNN
+F 1 "+5VRelay" H 8165 3373 50  0000 C CNN
+F 2 "" H 8150 3200 50  0001 C CNN
+F 3 "" H 8150 3200 50  0001 C CNN
+	1    8150 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L eec:+3.3VEth #PWR?
+U 1 1 6039A381
+P 10250 3350
+F 0 "#PWR?" H 10250 3200 50  0001 C CNN
+F 1 "+3.3VEth" H 10265 3523 50  0000 C CNN
+F 2 "" H 10250 3350 50  0001 C CNN
+F 3 "" H 10250 3350 50  0001 C CNN
+	1    10250 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L eec:+3.3VEth #PWR?
+U 1 1 6039A683
+P 1450 5950
+F 0 "#PWR?" H 1450 5800 50  0001 C CNN
+F 1 "+3.3VEth" H 1465 6123 50  0000 C CNN
+F 2 "" H 1450 5950 50  0001 C CNN
+F 3 "" H 1450 5950 50  0001 C CNN
+	1    1450 5950
+	1    0    0    -1  
+$EndComp
+$Comp
+L eec:+3.3VEth #PWR?
+U 1 1 6039AA3D
+P 7950 1150
+F 0 "#PWR?" H 7950 1000 50  0001 C CNN
+F 1 "+3.3VEth" H 7965 1323 50  0000 C CNN
+F 2 "" H 7950 1150 50  0001 C CNN
+F 3 "" H 7950 1150 50  0001 C CNN
+	1    7950 1150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7950 1150 8350 1150
 $EndSCHEMATC

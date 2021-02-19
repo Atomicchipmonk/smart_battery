@@ -340,6 +340,24 @@ X ~ 2 0 -150 110 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
+# Device_Fuse_Small
+#
+DEF Device_Fuse_Small F 0 10 N N 1 F N
+F0 "F" 0 -60 50 H V C CNN
+F1 "Device_Fuse_Small" 0 60 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ SM*
+$ENDFPLIST
+DRAW
+S -50 20 50 -20 0 1 0 N
+P 2 0 1 0 -50 0 50 0 N
+X ~ 1 -100 0 50 R 50 50 1 1 P
+X ~ 2 100 0 50 L 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
 # Device_R
 #
 DEF Device_R R 0 0 N Y 1 F N
@@ -501,6 +519,66 @@ P 5 0 1 0 50 -70 70 -50 90 -90 50 -70 50 -70 F
 X B 1 -200 0 225 R 50 50 1 1 I
 X E 2 100 -200 100 U 50 50 1 1 P
 X C 3 100 200 100 D 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# eec_+24VPower
+#
+DEF eec_+24VPower #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "eec_+24VPower" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +48V 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# eec_+3.3VEth
+#
+DEF eec_+3.3VEth #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "eec_+3.3VEth" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +48V 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# eec_+48VPower
+#
+DEF eec_+48VPower #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "eec_+48VPower" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +48V 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# eec_+5VRelay
+#
+DEF eec_+5VRelay #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "eec_+5VRelay" 0 140 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X +48V 1 0 0 0 U 50 50 1 1 W N
 ENDDRAW
 ENDDEF
 #
