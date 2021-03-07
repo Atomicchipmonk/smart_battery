@@ -1,5 +1,5 @@
 M48
-;DRILL file {KiCad 5.0.2+dfsg1-1} date Fri 19 Feb 2021 06:10:01 PM MST
+;DRILL file {KiCad 5.0.2+dfsg1-1} date Sat 06 Mar 2021 08:10:29 PM MST
 ;FORMAT={-:-/ absolute / inch / decimal}
 FMAT,2
 INCH,TZ
@@ -9,16 +9,16 @@ T2C0.1063
 G90
 G05
 T1
-X1.05Y-1.85
-X1.05Y-2.55
 X4.95Y-0.85
-X4.95Y-1.55
-X2.9Y-3.85
-X2.9Y-4.55
 X1.Y-0.85
 X1.Y-1.55
 X1.05Y-2.85
 X1.05Y-3.55
+X1.05Y-1.85
+X1.05Y-2.55
+X4.95Y-1.55
+X2.9Y-3.85
+X2.9Y-4.55
 T2
 X1.7571Y-3.25
 X1.7929Y-2.2
