@@ -7,9 +7,12 @@
 
 
 
+//This whole file is messy with interplay between smart_battery.ino, here, and hardware
+
+
 RTC_PCF8523 rtc;
 RTC_Micros rtc_emu;
-bool rtc_available = false;
+bool TIME_rtc_available = false;
 
 // NTP Servers:
 IPAddress timeServer(132, 163, 96, 1); // time-a.timefreq.bldrdoc.gov
@@ -25,7 +28,7 @@ unsigned int localPort = 8888;  // local port to listen for UDP packets
 uint8_t initialize_rtc(){
 
   if (! rtc.begin()) {
-    return 1;
+    return 0;
   }
 
   if (! rtc.initialized() || rtc.lostPower()) {
@@ -40,12 +43,12 @@ uint8_t initialize_rtc(){
   rtc.writeSqwPinMode(PCF8523_SquareWave1HZ);
   //rtc.enableCountdownTimer(PCF8523_FrequencySecond, 20, PCF8523_LowPulse14x64Hz);
 
-  rtc_available = true;
-  return 0;
+  TIME_rtc_available = true;
+  return 1;
 }
 
 uint8_t set_time(DateTime newTime){
-  if (rtc_available){
+  if (TIME_rtc_available){
     rtc.adjust(newTime);
     return 0;
   } else {
@@ -57,7 +60,7 @@ uint8_t set_time(DateTime newTime){
 }
 
 uint8_t set_repeating_alarm(uint8_t rate_in_minutes){
-  if (rtc_available){
+  if (TIME_rtc_available){
     rtc.deconfigureAllTimers();
     rtc.enableCountdownTimer(PCF8523_FrequencyMinute, rate_in_minutes, PCF8523_LowPulse6x64Hz);
     return 0;
@@ -68,7 +71,7 @@ uint8_t set_repeating_alarm(uint8_t rate_in_minutes){
 }
 
 DateTime get_time(){
-  if (rtc_available){
+  if (TIME_rtc_available){
     return rtc.now();
   } else {
     return rtc_emu.now();

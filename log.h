@@ -3,7 +3,13 @@
 #define LOGCPP_H
 
 int8_t create_influx_json(char batter_id[], \
-      bool live, \
+      int8_t serial_available, \
+      int8_t sd_available, \
+      int8_t sd_initialized, \
+      int8_t rtc_available, \
+      int8_t ethernet_available, \
+      int8_t ntp_available, \
+      int8_t iridium_available, \
       float heater_temp_celcius, \
       float battery_temp_celcius, \
       float solar_input_voltage, \
@@ -18,11 +24,18 @@ int8_t create_influx_json(char batter_id[], \
       DateTime time, \
       char* buffer, \
       uint16_t buffer_size);
-uint32_t log_message(String log_msg);
+uint32_t log_message(String log_msg,
+      int8_t *serial_available,
+      int8_t *sd_available,
+      int8_t *sd_initialized,
+      int8_t *rtc_available,
+      int8_t *ethernet_available,
+      int8_t *ntp_available,
+      int8_t *iridium_available);
 uint32_t write_to_ethernet(String log_msg);
 uint32_t write_to_serial(String log_msg);
 uint32_t write_to_sd_card(String log_msg, bool has_internet);
-uint8_t rotate_sd_file(DateTime timeNow);
+uint8_t rotate_sd_file_name(DateTime timeNow);
 uint32_t initialize_ethernet();
 
 #endif
