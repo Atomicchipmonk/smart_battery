@@ -56,8 +56,8 @@ int8_t create_influx_json(char batter_id[],
       uint16_t buffer_size){
       
   //this doesnt work, requires additional compiler linking for floats in printf. If this did work though, it would be great!
-  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%d,ser=%d,sd=%d,ntp=%d,irid=%d,eth=%d,dbg=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
-      BATTERY_ID, \
+  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%s,ser=%d,sd=%d,ntp=%d,irid=%d,eth=%d,dbg=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
+      batter_id, \
       serial_available, \
       (sd_available & sd_initialized), \
       ntp_available, \
@@ -103,6 +103,8 @@ uint32_t log_message(String log_msg,
   int32_t has_internet = 0;
 
   rc += write_to_serial(log_msg);
+
+  //ethernet available is currently reversed
   *ethernet_available = write_to_ethernet(log_msg);
   rc += *ethernet_available;
   rc += write_to_sd_card(log_msg, ! *ethernet_available);

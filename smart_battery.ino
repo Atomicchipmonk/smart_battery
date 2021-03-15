@@ -27,6 +27,10 @@
 
 #define LOG_BUFFER_SIZE 1024
 
+
+char battery_id[9] = {'D','E','F','A','U','L','T','\0'};
+#define BATTERY_ID_CONFIG_FILE "IDCONFIG.txt"
+
 float heater_temp_celcius = 0;
 float battery_temp_celcius = 0;
 float solar_input_voltage = 0;
@@ -46,8 +50,6 @@ int8_t rtc_available = 0;
 int8_t ethernet_available = 0;
 int8_t ntp_available = 0;
 int8_t iridium_available = 0;
-
-int8_t battery_id = 0xFF;
 
 uint8_t counter = 0;
 uint8_t system_state = 0;
@@ -115,6 +117,41 @@ void setup(void) {
 
       //Go read configuration from files, or write those files if they dont exist
       //Battery Id
+
+      File IDFile = SD.open(BATTERY_ID_CONFIG_FILE, FILE_READ);
+      // if the file is available, write to it:
+      if (IDFile) {
+        memset(&battery_id, 0, sizeof(battery_id));
+        int32_t chars_read = IDFile.read(battery_id, 8);
+        if(chars_read < 1) {
+          memset(&battery_id, 0, sizeof(battery_id));
+          battery_id[0] = 'E';
+          battery_id[0] = 'R';`
+          battery_id[0] = 'R';
+          battery_id[0] = '\0';
+        } else if (chars_read > 8) {
+          battery_id[8] = '\0';
+        } else {
+          if (battery_id[chars_read - 1] == '\n') {
+            battery_id[chars_read - 1] = '\0';
+          } else {
+            battery_id[chars_read] = '\0';
+          }
+        }
+        IDFile.close();
+      } else {
+        IDFile = SD.open(BATTERY_ID_CONFIG_FILE, FILE_WRITE);
+        if(IDFile){
+          IDFile.print(battery_id);
+          IDFile.close();
+        } else {
+          if(Serial){
+            Serial.println("ERR: Unable to write ID to sd card");
+          }
+        }
+      }
+
+      
       //Server Endpoint
       //TLS Key
       rotate_sd_file_name(last_rotation);
@@ -178,7 +215,7 @@ void loop(void) {
   //figure out how to deal with live (chicken/egg problem)
   
   create_influx_json(
-      BATTERY_ID,
+      battery_id,
       serial_available,
       sd_available,
       sd_initialized,

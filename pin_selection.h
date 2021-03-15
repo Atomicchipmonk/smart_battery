@@ -1,7 +1,4 @@
 
-//Battery ID - CHANGE PER BUILD
-#define BATTERY_ID "0"
-
 //Blink LED
 #define BLINK_LED 8
 
