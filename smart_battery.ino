@@ -100,8 +100,6 @@ void setup(void) {
   rtc_available = initialize_rtc();
   last_rotation = get_time();
 
-
-
   sd_available = digitalRead(SD_CARD_INSERTED);
 
   if (sd_available){
@@ -126,7 +124,7 @@ void setup(void) {
         if(chars_read < 1) {
           memset(&battery_id, 0, sizeof(battery_id));
           battery_id[0] = 'E';
-          battery_id[0] = 'R';`
+          battery_id[0] = 'R';
           battery_id[0] = 'R';
           battery_id[0] = '\0';
         } else if (chars_read > 8) {
@@ -169,6 +167,9 @@ void setup(void) {
  
 void loop(void) {
 
+
+
+  //first turn 3.3v peripheral rail on
   digitalWrite(VPIN, HIGH);
   delay(1000);
 
@@ -176,6 +177,13 @@ void loop(void) {
     serial_available = 1;
   } else {
     serial_available = 0;
+  }
+
+  if (Ethernet.linkStatus() == Unknown || Ethernet.linkStatus() == LinkOFF) {
+    ethernet_available = 0;
+  }
+  else if (Ethernet.linkStatus() == LinkON) {
+    ethernet_available = 1;
   }
 
   sd_available = digitalRead(SD_CARD_INSERTED);
@@ -190,7 +198,6 @@ void loop(void) {
 
   //Set next timer (always do this first)
 
-  //get data, first turn 3.3v peripheral rail on
   
   
   heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
@@ -208,11 +215,86 @@ void loop(void) {
   charge_relay = get_charge_relay();
   output_relay = get_output_relay();
 
+  //State machine logic goes here
+
+  //Modes
+  //SAFE
+  //Charging SAFE
+  //Charging
+  //Discharging
+
+  // SAFE
+  //Solar open circuit, output open circuit, heater open circuit
+  //Transition in -> breaking a limit, from all
+    //Temp < -15c
+    //Temp > 55c
+    //VOLTAGE_SENSE_SOLAR_ADDR > 30?
+    //VOLTAGE_SENSE_BATTERY_ADDR > 60?
+    //CURRENT_SENSE_SOLAR_ADDR > ??
+    //CURRENT_SENSE_BATTERY_ADDR > ??
+    //Battery < 30%
+  //Transition out 
+    //-> Charging SAFE
+      //Battery < 30%
+      //Temp > -15c
+      //Temp < 45c
+      //VOLTAGE_SENSE_SOLAR_ADDR > 28?
+      //VOLTAGE_SENSE_BATTERY_ADDR > 54?
+      //CURRENT_SENSE_SOLAR_ADDR > ??
+      //CURRENT_SENSE_BATTERY_ADDR > ??
+      //time weighted backoff scheme (with counter)
+    //-> To Discharging
+      //Temp > -15c
+      //Temp < 45c
+      //VOLTAGE_SENSE_SOLAR_ADDR > 28?
+      //VOLTAGE_SENSE_BATTERY_ADDR > 54?
+      //CURRENT_SENSE_SOLAR_ADDR > ??
+      //CURRENT_SENSE_BATTERY_ADDR > ??
+      //time weighted backoff scheme (with counter)
+
+  //Charging SAFE
+  //Solar closed circuit, output open circuit, heater circuit as needed
+    //Internal state logic - Temp < 0c turn on heater
+  //Transition in -> SAFE
+  //Transition out -> SAFE, Charging
+    //Battery > 50% -> Charging
+    //Break Limits (except 30% SOC) -> SAFE
+
+  //Nominal states
+
+  //Discharging
+  //Solar open circuit, output closed circuit, heater open circuit
+  //Transition in -> from SAFE, from Charging
+    //Battery > 95%
+  //Transition out -> all SAFE, Charging
+    //Break limits - > SAFE
+    //Battery < 90% -> Charging
+    
+
+  //Charging
+  //Solar closed circuit, output closed circuit, heater circuit as needed
+    //Internal state logic - Temp < 0c turn on heater, turn off Solar
+  //Transition in -> on boot, discharging, Charging SAFE
+    //Battery < 90%
+  //Transition out -> SAFE and Low Power SAFE, Discharging
+    //Break Limits -> SAFE
+    //Battery > 95% -> Discharge
+    
+
+
+
+  //Time based
+
+  //Iridium, midnight and noon, only if ethernet is not available
+  
+  //NTP at midnight and noon, if ethernet is available
+
+  //File rollover at midnight
+
+
 
   int8_t log_rc = 0;
   char log_msg[LOG_BUFFER_SIZE] = "DEFAULT MESSAGE";
-
-  //figure out how to deal with live (chicken/egg problem)
   
   create_influx_json(
       battery_id,
@@ -238,14 +320,8 @@ void loop(void) {
       log_msg,
       LOG_BUFFER_SIZE);
 
-  int32_t rc = log_message(log_msg,
-      &serial_available,
-      &sd_available,
-      &sd_initialized,
-      &rtc_available,
-      &ethernet_available,
-      &ntp_available,
-      &iridium_available);
+
+  int32_t rc = log_message(log_msg, system_state);
 
 /* Uncomment if you want to hear/see some latching action
 

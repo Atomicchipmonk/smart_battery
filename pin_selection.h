@@ -14,9 +14,11 @@
 #define PWR_48V_ENABLE_PIN A4           //48VEN
 #define PWR_ROCKBLOX_ENABLE_PIN A5      //RBEN
 
-//Current sense address
+//Power sense address
 #define CURRENT_SENSE_SOLAR_ADDR 0xFE
 #define CURRENT_SENSE_BATTERY_ADDR 0xFF
+#define VOLTAGE_SENSE_SOLAR_ADDR 0xFE
+#define VOLTAGE_SENSE_BATTERY_ADDR 0xFF
 
 
 //3.3v enable rail

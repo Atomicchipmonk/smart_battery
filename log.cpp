@@ -89,25 +89,15 @@ int8_t create_influx_json(char batter_id[],
 }
 
 
-uint32_t log_message(String log_msg,
-        int8_t *serial_available,
-        int8_t *sd_available,
-        int8_t *sd_initialized,
-        int8_t *rtc_available,
-        int8_t *ethernet_available,
-        int8_t *ntp_available,
-        int8_t *iridium_available){
-
+uint32_t log_message(String log_msg, uint8_t system_state){
 
   int32_t rc = 0;
-  int32_t has_internet = 0;
+  int32_t successful_post = 0;
 
   rc += write_to_serial(log_msg);
-
-  //ethernet available is currently reversed
-  *ethernet_available = write_to_ethernet(log_msg);
-  rc += *ethernet_available;
-  rc += write_to_sd_card(log_msg, ! *ethernet_available);
+  successful_post = write_to_ethernet(log_msg);
+  rc += successful_post;
+  rc += write_to_sd_card(log_msg, ! successful_post);
 
   return rc;  
 }
@@ -169,6 +159,8 @@ uint32_t write_to_serial(String log_msg){
 
 
 //requires SD knowledge and internet knowledge
+//Return 0: write worked
+//Return 1: write failed
 uint32_t write_to_sd_card(String log_msg, bool has_internet){
 
   File dataFile;
