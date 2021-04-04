@@ -254,7 +254,7 @@ void loop(void) {
 
   //Charging SAFE
   //Solar closed circuit, output open circuit, heater circuit as needed
-    //Internal state logic - Temp < 0c turn on heater
+    //Internal state logic - Temp < 0c turn on heater, turn off solar
   //Transition in -> SAFE
   //Transition out -> SAFE, Charging
     //Battery > 50% -> Charging
@@ -284,12 +284,18 @@ void loop(void) {
 
 
   //Time based
-
   //Iridium, midnight and noon, only if ethernet is not available
-  
-  //NTP at midnight and noon, if ethernet is available
-
+  //NTP at midnight and noon, requires ethernet to be available
   //File rollover at midnight
+
+  //3.3v feather_battery Charging
+  //if feather_battery < 30%
+  //Set FBCharge state, set 48v charge on
+
+  //if feather_battery > 70%
+  //Unset FBCharge state, turn 48v charge off
+
+
 
 
 
