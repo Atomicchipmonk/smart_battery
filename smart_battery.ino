@@ -10,6 +10,7 @@
 #include "RTClib.h"
 #include <SD.h>
 #include <Ethernet.h>
+#include <Wire.h>
 
 #include "debug.h"
 #include "pin_selection.h"
@@ -19,11 +20,6 @@
 #include "power_readings.h"
 #include "time.h"
 
-
-
-
-
-        
 
 #define LOG_BUFFER_SIZE 1024
 
@@ -35,13 +31,17 @@ DateTime last_rotation;
 
  
 void setup(void) {
-  Serial.begin(9600);
-
+  Serial.begin(9/600);
+  Wire.begin();
+  
+  setup_ltc4151();
   //If in debug mode, wait for serial to come up, otherwise just roll with it if you got it
   if (debug){
     while (!Serial){
       delay(100);
     }
+  } else {
+    Serial.end();
   }
  
 
@@ -63,7 +63,7 @@ void setup(void) {
 
 
   if (!SD.begin(SD_CHIP_SELECT)) {
-    Serial.println("ERR: SD Card not initialized");
+    if (Serial) Serial.println("ERR: SD Card not initialized");
   } else {
     SD.mkdir("/stored");
     SD.mkdir("/live");
@@ -98,12 +98,14 @@ void loop(void) {
   float heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
   float battery_temp_celcius = get_temperature(THERMISTOR_PIN_BATTERY);
 
-  float solar_input_voltage = get_voltage(VOLTAGE_SENSE_SOLAR_PIN);
-  float battery_input_voltage = get_voltage(VOLTAGE_SENSE_BATTERY_PIN);
+  poll_solar();
+  poll_power();
+  float solar_input_voltage = get_solar_voltage();
+  float battery_input_voltage = get_power_voltage();
   float battery_percent_charged = translate_charge(battery_input_voltage);
   
-  float solar_input_current = get_current(CURRENT_SENSE_SOLAR_ADDR);
-  float battery_current = get_current(CURRENT_SENSE_BATTERY_ADDR);
+  float solar_input_current = get_solar_current();
+  float battery_current = get_power_current();
 
   //get relays
   int8_t heater_relay = get_heater_relay();

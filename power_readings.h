@@ -4,8 +4,13 @@
 
 #include <stdint.h>
 
-float get_voltage(uint8_t pin);
+void setup_ltc4151();
+void poll_power();
+void poll_solar();
+float get_power_voltage();
+float get_solar_voltage();
+float get_power_current();
+float get_solar_current();
 float translate_charge(float input_voltage);
-float get_current(uint8_t pin);
 
 #endif

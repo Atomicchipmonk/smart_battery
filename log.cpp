@@ -21,7 +21,7 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 char server[] = "granolamatt.net";    // Server address
 
 // Set the static IP address to use if the DHCP fails to assign
-IPAddress ip(192, 168, 1, 177);
+IPAddress ip(192, 168, 9, 22);
 IPAddress myDns(8, 8, 8, 8);
 
 // Initialize the Ethernet client library
@@ -93,7 +93,9 @@ uint32_t log_message(String log_msg){
 
 uint32_t initialize_ethernet(){
 
-  Ethernet.begin(mac, ip, myDns);
+///  Ethernet.begin(mac, ip, myDns);
+  Ethernet.begin(mac);
+
 
   if (Ethernet.hardwareStatus() == EthernetNoHardware) {
     if (Serial){
