@@ -24,10 +24,10 @@ int8_t create_influx_json(char batter_id[], \
       DateTime time, \
       char* buffer, \
       uint16_t buffer_size);
-uint32_t log_message(String log_msg, uint8_t system_state);
+uint32_t log_message(String log_msg, uint8_t system_state, int8_t *sd_available, int8_t *sd_initialized);
 uint32_t write_to_ethernet(String log_msg);
 uint32_t write_to_serial(String log_msg);
-uint32_t write_to_sd_card(String log_msg, bool has_internet);
+uint32_t write_to_sd_card(String log_msg, bool has_internet, int8_t *sd_available, int8_t *sd_initialized);
 uint8_t rotate_sd_file_name(DateTime timeNow);
 uint32_t initialize_ethernet();
 

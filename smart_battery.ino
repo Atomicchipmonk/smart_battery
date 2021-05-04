@@ -327,7 +327,7 @@ void loop(void) {
       LOG_BUFFER_SIZE);
 
 
-  int32_t rc = log_message(log_msg, system_state);
+  int32_t rc = log_message(log_msg, system_state, &sd_available, &sd_initialized);
 
 /* Uncomment if you want to hear/see some latching action
 

@@ -21,7 +21,7 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 char server[] = "granolamatt.net";    // Server address
 
 // Set the static IP address to use if the DHCP fails to assign
-IPAddress ip(192, 168, 1, 177);
+IPAddress ip(192, 168, 0, 177);
 IPAddress myDns(8, 8, 8, 8);
 
 // Initialize the Ethernet client library
@@ -89,7 +89,7 @@ int8_t create_influx_json(char batter_id[],
 }
 
 
-uint32_t log_message(String log_msg, uint8_t system_state){
+uint32_t log_message(String log_msg, uint8_t system_state, int8_t *sd_available, int8_t *sd_initialized){
 
   int32_t rc = 0;
   int32_t successful_post = 0;
@@ -97,7 +97,7 @@ uint32_t log_message(String log_msg, uint8_t system_state){
   rc += write_to_serial(log_msg);
   successful_post = write_to_ethernet(log_msg);
   rc += successful_post;
-  rc += write_to_sd_card(log_msg, ! successful_post);
+  rc += write_to_sd_card(log_msg, ! successful_post, sd_available, sd_initialized);
 
   return rc;  
 }
@@ -158,31 +158,56 @@ uint32_t write_to_serial(String log_msg){
 }
 
 
-//requires SD knowledge and internet knowledge
 //Return 0: write worked
 //Return 1: write failed
-uint32_t write_to_sd_card(String log_msg, bool has_internet){
+uint32_t write_to_sd_card(String log_msg, bool has_internet, int8_t *sd_available, int8_t *sd_initialized){
 
-  File dataFile;
-   if(has_internet){
-     dataFile = SD.open(current_sd_file_live_down, FILE_WRITE);
-   } else {
-     dataFile = SD.open(current_sd_file_stored, FILE_WRITE);
-   }
+  *sd_available = digitalRead(SD_CARD_INSERTED);
+  if(0 == *sd_available){
+    *sd_initialized = 0;
+  } else {
+    if (0 == *sd_initialized){
+      *sd_initialized = 1;
+      SD.mkdir("/stored");
+      SD.mkdir("/live");
+      SD.mkdir("/stor_db");
+      SD.mkdir("/live_db");
 
-  // if the file is available, write to it:
-  if (dataFile) {
-    dataFile.println(log_msg);
-    dataFile.close();
-    return 0;
-  }
-  // if the file isn't open, pop up an error:
-  else {
-    if(Serial){
-      Serial.println("ERR: Unable to write to sd card");
+      //Go read configuration from files, or write those files if they dont exist
+      //Battery Id
+
     }
-    return 1;
   }
+
+  if(*sd_available){
+    File dataFile;
+    if(has_internet){
+      dataFile = SD.open(current_sd_file_live_down, FILE_WRITE);
+    } else {
+      dataFile = SD.open(current_sd_file_stored, FILE_WRITE);
+    }
+
+    // if the file is available, write to it:
+    if (dataFile) {
+      dataFile.println(log_msg);
+      dataFile.close();
+      return 0;
+    }
+    // if the file isn't open, pop up an error:
+    else {
+      if(Serial){
+        Serial.println("ERR: Unable to write to sd card");
+      }
+      return 1;
+    }
+  } else {
+    if(Serial){
+        Serial.println("ERR: No SD card present");
+      }
+      return 1;
+  }
+
+  
  }
 
 

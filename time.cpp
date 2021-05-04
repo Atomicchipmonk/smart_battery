@@ -40,7 +40,7 @@ uint8_t initialize_rtc(){
   }
   rtc.deconfigureAllTimers();
   
-  rtc.writeSqwPinMode(PCF8523_SquareWave1HZ);
+  //rtc.writeSqwPinMode(PCF8523_SquareWave1HZ);
   //rtc.enableCountdownTimer(PCF8523_FrequencySecond, 20, PCF8523_LowPulse14x64Hz);
 
   TIME_rtc_available = true;
