@@ -10,6 +10,7 @@
 #include "RTClib.h"
 #include <SD.h>
 #include <Ethernet.h>
+#include <Wire.h>
 
 #include "debug.h"
 #include "pin_selection.h"
@@ -19,11 +20,6 @@
 #include "power_readings.h"
 #include "time.h"
 
-
-
-
-
-        
 
 #define LOG_BUFFER_SIZE 1024
 
@@ -95,6 +91,10 @@ void setup(void) {
 
   //Turn 3.3V rail on
   digitalWrite(VPIN, HIGH);
+  
+  //Setup LTC
+  Wire.begin();
+  setup_ltc4151();
 
   //TODO currently if the rtc is not found it halts
   rtc_available = initialize_rtc();
@@ -203,12 +203,12 @@ void loop(void) {
   heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
   battery_temp_celcius = get_temperature(THERMISTOR_PIN_BATTERY);
 
-  solar_input_voltage = .2;
-  battery_input_voltage = .3;
-  battery_percent_charged = translate_charge(battery_input_voltage);
+  float solar_input_voltage = get_solar_voltage();
+  float battery_input_voltage = get_power_voltage();
+  float battery_percent_charged = translate_charge(battery_input_voltage);
   
-  solar_input_current = get_current(CURRENT_SENSE_SOLAR_ADDR);
-  battery_current = get_current(CURRENT_SENSE_BATTERY_ADDR);
+  float solar_input_current = get_solar_current();
+  float battery_current = get_power_current();
 
   //get relays
   heater_relay = get_heater_relay();

@@ -104,7 +104,9 @@ uint32_t log_message(String log_msg, uint8_t system_state, int8_t *sd_available,
 
 uint32_t initialize_ethernet(){
 
-  Ethernet.begin(mac, ip, myDns);
+///  Ethernet.begin(mac, ip, myDns);
+  Ethernet.begin(mac);
+
 
   if (Ethernet.hardwareStatus() == EthernetNoHardware) {
     if (Serial){

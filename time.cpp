@@ -133,7 +133,6 @@ time_t getNtpTime()
     }
   }
   Udp.stop();
-  Serial.println("No NTP Response :-(");
+  if (Serial) Serial.println("No NTP Response :-(");
   return 0; // return 0 if unable to get the time
 }
-
