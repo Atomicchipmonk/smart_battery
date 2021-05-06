@@ -1,0 +1,7 @@
+(fp_lib_table
+  (lib (name eec)(type KiCad)(uri /home/matt/icparts/LTC4151/eec.pretty)(options "")(descr ""))
+  (lib (name mp930)(type KiCad)(uri /home/matt/icparts/MP930/mp930.pretty)(options "")(descr ""))
+  (lib (name TEC_2)(type KiCad)(uri /home/matt/icparts/TEC_2)(options "")(descr ""))
+  (lib (name TSR1)(type KiCad)(uri /home/matt/icparts/TSR1)(options "")(descr ""))
+  (lib (name SMARTBATT)(type KiCad)(uri ${KIPRJMOD}/lib_fp.pretty)(options "")(descr ""))
+)

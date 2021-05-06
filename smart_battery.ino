@@ -24,6 +24,29 @@
 #define LOG_BUFFER_SIZE 1024
 
 
+char battery_id[9] = {'D','E','F','A','U','L','T','\0'};
+#define BATTERY_ID_CONFIG_FILE "IDCONFIG.txt"
+
+float heater_temp_celcius = 0;
+float battery_temp_celcius = 0;
+float solar_input_voltage = 0;
+float battery_input_voltage = 0;
+float battery_percent_charged = 0;
+float solar_input_current = 0;
+float battery_current = 0;
+
+int8_t heater_relay = 0;
+int8_t charge_relay = 0;
+int8_t output_relay = 0;
+
+int8_t serial_available = 0;
+int8_t sd_available = 0;
+int8_t sd_initialized = 0;
+int8_t rtc_available = 0;
+int8_t ethernet_available = 0;
+int8_t ntp_available = 0;
+int8_t iridium_available = 0;
+
 uint8_t counter = 0;
 uint8_t system_state = 0;
 DateTime last_rotation;
@@ -31,24 +54,27 @@ DateTime last_rotation;
 
  
 void setup(void) {
-  Serial.begin(9/600);
-  Wire.begin();
-  
-  setup_ltc4151();
+  Serial.begin(9600);
+
+  if(Serial){
+    serial_available = 1;
+  } else {
+    serial_available = 0;
+  }
+
   //If in debug mode, wait for serial to come up, otherwise just roll with it if you got it
   if (debug){
     while (!Serial){
       delay(100);
     }
-  } else {
-    Serial.end();
+    Serial.println("In debug mode: loaded and running");
   }
  
-
 
   analogReference(AR_DEFAULT);
 
   pinMode(BLINK_LED, OUTPUT);
+  pinMode(VPIN, OUTPUT);
   //Set up relay pins
   pinMode(HEATER_RELAY_PIN, OUTPUT);
   pinMode(CHARGE_RELAY_ON_PIN, OUTPUT);
@@ -56,50 +82,127 @@ void setup(void) {
   pinMode(OUTPUT_RELAY_ON_PIN, OUTPUT);
   pinMode(OUTPUT_RELAY_OFF_PIN, OUTPUT);
 
+  //Set SD Card input
+  pinMode(SD_CARD_INSERTED, INPUT_PULLUP);
+
+  //Set up Thermistors
+  pinMode(THERMISTOR_PIN_HEATER, INPUT);
+  pinMode(THERMISTOR_PIN_BATTERY, INPUT);
+
+  //Turn 3.3V rail on
+  digitalWrite(VPIN, HIGH);
+  
+  //Setup LTC
+  Wire.begin();
+  setup_ltc4151();
 
   //TODO currently if the rtc is not found it halts
-  initialize_rtc();
+  rtc_available = initialize_rtc();
   last_rotation = get_time();
 
+  sd_available = digitalRead(SD_CARD_INSERTED);
 
-  if (!SD.begin(SD_CHIP_SELECT)) {
-    if (Serial) Serial.println("ERR: SD Card not initialized");
-  } else {
-    SD.mkdir("/stored");
-    SD.mkdir("/live");
-    SD.mkdir("/stor_db");
-    SD.mkdir("/live_db");
+  if (sd_available){
+    if (!SD.begin(SD_CHIP_SELECT)) {
+      Serial.println("ERR: SD Card not initialized");
+      sd_initialized = 0;
+    } else {
+      sd_initialized = 1;
+      SD.mkdir("/stored");
+      SD.mkdir("/live");
+      SD.mkdir("/stor_db");
+      SD.mkdir("/live_db");
 
-    //Go read configuration from files, or write those files if they dont exist
-    //Battery Id
-    //Server Endpoint
-    //TLS Key
+      //Go read configuration from files, or write those files if they dont exist
+      //Battery Id
+
+      File IDFile = SD.open(BATTERY_ID_CONFIG_FILE, FILE_READ);
+      // if the file is available, write to it:
+      if (IDFile) {
+        memset(&battery_id, 0, sizeof(battery_id));
+        int32_t chars_read = IDFile.read(battery_id, 8);
+        if(chars_read < 1) {
+          memset(&battery_id, 0, sizeof(battery_id));
+          battery_id[0] = 'E';
+          battery_id[0] = 'R';
+          battery_id[0] = 'R';
+          battery_id[0] = '\0';
+        } else if (chars_read > 8) {
+          battery_id[8] = '\0';
+        } else {
+          if (battery_id[chars_read - 1] == '\n') {
+            battery_id[chars_read - 1] = '\0';
+          } else {
+            battery_id[chars_read] = '\0';
+          }
+        }
+        IDFile.close();
+      } else {
+        IDFile = SD.open(BATTERY_ID_CONFIG_FILE, FILE_WRITE);
+        if(IDFile){
+          IDFile.print(battery_id);
+          IDFile.close();
+        } else {
+          if(Serial){
+            Serial.println("ERR: Unable to write ID to sd card");
+          }
+        }
+      }
+
+      
+      //Server Endpoint
+      //TLS Key
+      rotate_sd_file_name(last_rotation);
+
+    }
   }
-
   
-  rotate_sd_file(last_rotation);
-
 
   Ethernet.init(ETHERNET_CHIP_SELECT);
-  initialize_ethernet();
+  ethernet_available = initialize_ethernet();
+
+  digitalWrite(VPIN, LOW);
 
 }
  
 void loop(void) {
 
+
+
+  //first turn 3.3v peripheral rail on
+  digitalWrite(VPIN, HIGH);
+  delay(1000);
+
+  if(Serial){
+    serial_available = 1;
+  } else {
+    serial_available = 0;
+  }
+
+  if (Ethernet.linkStatus() == Unknown || Ethernet.linkStatus() == LinkOFF) {
+    ethernet_available = 0;
+  }
+  else if (Ethernet.linkStatus() == LinkON) {
+    ethernet_available = 1;
+  }
+
+  sd_available = digitalRead(SD_CARD_INSERTED);
+  
+  rtc_available = initialize_rtc();
+
   DateTime loop_start_time = get_time();
 
   //im alive
   digitalWrite(BLINK_LED, HIGH);
+  
 
   //Set next timer (always do this first)
 
-  //get data
-  float heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
-  float battery_temp_celcius = get_temperature(THERMISTOR_PIN_BATTERY);
+  
+  
+  heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
+  battery_temp_celcius = get_temperature(THERMISTOR_PIN_BATTERY);
 
-  poll_solar();
-  poll_power();
   float solar_input_voltage = get_solar_voltage();
   float battery_input_voltage = get_power_voltage();
   float battery_percent_charged = translate_charge(battery_input_voltage);
@@ -108,20 +211,106 @@ void loop(void) {
   float battery_current = get_power_current();
 
   //get relays
-  int8_t heater_relay = get_heater_relay();
-  int8_t charge_relay = get_charge_relay();
-  int8_t output_relay = get_output_relay();
+  heater_relay = get_heater_relay();
+  charge_relay = get_charge_relay();
+  output_relay = get_output_relay();
+
+  //State machine logic goes here
+
+  //Modes
+  //SAFE
+  //Charging SAFE
+  //Charging
+  //Discharging
+
+  // SAFE
+  //Solar open circuit, output open circuit, heater open circuit
+  //Transition in -> breaking a limit, from all
+    //Temp < -15c
+    //Temp > 55c
+    //VOLTAGE_SENSE_SOLAR_ADDR > 30?
+    //VOLTAGE_SENSE_BATTERY_ADDR > 60?
+    //CURRENT_SENSE_SOLAR_ADDR > ??
+    //CURRENT_SENSE_BATTERY_ADDR > ??
+    //Battery < 30%
+  //Transition out 
+    //-> Charging SAFE
+      //Battery < 30%
+      //Temp > -15c
+      //Temp < 45c
+      //VOLTAGE_SENSE_SOLAR_ADDR > 28?
+      //VOLTAGE_SENSE_BATTERY_ADDR > 54?
+      //CURRENT_SENSE_SOLAR_ADDR > ??
+      //CURRENT_SENSE_BATTERY_ADDR > ??
+      //time weighted backoff scheme (with counter)
+    //-> To Discharging
+      //Temp > -15c
+      //Temp < 45c
+      //VOLTAGE_SENSE_SOLAR_ADDR > 28?
+      //VOLTAGE_SENSE_BATTERY_ADDR > 54?
+      //CURRENT_SENSE_SOLAR_ADDR > ??
+      //CURRENT_SENSE_BATTERY_ADDR > ??
+      //time weighted backoff scheme (with counter)
+
+  //Charging SAFE
+  //Solar closed circuit, output open circuit, heater circuit as needed
+    //Internal state logic - Temp < 0c turn on heater, turn off solar
+  //Transition in -> SAFE
+  //Transition out -> SAFE, Charging
+    //Battery > 50% -> Charging
+    //Break Limits (except 30% SOC) -> SAFE
+
+  //Nominal states
+
+  //Discharging
+  //Solar open circuit, output closed circuit, heater open circuit
+  //Transition in -> from SAFE, from Charging
+    //Battery > 95%
+  //Transition out -> all SAFE, Charging
+    //Break limits - > SAFE
+    //Battery < 90% -> Charging
+    
+
+  //Charging
+  //Solar closed circuit, output closed circuit, heater circuit as needed
+    //Internal state logic - Temp < 0c turn on heater, turn off Solar
+  //Transition in -> on boot, discharging, Charging SAFE
+    //Battery < 90%
+  //Transition out -> SAFE and Low Power SAFE, Discharging
+    //Break Limits -> SAFE
+    //Battery > 95% -> Discharge
+    
+
+
+
+  //Time based
+  //Iridium, midnight and noon, only if ethernet is not available
+  //NTP at midnight and noon, requires ethernet to be available
+  //File rollover at midnight
+
+  //3.3v feather_battery Charging
+  //if feather_battery < 30%
+  //Set FBCharge state, set 48v charge on
+
+  //if feather_battery > 70%
+  //Unset FBCharge state, turn 48v charge off
+
+
 
 
 
   int8_t log_rc = 0;
   char log_msg[LOG_BUFFER_SIZE] = "DEFAULT MESSAGE";
-
-  //figure out how to deal with live (chicken/egg problem)
   
   create_influx_json(
-      BATTERY_ID,
-      true,
+      battery_id,
+      serial_available,
+      sd_available,
+      sd_initialized,
+      rtc_available,
+      ethernet_available,
+      ntp_available,
+      iridium_available,
       heater_temp_celcius,
       battery_temp_celcius,
       solar_input_voltage,
@@ -137,7 +326,8 @@ void loop(void) {
       log_msg,
       LOG_BUFFER_SIZE);
 
-  int32_t rc = log_message(log_msg);
+
+  int32_t rc = log_message(log_msg, system_state);
 
 /* Uncomment if you want to hear/see some latching action
 
@@ -159,31 +349,39 @@ void loop(void) {
   }
 
 
-  time_t ntp_time;
-  //fast rotation if debugging
+  time_t ntp_time = 0;
+  //fast rotation for debugging
   if(debug){
     if(loop_start_time.minute() != last_rotation.minute()){
-      rotate_sd_file(loop_start_time);
+      rotate_sd_file_name(loop_start_time);
+      
       memcpy(&last_rotation, &loop_start_time, sizeof(DateTime));
 
       ntp_time = getNtpTime();
       if (ntp_time != 0){
         set_time(DateTime(ntp_time));
+        ntp_available = 1;
+      } else {
+        ntp_available = 0;
       }
       
     }    
   } else {
     if(loop_start_time.day() != last_rotation.day()){
-      rotate_sd_file(loop_start_time);
+      rotate_sd_file_name(loop_start_time);
       memcpy(&last_rotation, &loop_start_time, sizeof(DateTime));
 
       ntp_time = getNtpTime();
       if (ntp_time != 0){
         set_time(DateTime(ntp_time));
+        ntp_available = 1;
+      } else {
+        ntp_available = 0;
       }
     }
   }
 
+  digitalWrite(VPIN, LOW);
   digitalWrite(BLINK_LED, LOW);
 
 

@@ -33,7 +33,13 @@ char current_sd_file_live_down[64] = "/live/defaultl.txt";
 char current_sd_file_stored[64] = "/stored/defaults.txt";
 
 int8_t create_influx_json(char batter_id[],
-      bool live,
+      int8_t serial_available,
+      int8_t sd_available,
+      int8_t sd_initialized,
+      int8_t rtc_available,
+      int8_t ethernet_available,
+      int8_t ntp_available,
+      int8_t iridium_available,
       float heater_temp_celcius,
       float battery_temp_celcius,
       float solar_input_voltage,
@@ -48,11 +54,15 @@ int8_t create_influx_json(char batter_id[],
       DateTime time, 
       char* buffer,
       uint16_t buffer_size){
-
+      
   //this doesnt work, requires additional compiler linking for floats in printf. If this did work though, it would be great!
-  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%S,live=%d,dbg=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
-      BATTERY_ID, \
-      live, \
+  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%s,ser=%d,sd=%d,ntp=%d,irid=%d,eth=%d,dbg=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
+      batter_id, \
+      serial_available, \
+      (sd_available & sd_initialized), \
+      ntp_available, \
+      iridium_available, \
+      ethernet_available, \
       debug, \
       heater_temp_celcius, \
       battery_temp_celcius, \
@@ -79,14 +89,15 @@ int8_t create_influx_json(char batter_id[],
 }
 
 
-uint32_t log_message(String log_msg){
+uint32_t log_message(String log_msg, uint8_t system_state){
+
   int32_t rc = 0;
-  int32_t has_internet = 0;
+  int32_t successful_post = 0;
 
   rc += write_to_serial(log_msg);
-  has_internet = write_to_ethernet(log_msg);
-  rc += has_internet;
-  rc += write_to_sd_card(log_msg, ! has_internet);
+  successful_post = write_to_ethernet(log_msg);
+  rc += successful_post;
+  rc += write_to_sd_card(log_msg, ! successful_post);
 
   return rc;  
 }
@@ -101,18 +112,20 @@ uint32_t initialize_ethernet(){
     if (Serial){
       Serial.println("ERR: Ethernet shield was not found");
     }
-    return -1;
+    return 0;
   }
   if (Ethernet.linkStatus() == LinkOFF) {
     if (Serial){
       Serial.println("ERR: No ethernet cable found");
     }
-    return -2;
+    return 0;
   }
 
-  return 0;
+  return 1;
 }
 
+
+//Hardware safe, best effort connection, errors out after timeout
 uint32_t write_to_ethernet(String log_msg){
   int32_t rc = client.connect(server, 8086);
   if (rc) {
@@ -146,6 +159,10 @@ uint32_t write_to_serial(String log_msg){
     }
 }
 
+
+//requires SD knowledge and internet knowledge
+//Return 0: write worked
+//Return 1: write failed
 uint32_t write_to_sd_card(String log_msg, bool has_internet){
 
   File dataFile;
@@ -170,7 +187,9 @@ uint32_t write_to_sd_card(String log_msg, bool has_internet){
   }
  }
 
-uint8_t rotate_sd_file(DateTime timeNow){
+
+//Hardware safe
+uint8_t rotate_sd_file_name(DateTime timeNow){
   uint8_t rc = 0;
 
   if(debug){
