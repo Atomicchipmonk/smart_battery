@@ -19,13 +19,25 @@
 #include "relays.h"
 #include "power_readings.h"
 #include "time.h"
+#include "config.h"
 
 
 #define LOG_BUFFER_SIZE 1024
 
 
 char battery_id[9] = {'D','E','F','A','U','L','T','\0'};
-#define BATTERY_ID_CONFIG_FILE "IDCONFIG.txt"
+#define BATTERY_ID_CONFIG_FILE "config/IDCONFIG.txt"
+
+char server_name[65] = {'D','E','F','A','U','L','T','.','n','e','t','\0'};
+#define SERVER_NAME_CONFIG_FILE "config/SERVRCFG.txt"
+
+char battery_ip[12] = {'1','9','2','.','1','6','8','.','1','.','111','\0'};
+IPAddress ip_addr(192, 168, 1, 111);
+#define BATTERY_IP_CONFIG_FILE "config/IPADDCFG.txt"
+
+char battery_mac[18] = {'0','1','-','2','3','-','4','5','-','6','7','-','8','9','-','A','B','\0'};
+byte mac_addr[6] = { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB };
+#define BATTERY_MAC_CONFIG_FILE "config/MACADCFG.txt"
 
 float heater_temp_celcius = 0;
 float battery_temp_celcius = 0;
@@ -112,46 +124,20 @@ void setup(void) {
       SD.mkdir("/live");
       SD.mkdir("/stor_db");
       SD.mkdir("/live_db");
+      SD.mkdir("/config");
 
       //Go read configuration from files, or write those files if they dont exist
-      //Battery Id
+      read_config_file(battery_id, BATTERY_ID_CONFIG_FILE, sizeof(battery_id));
+      read_config_file(server_name, SERVER_NAME_CONFIG_FILE, sizeof(server_name));
+      read_config_file(battery_ip, BATTERY_IP_CONFIG_FILE, sizeof(battery_ip));
+      read_config_file(battery_mac, BATTERY_MAC_CONFIG_FILE, sizeof(battery_mac));
 
-      File IDFile = SD.open(BATTERY_ID_CONFIG_FILE, FILE_READ);
-      // if the file is available, write to it:
-      if (IDFile) {
-        memset(&battery_id, 0, sizeof(battery_id));
-        int32_t chars_read = IDFile.read(battery_id, 8);
-        if(chars_read < 1) {
-          memset(&battery_id, 0, sizeof(battery_id));
-          battery_id[0] = 'E';
-          battery_id[0] = 'R';
-          battery_id[0] = 'R';
-          battery_id[0] = '\0';
-        } else if (chars_read > 8) {
-          battery_id[8] = '\0';
-        } else {
-          if (battery_id[chars_read - 1] == '\n') {
-            battery_id[chars_read - 1] = '\0';
-          } else {
-            battery_id[chars_read] = '\0';
-          }
-        }
-        IDFile.close();
-      } else {
-        IDFile = SD.open(BATTERY_ID_CONFIG_FILE, FILE_WRITE);
-        if(IDFile){
-          IDFile.print(battery_id);
-          IDFile.close();
-        } else {
-          if(Serial){
-            Serial.println("ERR: Unable to write ID to sd card");
-          }
-        }
-      }
-
+      process_ip_address(battery_ip, &ip_addr);
+      process_mac_address(battery_mac, mac_addr);
       
-      //Server Endpoint
-      //TLS Key
+
+      //TLS Key (Eventually)
+
       rotate_sd_file_name(last_rotation);
 
     }
