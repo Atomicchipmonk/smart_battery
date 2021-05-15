@@ -27,7 +27,7 @@ int8_t read_config_file(char config_str[], const char* file_name, uint32_t size)
               Serial.print("ERR: ");
               Serial.print(file_name);
               Serial.println(" is empty. removing file and rebooting");
-            }
+          }
           IDFile.close();
           SD.remove(file_name);
           return -1;
@@ -111,33 +111,35 @@ int8_t process_ip_address(const char config_str[], IPAddress* resulting_ip_addr)
 }
 
 int8_t process_mac_address(const char config_str[], byte resulting_mac_addr[]){
-    uint32_t safe_byte_mac_address[6] = {0,0,0,0,0,0};
+  uint32_t safe_byte_mac_address[6] = {0,0,0,0,0,0};
 
-    int32_t scan_result = sscanf(config_str, "%02X-%02X-%02X-%02X-%02X-%02X", &safe_byte_mac_address[0], &safe_byte_mac_address[1], &safe_byte_mac_address[2], &safe_byte_mac_address[3], &safe_byte_mac_address[4], &safe_byte_mac_address[5]);
-    
-    if( scan_result != 6 ){
-        if(Serial){
-          Serial.print("Using default MAC: ");
-          for(int i = 0; i < 6; i++){
-            Serial.print(resulting_mac_addr[i], HEX);
-            Serial.print(" ");
-          }
-          Serial.println("");
-        }
-        return 0;
-    } else {
-        if(Serial){
-          Serial.print("Using MAC from SD card: ");
-          for(int i = 0; i < 6; i++){
-            if(Serial){
-            Serial.print(safe_byte_mac_address[i], HEX);
-            Serial.print(" ");
-            }
-            resulting_mac_addr[i] = (byte) safe_byte_mac_address[i];
-          }
-          Serial.println("");
-        }
-        return 1;
+  int32_t scan_result = sscanf(config_str, "%02X-%02X-%02X-%02X-%02X-%02X", &safe_byte_mac_address[0], &safe_byte_mac_address[1], &safe_byte_mac_address[2], &safe_byte_mac_address[3], &safe_byte_mac_address[4], &safe_byte_mac_address[5]);
+  
+  if( scan_result != 6 ){
+    if(Serial){
+      Serial.print("Using default MAC: ");
+      for(int i = 0; i < 6; i++){
+        Serial.print(resulting_mac_addr[i], HEX);
+        Serial.print(" ");
+      }
+      Serial.println("");
     }
-    
+    return 0;
+  } else {
+    if(Serial){
+      Serial.print("Using MAC from SD card: ");
+    }
+    for(int i = 0; i < 6; i++){
+      if(Serial){
+        Serial.print(safe_byte_mac_address[i], HEX);
+        Serial.print(" ");
+      }
+      resulting_mac_addr[i] = (byte) safe_byte_mac_address[i];
+    }
+    if(Serial){
+      Serial.println("");
+    }
+  }
+  return 1;
 }
+    

@@ -117,7 +117,6 @@ void setup(void) {
     }
     Serial.println("In debug mode: loaded and running");
   }
- 
 
   analogReference(AR_DEFAULT);
 
@@ -129,6 +128,8 @@ void setup(void) {
   pinMode(CHARGE_RELAY_OFF_PIN, OUTPUT);
   pinMode(OUTPUT_RELAY_ON_PIN, OUTPUT);
   pinMode(OUTPUT_RELAY_OFF_PIN, OUTPUT);
+  pinMode(PWR_48V_ENABLE_PIN, OUTPUT);
+  pinMode(PWR_ROCKBLOX_ENABLE_PIN, OUTPUT);
 
   //Set SD Card input
   pinMode(SD_CARD_INSERTED, INPUT_PULLUP);
@@ -137,8 +138,14 @@ void setup(void) {
   pinMode(THERMISTOR_PIN_HEATER, INPUT);
   pinMode(THERMISTOR_PIN_BATTERY, INPUT);
 
+  //Start Charging from the 48v Battery
+  digitalWrite(PWR_48V_ENABLE_PIN, HIGH);
+
   //Turn 3.3V rail on
   digitalWrite(VPIN, HIGH);
+
+  
+
   
   //Setup LTC
   Wire.begin();
@@ -440,6 +447,9 @@ void loop(void) {
   //3.3v feather_battery Charging
   //if feather_battery < 30%
   //Set FBCharge state, set 48v charge on
+
+  //  //Start Charging from the 48v Battery
+  //digitalWrite(PWR_48V_ENABLE_PIN, HIGH);
 
   //if feather_battery > 70%
   //Unset FBCharge state, turn 48v charge off
