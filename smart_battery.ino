@@ -44,11 +44,11 @@ byte mac_addr[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
 float heater_temp_celcius = 0;
 float battery_temp_celcius = 0;
-float solar_input_voltage = 0;
-float battery_input_voltage = 0;
+float solar_input_voltage = 0.0;
+float battery_input_voltage = 0.0;
 float battery_percent_charged = 0;
-float solar_input_current = 0;
-float battery_current = 0;
+float solar_input_current = 0.0;
+float battery_current = 0.0;
 
 int8_t heater_relay = 0;
 int8_t charge_relay = 0;
@@ -76,8 +76,8 @@ typedef enum {
 #define SAFE_TEMP_HIGH 55.0
 #define SAFE_SOLAR_OVERVOLTAGE 48.0
 #define SAFE_BATTERY_OVERVOLTAGE 60.0
-#define SAFE_SOLAR_OVERCURRENT 6.0
-#define SAFE_BATTERY_OVERCURRENT 4.0
+#define SAFE_SOLAR_OVERCURRENT 6000.0
+#define SAFE_BATTERY_OVERCURRENT 4000.0
 #define SAFE_BATTERY_LOW 0.3
 #define SAFE_TIMER 10
 
@@ -85,8 +85,8 @@ typedef enum {
 #define NOMINAL_TEMP_HIGH 52.0
 #define NOMINAL_SOLAR_OVERVOLTAGE 46.0
 #define NOMINAL_BATTERY_OVERVOLTAGE 54.0
-#define NOMINAL_SOLAR_OVERCURRENT 6.0
-#define NOMINAL_BATTERY_OVERCURRENT 4.0
+#define NOMINAL_SOLAR_OVERCURRENT 6000.0
+#define NOMINAL_BATTERY_OVERCURRENT 4000.0
 #define NOMINAL_BATTERY_LOW 0.5
 
 #define CHARGING_BATTERY_HIGH 0.95
@@ -242,6 +242,10 @@ void loop(void) {
   heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
   battery_temp_celcius = get_temperature(THERMISTOR_PIN_BATTERY);
 
+
+  poll_power();
+  poll_solar();
+
   solar_input_voltage = get_solar_voltage();
   battery_input_voltage = get_power_voltage();
   battery_percent_charged = translate_charge(battery_input_voltage);
@@ -293,26 +297,26 @@ void loop(void) {
             //CURRENT_SENSE_SOLAR_ADDR > ??
             //CURRENT_SENSE_BATTERY_ADDR > ??
             //time weighted backoff scheme (with counter)
-          if(heater_temp_celcius > NOMINAL_TEMP_LOW || \
-                  heater_temp_celcius <  NOMINAL_TEMP_HIGH || \
-                  battery_temp_celcius > NOMINAL_TEMP_LOW || \
-                  battery_temp_celcius < NOMINAL_TEMP_HIGH || \
-                  solar_input_voltage < NOMINAL_SOLAR_OVERVOLTAGE || \
-                  battery_input_voltage < NOMINAL_BATTERY_OVERVOLTAGE || \
-                  solar_input_current < NOMINAL_SOLAR_OVERCURRENT || \
-                  battery_current < NOMINAL_BATTERY_OVERCURRENT || \
-                  battery_percent_charged < NOMINAL_BATTERY_LOW || \
+          if(heater_temp_celcius > NOMINAL_TEMP_LOW && \
+                  heater_temp_celcius <  NOMINAL_TEMP_HIGH && \
+                  battery_temp_celcius > NOMINAL_TEMP_LOW && \
+                  battery_temp_celcius < NOMINAL_TEMP_HIGH && \
+                  solar_input_voltage < NOMINAL_SOLAR_OVERVOLTAGE && \
+                  battery_input_voltage < NOMINAL_BATTERY_OVERVOLTAGE && \
+                  solar_input_current < NOMINAL_SOLAR_OVERCURRENT && \
+                  battery_current < NOMINAL_BATTERY_OVERCURRENT && \
+                  battery_percent_charged < NOMINAL_BATTERY_LOW && \
                   state_counter > SAFE_TIMER){
             system_state = CHARGING_SAFE;
             state_counter = 0;
-          } else if (heater_temp_celcius > NOMINAL_TEMP_LOW || \
-                  heater_temp_celcius < NOMINAL_TEMP_HIGH || \
-                  battery_temp_celcius > NOMINAL_TEMP_LOW || \
-                  battery_temp_celcius < NOMINAL_TEMP_HIGH || \
-                  solar_input_voltage < NOMINAL_SOLAR_OVERVOLTAGE || \
-                  battery_input_voltage < NOMINAL_BATTERY_OVERVOLTAGE || \
-                  solar_input_current < NOMINAL_SOLAR_OVERCURRENT || \
-                  battery_current < NOMINAL_BATTERY_OVERCURRENT || \
+          } else if (heater_temp_celcius > NOMINAL_TEMP_LOW && \
+                  heater_temp_celcius < NOMINAL_TEMP_HIGH && \
+                  battery_temp_celcius > NOMINAL_TEMP_LOW && \
+                  battery_temp_celcius < NOMINAL_TEMP_HIGH && \
+                  solar_input_voltage < NOMINAL_SOLAR_OVERVOLTAGE && \
+                  battery_input_voltage < NOMINAL_BATTERY_OVERVOLTAGE && \
+                  solar_input_current < NOMINAL_SOLAR_OVERCURRENT && \
+                  battery_current < NOMINAL_BATTERY_OVERCURRENT && \
                   state_counter > SAFE_TIMER){
             system_state = DISCHARGING;
             state_counter = 0;
