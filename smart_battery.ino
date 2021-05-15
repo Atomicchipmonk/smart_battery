@@ -31,12 +31,12 @@ char battery_id[9] = {'D','E','F','A','U','L','T','\0'};
 char server_name[65] = {'D','E','F','A','U','L','T','.','n','e','t','\0'};
 #define SERVER_NAME_CONFIG_FILE "config/SERVRCFG.txt"
 
-char battery_ip[12] = {'1','9','2','.','1','6','8','.','1','.','111','\0'};
+char battery_ip[16] = {'1','9','2','.','1','6','8','.','1','.','111','\0'};
 IPAddress ip_addr(192, 168, 1, 111);
 #define BATTERY_IP_CONFIG_FILE "config/IPADDCFG.txt"
 
 char battery_mac[18] = {'0','1','-','2','3','-','4','5','-','6','7','-','8','9','-','A','B','\0'};
-byte mac_addr[6] = { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB };
+byte mac_addr[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 #define BATTERY_MAC_CONFIG_FILE "config/MACADCFG.txt"
 
 float heater_temp_celcius = 0;
@@ -116,7 +116,10 @@ void setup(void) {
 
   if (sd_available){
     if (!SD.begin(SD_CHIP_SELECT)) {
-      Serial.println("ERR: SD Card not initialized");
+      if(Serial){
+        Serial.println("ERR: SD Card not initialized");
+      }
+      
       sd_initialized = 0;
     } else {
       sd_initialized = 1;
@@ -126,15 +129,22 @@ void setup(void) {
       SD.mkdir("/live_db");
       SD.mkdir("/config");
 
+      if(Serial){
+        Serial.println("Initializing configs");
+      }
+      int8_t config_rc = 0;
       //Go read configuration from files, or write those files if they dont exist
-      read_config_file(battery_id, BATTERY_ID_CONFIG_FILE, sizeof(battery_id));
-      read_config_file(server_name, SERVER_NAME_CONFIG_FILE, sizeof(server_name));
-      read_config_file(battery_ip, BATTERY_IP_CONFIG_FILE, sizeof(battery_ip));
-      read_config_file(battery_mac, BATTERY_MAC_CONFIG_FILE, sizeof(battery_mac));
+      config_rc = read_config_file(battery_id, BATTERY_ID_CONFIG_FILE, sizeof(battery_id));
+      config_rc = read_config_file(server_name, SERVER_NAME_CONFIG_FILE, sizeof(server_name));
+      config_rc = read_config_file(battery_ip, BATTERY_IP_CONFIG_FILE, sizeof(battery_ip));
+      config_rc = read_config_file(battery_mac, BATTERY_MAC_CONFIG_FILE, sizeof(battery_mac));
 
+      if(Serial){
+        Serial.println("Parsing configs");
+      }
+   
       process_ip_address(battery_ip, &ip_addr);
       process_mac_address(battery_mac, mac_addr);
-      
 
       //TLS Key (Eventually)
 
@@ -145,7 +155,7 @@ void setup(void) {
   
 
   Ethernet.init(ETHERNET_CHIP_SELECT);
-  ethernet_available = initialize_ethernet();
+  ethernet_available = initialize_ethernet(mac_addr, &ip_addr);
 
   digitalWrite(VPIN, LOW);
 
@@ -313,7 +323,7 @@ void loop(void) {
       LOG_BUFFER_SIZE);
 
 
-  int32_t rc = log_message(log_msg, system_state, &sd_available, &sd_initialized);
+  int32_t rc = log_message(log_msg, server_name, system_state, &sd_available, &sd_initialized);
 
 /* Uncomment if you want to hear/see some latching action
 

@@ -13,20 +13,17 @@
 
 
 
-// Enter a MAC address for your controller below.
-// Newer Ethernet shields have a MAC address printed on a sticker on the shield
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
-//IPAddress server(192,168,1,238); //Hardcoded internal IP address for debug
-char server[] = "granolamatt.net";    // Server address
 
 // Set the static IP address to use if the DHCP fails to assign
-IPAddress ip(192, 168, 0, 177);
 IPAddress myDns(8, 8, 8, 8);
 
 // Initialize the Ethernet client library
 // Only used to post log messages
 EthernetClient client;
+
+//IPAddress server(192,168,1,238); //Hardcoded internal IP address for debug
+char server[] = "granolamatt.net";    // Server address
 
 
 char current_sd_file_live_down[64] = "/live/defaultl.txt";
@@ -89,23 +86,23 @@ int8_t create_influx_json(char batter_id[],
 }
 
 
-uint32_t log_message(String log_msg, uint8_t system_state, int8_t *sd_available, int8_t *sd_initialized){
+uint32_t log_message(String log_msg, char server_name[], uint8_t system_state, int8_t *sd_available, int8_t *sd_initialized){
 
   int32_t rc = 0;
   int32_t successful_post = 0;
 
   rc += write_to_serial(log_msg);
-  successful_post = write_to_ethernet(log_msg);
+  successful_post = write_to_ethernet(log_msg, server_name);
   rc += successful_post;
   rc += write_to_sd_card(log_msg, ! successful_post, sd_available, sd_initialized);
 
   return rc;  
 }
 
-uint32_t initialize_ethernet(){
+uint32_t initialize_ethernet(byte mac[], IPAddress *my_ip_addr){
 
 ///  Ethernet.begin(mac, ip, myDns);
-  Ethernet.begin(mac);
+  Ethernet.begin(mac, *my_ip_addr, myDns);
 
 
   if (Ethernet.hardwareStatus() == EthernetNoHardware) {
@@ -126,8 +123,8 @@ uint32_t initialize_ethernet(){
 
 
 //Hardware safe, best effort connection, errors out after timeout
-uint32_t write_to_ethernet(String log_msg){
-  int32_t rc = client.connect(server, 8086);
+uint32_t write_to_ethernet(String log_msg, char server_name[]){
+  int32_t rc = client.connect(server_name, 8086);
   if (rc) {
       client.println("POST /write?db=mydb&precision=s HTTP/1.1");
       client.println("Host:  blackmesa.com");
