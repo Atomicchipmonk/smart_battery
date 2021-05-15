@@ -39,6 +39,9 @@ char battery_mac[18] = {'0','1','-','2','3','-','4','5','-','6','7','-','8','9',
 byte mac_addr[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 #define BATTERY_MAC_CONFIG_FILE "config/MACADCFG.txt"
 
+
+
+
 float heater_temp_celcius = 0;
 float battery_temp_celcius = 0;
 float solar_input_voltage = 0;
@@ -59,8 +62,41 @@ int8_t ethernet_available = 0;
 int8_t ntp_available = 0;
 int8_t iridium_available = 0;
 
-uint8_t counter = 0;
-uint8_t system_state = 0;
+
+typedef enum {
+  SAFE = 0,
+  CHARGING_SAFE = 1,
+  CHARGING = 2,
+  DISCHARGING = 3,
+} battery_state_enum;
+
+
+//SAFE Defines
+#define SAFE_TEMP_LOW -15.0
+#define SAFE_TEMP_HIGH 55.0
+#define SAFE_SOLAR_OVERVOLTAGE 48.0
+#define SAFE_BATTERY_OVERVOLTAGE 60.0
+#define SAFE_SOLAR_OVERCURRENT 6.0
+#define SAFE_BATTERY_OVERCURRENT 4.0
+#define SAFE_BATTERY_LOW 0.3
+#define SAFE_TIMER 10
+
+#define NOMINAL_TEMP_LOW -12.0
+#define NOMINAL_TEMP_HIGH 52.0
+#define NOMINAL_SOLAR_OVERVOLTAGE 46.0
+#define NOMINAL_BATTERY_OVERVOLTAGE 54.0
+#define NOMINAL_SOLAR_OVERCURRENT 6.0
+#define NOMINAL_BATTERY_OVERCURRENT 4.0
+#define NOMINAL_BATTERY_LOW 0.5
+
+#define CHARGING_BATTERY_HIGH 0.95
+
+#define DISCHARGE_BATTERY_LOW 0.9
+
+
+
+uint32_t state_counter = 0;
+battery_state_enum system_state = CHARGING_SAFE;
 DateTime last_rotation;
 
 
@@ -199,12 +235,12 @@ void loop(void) {
   heater_temp_celcius = get_temperature(THERMISTOR_PIN_HEATER);
   battery_temp_celcius = get_temperature(THERMISTOR_PIN_BATTERY);
 
-  float solar_input_voltage = get_solar_voltage();
-  float battery_input_voltage = get_power_voltage();
-  float battery_percent_charged = translate_charge(battery_input_voltage);
+  solar_input_voltage = get_solar_voltage();
+  battery_input_voltage = get_power_voltage();
+  battery_percent_charged = translate_charge(battery_input_voltage);
   
-  float solar_input_current = get_solar_current();
-  float battery_current = get_power_current();
+  solar_input_current = get_solar_current();
+  battery_current = get_power_current();
 
   //get relays
   heater_relay = get_heater_relay();
@@ -219,65 +255,182 @@ void loop(void) {
   //Charging
   //Discharging
 
-  // SAFE
-  //Solar open circuit, output open circuit, heater open circuit
-  //Transition in -> breaking a limit, from all
-    //Temp < -15c
-    //Temp > 55c
-    //VOLTAGE_SENSE_SOLAR_ADDR > 30?
-    //VOLTAGE_SENSE_BATTERY_ADDR > 60?
-    //CURRENT_SENSE_SOLAR_ADDR > ??
-    //CURRENT_SENSE_BATTERY_ADDR > ??
-    //Battery < 30%
-  //Transition out 
-    //-> Charging SAFE
-      //Battery < 30%
-      //Temp > -15c
-      //Temp < 45c
-      //VOLTAGE_SENSE_SOLAR_ADDR > 28?
-      //VOLTAGE_SENSE_BATTERY_ADDR > 54?
-      //CURRENT_SENSE_SOLAR_ADDR > ??
-      //CURRENT_SENSE_BATTERY_ADDR > ??
-      //time weighted backoff scheme (with counter)
-    //-> To Discharging
-      //Temp > -15c
-      //Temp < 45c
-      //VOLTAGE_SENSE_SOLAR_ADDR > 28?
-      //VOLTAGE_SENSE_BATTERY_ADDR > 54?
-      //CURRENT_SENSE_SOLAR_ADDR > ??
-      //CURRENT_SENSE_BATTERY_ADDR > ??
-      //time weighted backoff scheme (with counter)
 
-  //Charging SAFE
-  //Solar closed circuit, output open circuit, heater circuit as needed
-    //Internal state logic - Temp < 0c turn on heater, turn off solar
-  //Transition in -> SAFE
-  //Transition out -> SAFE, Charging
-    //Battery > 50% -> Charging
-    //Break Limits (except 30% SOC) -> SAFE
 
-  //Nominal states
+  //Transition based on the new data
+  switch(system_state){
+        case SAFE: 
+        //Transition in -> breaking a limit, from all
+          //Temp < -15c
+          //Temp > 55c
+          //VOLTAGE_SENSE_SOLAR_ADDR > 30?
+          //VOLTAGE_SENSE_BATTERY_ADDR > 60?
+          //CURRENT_SENSE_SOLAR_ADDR > ??
+          //CURRENT_SENSE_BATTERY_ADDR > ??
+          //Battery < 30%
+        //Transition out 
+          //-> Charging SAFE
+            //Battery < 30%
+            //Temp > -15c
+            //Temp < 45c
+            //VOLTAGE_SENSE_SOLAR_ADDR > 28?
+            //VOLTAGE_SENSE_BATTERY_ADDR > 54?
+            //CURRENT_SENSE_SOLAR_ADDR > ??
+            //CURRENT_SENSE_BATTERY_ADDR > ??
+            //time weighted backoff scheme (with counter)
+          //-> To Discharging
+            //Temp > -15c
+            //Temp < 45c
+            //VOLTAGE_SENSE_SOLAR_ADDR > 28?
+            //VOLTAGE_SENSE_BATTERY_ADDR > 54?
+            //CURRENT_SENSE_SOLAR_ADDR > ??
+            //CURRENT_SENSE_BATTERY_ADDR > ??
+            //time weighted backoff scheme (with counter)
+          if(heater_temp_celcius > NOMINAL_TEMP_LOW || \
+                  heater_temp_celcius <  NOMINAL_TEMP_HIGH || \
+                  battery_temp_celcius > NOMINAL_TEMP_LOW || \
+                  battery_temp_celcius < NOMINAL_TEMP_HIGH || \
+                  solar_input_voltage < NOMINAL_SOLAR_OVERVOLTAGE || \
+                  battery_input_voltage < NOMINAL_BATTERY_OVERVOLTAGE || \
+                  solar_input_current < NOMINAL_SOLAR_OVERCURRENT || \
+                  battery_current < NOMINAL_BATTERY_OVERCURRENT || \
+                  battery_percent_charged < NOMINAL_BATTERY_LOW || \
+                  state_counter > SAFE_TIMER){
+            system_state = CHARGING_SAFE;
+            state_counter = 0;
+          } else if (heater_temp_celcius > NOMINAL_TEMP_LOW || \
+                  heater_temp_celcius < NOMINAL_TEMP_HIGH || \
+                  battery_temp_celcius > NOMINAL_TEMP_LOW || \
+                  battery_temp_celcius < NOMINAL_TEMP_HIGH || \
+                  solar_input_voltage < NOMINAL_SOLAR_OVERVOLTAGE || \
+                  battery_input_voltage < NOMINAL_BATTERY_OVERVOLTAGE || \
+                  solar_input_current < NOMINAL_SOLAR_OVERCURRENT || \
+                  battery_current < NOMINAL_BATTERY_OVERCURRENT || \
+                  state_counter > SAFE_TIMER){
+            system_state = DISCHARGING;
+            state_counter = 0;
+          } 
+          
+          break;
+        case CHARGING_SAFE:
+          //Transition in -> SAFE
+          //Transition out -> SAFE, Charging
+            //Battery > 50% -> Charging
+            //Break Limits (except 30% SOC) -> SAFE
+          if(heater_temp_celcius < SAFE_TEMP_LOW || \
+                  heater_temp_celcius > SAFE_TEMP_HIGH || \
+                  battery_temp_celcius < SAFE_TEMP_LOW || \
+                  battery_temp_celcius > SAFE_TEMP_HIGH || \
+                  solar_input_voltage > SAFE_SOLAR_OVERVOLTAGE || \
+                  battery_input_voltage > SAFE_BATTERY_OVERVOLTAGE || \
+                  solar_input_current > SAFE_SOLAR_OVERCURRENT || \
+                  battery_current > SAFE_BATTERY_OVERCURRENT){
+            system_state = SAFE;
+            state_counter = 0;
+          }
+          else if(battery_percent_charged > .5){
+            system_state = CHARGING;
+            state_counter = 0;
+          }
+          break;
+        case CHARGING: 
+          //Transition in -> on boot, discharging, Charging SAFE
+            //Battery < 90%
+          //Transition out -> SAFE and Low Power SAFE, Discharging
+            //Break Limits -> SAFE
+            //Battery > 95% -> Discharge
+          if(heater_temp_celcius < SAFE_TEMP_LOW || \
+                  heater_temp_celcius > SAFE_TEMP_HIGH || \
+                  battery_temp_celcius < SAFE_TEMP_LOW || \
+                  battery_temp_celcius > SAFE_TEMP_HIGH || \
+                  solar_input_voltage > SAFE_SOLAR_OVERVOLTAGE || \
+                  battery_input_voltage > SAFE_BATTERY_OVERVOLTAGE || \
+                  solar_input_current > SAFE_SOLAR_OVERCURRENT || \
+                  battery_current > SAFE_BATTERY_OVERCURRENT || \
+                  battery_percent_charged < SAFE_BATTERY_LOW){
+            system_state = SAFE;
+            state_counter = 0;
+          } else if (battery_percent_charged > CHARGING_BATTERY_HIGH){
+            system_state = DISCHARGING;
+            state_counter = 0;
+          }
+          break;
+        case DISCHARGING:
+          //Transition in -> from SAFE, from Charging
+            //Battery > 95%
+          //Transition out -> all SAFE, Charging
+            //Break limits - > SAFE
+            //Battery < 90% -> Charging
+          if(heater_temp_celcius < SAFE_TEMP_LOW || \
+                  heater_temp_celcius > SAFE_TEMP_HIGH || \
+                  battery_temp_celcius < SAFE_TEMP_LOW || \
+                  battery_temp_celcius > SAFE_TEMP_HIGH || \
+                  solar_input_voltage > SAFE_SOLAR_OVERVOLTAGE || \
+                  battery_input_voltage > SAFE_BATTERY_OVERVOLTAGE || \
+                  solar_input_current > SAFE_SOLAR_OVERCURRENT || \
+                  battery_current > SAFE_BATTERY_OVERCURRENT || \
+                  battery_percent_charged < SAFE_BATTERY_LOW){
+            system_state = SAFE;
+            state_counter = 0;
+          } else if (battery_percent_charged < DISCHARGE_BATTERY_LOW){
+            system_state = CHARGING;
+            state_counter = 0;
+          }
+          break;
+        default: 
+          system_state = SAFE;
+          state_counter = 0;
+          break;
+  }
 
-  //Discharging
-  //Solar open circuit, output closed circuit, heater open circuit
-  //Transition in -> from SAFE, from Charging
-    //Battery > 95%
-  //Transition out -> all SAFE, Charging
-    //Break limits - > SAFE
-    //Battery < 90% -> Charging
+  state_counter++;
+
+  //Update/Reinforce relays
+  switch(system_state){
+        case SAFE: 
+          //Solar open circuit, output open circuit, heater open circuit
+            set_latching_relay(CHARGE_RELAY_OFF_PIN);
+            set_latching_relay(OUTPUT_RELAY_OFF_PIN);
+            set_relay_off(HEATER_RELAY_PIN);
+          break;
+        case CHARGING_SAFE: 
+          //Charging SAFE
+              //Solar closed circuit, output open circuit, heater circuit as needed
+                //Internal state logic - Temp < 0c turn on heater, turn off solar
+          set_latching_relay(OUTPUT_RELAY_OFF_PIN);
+          if(heater_temp_celcius < 0 || battery_temp_celcius < 0){
+            set_relay_on(HEATER_RELAY_PIN);
+            set_latching_relay(CHARGE_RELAY_OFF_PIN);
+          } else {
+            set_relay_off(HEATER_RELAY_PIN);
+            set_latching_relay(CHARGE_RELAY_ON_PIN);
+          }
+          break;
+        case CHARGING: 
+          //Charging
+          //Solar closed circuit, output closed circuit, heater circuit as needed
+            //Internal state logic - Temp < 0c turn on heater, turn off Solar
+          set_latching_relay(OUTPUT_RELAY_ON_PIN);
+          if(heater_temp_celcius < 0 || battery_temp_celcius < 0){
+            set_relay_on(HEATER_RELAY_PIN);
+            set_latching_relay(CHARGE_RELAY_OFF_PIN);
+          } else {
+            set_relay_off(HEATER_RELAY_PIN);
+            set_latching_relay(CHARGE_RELAY_ON_PIN);
+          }
+          break;
+        case DISCHARGING:
+          //Discharging
+            //Solar open circuit, output closed circuit, heater open circuit
+          set_latching_relay(CHARGE_RELAY_OFF_PIN);
+          set_latching_relay(OUTPUT_RELAY_ON_PIN);
+          set_relay_off(HEATER_RELAY_PIN);
+          break;
+        default:
+          break;
+  }
+
     
-
-  //Charging
-  //Solar closed circuit, output closed circuit, heater circuit as needed
-    //Internal state logic - Temp < 0c turn on heater, turn off Solar
-  //Transition in -> on boot, discharging, Charging SAFE
-    //Battery < 90%
-  //Transition out -> SAFE and Low Power SAFE, Discharging
-    //Break Limits -> SAFE
-    //Battery > 95% -> Discharge
-    
-
-
 
   //Time based
   //Iridium, midnight and noon, only if ethernet is not available
@@ -318,6 +471,7 @@ void loop(void) {
       charge_relay,
       output_relay,
       system_state,
+      state_counter,
       loop_start_time,
       log_msg,
       LOG_BUFFER_SIZE);

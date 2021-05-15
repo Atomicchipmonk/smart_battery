@@ -21,6 +21,7 @@ int8_t create_influx_json(char batter_id[], \
       int8_t charge_relay, \
       int8_t output_relay, \
       int8_t system_state, \
+      int32_t state_counter, \
       DateTime time, \
       char* buffer, \
       uint16_t buffer_size);

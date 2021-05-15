@@ -48,12 +48,13 @@ int8_t create_influx_json(char batter_id[],
       int8_t charge_relay,
       int8_t output_relay,
       int8_t system_state,
+      int32_t state_counter, \
       DateTime time, 
       char* buffer,
       uint16_t buffer_size){
       
   //this doesnt work, requires additional compiler linking for floats in printf. If this did work though, it would be great!
-  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%s,ser=%d,sd=%d,ntp=%d,irid=%d,eth=%d,dbg=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d %lu", 
+  int8_t ret = snprintf(buffer, buffer_size, "battery,id=%s,ser=%d,sd=%d,ntp=%d,irid=%d,eth=%d,dbg=%d htr_tmp=%.2f,bat_tmp=%.2f,solar_v=%.2f,bat_in_v=%.2f,solar_a=%.2f,bat_a=%.2f,htr_relay=%d,chrg_relay=%d,out_relay=%d,bat_pcnt=%.2f,state=%d,state_cntr=%d %lu", 
       batter_id, \
       serial_available, \
       (sd_available & sd_initialized), \
@@ -72,6 +73,7 @@ int8_t create_influx_json(char batter_id[],
       output_relay, \
       battery_percent_charged, \
       system_state, \
+      state_counter, \
       time.unixtime());
 
 
