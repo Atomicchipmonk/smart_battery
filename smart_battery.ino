@@ -91,7 +91,7 @@ typedef enum {
 
 #define CHARGING_BATTERY_HIGH 0.95
 
-#define DISCHARGE_BATTERY_LOW 0.9
+#define DISCHARGE_BATTERY_LOW 0.8
 
 
 
@@ -339,7 +339,7 @@ void loop(void) {
             system_state = SAFE;
             state_counter = 0;
           }
-          else if(battery_percent_charged > .5){
+          else if(battery_percent_charged > NOMINAL_BATTERY_LOW){
             system_state = CHARGING;
             state_counter = 0;
           }
@@ -400,9 +400,9 @@ void loop(void) {
   switch(system_state){
         case SAFE: 
           //Solar open circuit, output open circuit, heater open circuit
-            set_latching_relay(CHARGE_RELAY_OFF_PIN);
-            set_latching_relay(OUTPUT_RELAY_OFF_PIN);
-            set_relay_off(HEATER_RELAY_PIN);
+          set_latching_relay(CHARGE_RELAY_OFF_PIN);
+          set_latching_relay(OUTPUT_RELAY_OFF_PIN);
+          set_relay_off(HEATER_RELAY_PIN);
           break;
         case CHARGING_SAFE: 
           //Charging SAFE

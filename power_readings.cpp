@@ -83,7 +83,14 @@ float get_solar_voltage(){
 }
 
 float translate_charge(float input_voltage){
-  return .85;
+  float batt_percent = 100 * ( ( input_voltage - 47.8 ) / 3);
+  if (0.0 > batt_percent){
+    batt_percent = -1.0;
+  } else if (100.0 < batt_percent){
+    batt_percent = 100.0;
+  }
+  return batt_percent;
+
 }
 
 float get_power_current(){
